@@ -111,43 +111,45 @@
   }
 </style>
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
-<canvas height="360" id="shader-canvas-ANIMATION_26" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="640"></canvas>
+<canvas height="240" id="shader-canvas-ANIMATION_26" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="426"></canvas>
 <script>
 (function() {
   const canvas = document.getElementById('shader-canvas-ANIMATION_26');
   
-  // 1. Resolution scaling: 0.5x resolution buffer cuts GPU fill-rate by ~75%
+  // 1. Stable, clamped low-resolution buffer: exactly 0.33x scale factor clamped to max 512x288
+  // This drastically slashes fill-rate by >88% and guarantees deterministic, tiny GPU workload across all display sizes.
   function syncSize() {
-    const displayW = canvas.clientWidth || window.innerWidth || 1280;
-    const displayH = canvas.clientHeight || window.innerHeight || 720;
-    const targetW = Math.max(320, Math.floor(displayW * 0.5));
-    const targetH = Math.max(180, Math.floor(displayH * 0.5));
+    const displayW = window.innerWidth || 1280;
+    const displayH = window.innerHeight || 720;
+    const targetW = Math.max(240, Math.min(512, Math.floor(displayW * 0.33)));
+    const targetH = Math.max(135, Math.min(288, Math.floor(displayH * 0.33)));
     if (canvas.width !== targetW || canvas.height !== targetH) {
       canvas.width = targetW;
       canvas.height = targetH;
     }
   }
-  if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(syncSize).observe(canvas);
-  }
   syncSize();
-  window.addEventListener('resize', syncSize);
+  window.addEventListener('resize', syncSize, { passive: true });
 
-  const gl = canvas.getContext('webgl', { powerPreference: 'low-power', antialias: false, depth: false, stencil: false }) || canvas.getContext('experimental-webgl');
+  const gl = canvas.getContext('webgl', { 
+    powerPreference: 'low-power', 
+    antialias: false, 
+    depth: false, 
+    stencil: false,
+    alpha: false,
+    preserveDrawingBuffer: false
+  }) || canvas.getContext('experimental-webgl');
   if (!gl) return;
   
   const vs = `attribute vec2 a_position;
-varying vec2 v_texCoord;
 void main() {
-  v_texCoord = a_position * 0.5 + 0.5;
   gl_Position = vec4(a_position, 0.0, 1.0);
 }`;
 
-  // Optimized fragment shader with mediump and streamlined noise math
+  // Streamlined fragment shader: strictly mediump, branchless math, lightweight uniform noise
   const fs = `precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
-varying vec2 v_texCoord;
 
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -167,8 +169,7 @@ float snoise(vec2 v) {
     m = m * m;
     vec3 x = 2.0 * fract(p * C.www) - 1.0;
     vec3 h = abs(x) - 0.5;
-    vec3 ox = floor(x + 0.5);
-    vec3 a0 = x - ox;
+    vec3 a0 = x - floor(x + 0.5);
     m *= 1.792842914 - 0.85373472 * (a0 * a0 + h * h);
     vec3 g;
     g.x = a0.x * x0.x + h.x * x0.y;
@@ -181,16 +182,16 @@ void main() {
     vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
     float t = u_time * 0.15;
     
-    // Ambient grid lines (scale adjusted for half resolution)
-    float cellSize = 22.0;
+    // Constant-cost ambient grid calculation
+    float cellSize = 16.0;
     vec2 gridDist = abs(fract(gl_FragCoord.xy / cellSize) - 0.5) * cellSize;
     float dist = min(gridDist.x, gridDist.y);
-    float gridLine = 1.0 - smoothstep(0.0, 1.2, dist);
+    float gridLine = 1.0 - smoothstep(0.0, 1.1, dist);
 
-    // Optimized waves calculation
+    // Uniform, lightweight waves
     float n1 = snoise(p * 1.1 + vec2(t * 0.28, -t * 0.14));
-    float n2 = snoise(p * 2.2 - vec2(-t * 0.18, t * 0.32 + n1 * 0.35));
-    float wave = sin(p.y * 2.4 + n1 * 1.6 + t) * 0.5 + 0.5;
+    float n2 = snoise(p * 2.1 - vec2(-t * 0.18, t * 0.3 + n1 * 0.35));
+    float wave = sin(p.y * 2.2 + n1 * 1.5 + t) * 0.5 + 0.5;
 
     vec3 colBase = vec3(0.03, 0.05, 0.08);
     vec3 colDarkVoid = vec3(0.015, 0.02, 0.03);
@@ -199,17 +200,16 @@ void main() {
 
     float rawEnergy = abs(n2 * 0.7 + wave * 0.3);
     float energy2 = rawEnergy * rawEnergy;
-    float energy = energy2 * sqrt(rawEnergy);
     
     vec3 color = mix(colDarkVoid, colBase, uv.y);
-    color += deepCyan * (energy * 0.8);
-    color += neonEmerald * (energy2 * energy2 * 0.75);
+    color += deepCyan * (energy2 * 0.9);
+    color += neonEmerald * (energy2 * energy2 * 0.7);
 
     float gridPulse = 0.035 + 0.015 * sin(t * 1.2);
-    color += neonEmerald * gridLine * gridPulse;
+    color += neonEmerald * (gridLine * gridPulse);
 
     float vignette = length(uv - 0.5);
-    color *= smoothstep(1.1, 0.2, vignette);
+    color *= smoothstep(1.05, 0.25, vignette);
 
     gl_FragColor = vec4(color, 1.0);
 }`;
@@ -236,16 +236,19 @@ void main() {
   const uTime = gl.getUniformLocation(prog, 'u_time');
   const uRes = gl.getUniformLocation(prog, 'u_resolution');
 
-  // 2. Target FPS / Frame throttling: cap at ~30 FPS (interval ~33ms)
+  // 2. Strict Frame Pacing: solid 28 FPS cap (~35.7ms per frame) & auto-pause when tab is hidden
   let lastFrameTime = 0;
-  const targetInterval = 1000 / 30; // ~33.3ms for smooth 30 FPS ambient background
+  const frameInterval = 35.7;
 
   function render(currentTime) {
     requestAnimationFrame(render);
-    const delta = currentTime - lastFrameTime;
-    if (delta < targetInterval) return;
     
-    lastFrameTime = currentTime - (delta % targetInterval);
+    if (document.hidden) return;
+
+    const delta = currentTime - lastFrameTime;
+    if (delta < frameInterval) return;
+    
+    lastFrameTime = currentTime - (delta % frameInterval);
 
     gl.viewport(0, 0, canvas.width, canvas.height);
     if (uTime) gl.uniform1f(uTime, currentTime * 0.001);
