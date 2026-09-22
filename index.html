@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-
-<html lang="ru"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>.mrpack to .zip</title>
+<!DOCTYPE html><html lang="ru" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>.mrpack to .zip</title><link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png">
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Fonts -->
-<link href="https://fonts.preconnect.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.preconnect.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
 <!-- JSZip & FileSaver -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -38,31 +36,14 @@
         }
       }
     }
-</script>
+  </script>
 <style>
     body {
       background-color: #070b10;
       color: #e2e8f0;
       font-family: 'JetBrains Mono', monospace;
       overflow-x: hidden;
-      min-height: 100vh;
     }
-
-    /* Cyber background with subtle glows and crisp grid lines */
-    .cyber-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-color: #070b10;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 245, 160, 0.08) 0%, transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(4, 53, 46, 0.12) 0%, transparent 50%),
-        linear-gradient(to right, rgba(0, 245, 160, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 245, 160, 0.035) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
-    }
-
     .custom-scroll::-webkit-scrollbar {
       width: 5px;
       height: 5px;
@@ -83,60 +64,196 @@
     .folder-children.collapsed {
       display: none;
     }
-
-    /* Custom styled Emerald Checkbox & Radio */
-    input[type="checkbox"], input[type="radio"] {
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: #0b1017;
-      border: 1.5px solid rgba(0, 245, 160, 0.4);
-      outline: none;
-      transition: all 0.15s ease-in-out;
-      vertical-align: middle;
-      position: relative;
-      cursor: pointer;
-    }
-    input[type="checkbox"] {
-      border-radius: 4px;
-    }
-    input[type="radio"] {
-      border-radius: 9999px;
-    }
-    input[type="checkbox"]:hover, input[type="radio"]:hover {
-      border-color: #00f5a0;
-      box-shadow: 0 0 8px rgba(0, 245, 160, 0.3);
-    }
-    input[type="checkbox"]:focus, input[type="radio"]:focus {
-      border-color: #00f5a0;
-      box-shadow: 0 0 0 2px rgba(0, 245, 160, 0.25), 0 0 10px rgba(0, 245, 160, 0.35);
-    }
-    input[type="radio"]:checked {
-      background-color: #0b1017;
-      border-color: #00f5a0;
-      box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
-      background-image: radial-gradient(#00f5a0 42%, transparent 48%);
-    }
-    input[type="checkbox"]:checked {
-      background-color: #00f5a0;
-      border-color: #00f5a0;
-      box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23070b10' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-</style>
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-6 antialiased select-none relative bg-[#070b10]">
-<!-- CSS Cyber Grid Background -->
-<div class="cyber-bg"></div>
+<body class="min-h-screen flex flex-col justify-between p-6 antialiased select-none relative bg-[#070b10]"><style id="theme-inputs-override">
+  input[type="checkbox"], input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #0b1017;
+    border: 1.5px solid rgba(0, 245, 160, 0.4);
+    outline: none;
+    transition: all 0.15s ease-in-out;
+    vertical-align: middle;
+    position: relative;
+    cursor: pointer;
+  }
+  input[type="checkbox"] {
+    border-radius: 4px;
+  }
+  input[type="radio"] {
+    border-radius: 9999px;
+  }
+  input[type="checkbox"]:hover, input[type="radio"]:hover {
+    border-color: #00f5a0;
+    box-shadow: 0 0 8px rgba(0, 245, 160, 0.3);
+  }
+  input[type="checkbox"]:focus, input[type="radio"]:focus {
+    border-color: #00f5a0;
+    box-shadow: 0 0 0 2px rgba(0, 245, 160, 0.25), 0 0 10px rgba(0, 245, 160, 0.35);
+  }
+  input[type="radio"]:checked {
+    background-color: #0b1017;
+    border-color: #00f5a0;
+    box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
+    background-image: radial-gradient(#00f5a0 42%, transparent 48%);
+  }
+  input[type="checkbox"]:checked {
+    background-color: #00f5a0;
+    border-color: #00f5a0;
+    box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23070b10' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
+<!-- Living WebGL background shader -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_26" style="display:block;width:100%;height:100%" width="1280" height="714"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_26');
+  function syncSize() {
+    const w = canvas.clientWidth  || window.innerWidth || 1280;
+    const h = canvas.clientHeight || window.innerHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+float snoise(vec2 v) {
+    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+    vec2 i  = floor(v + dot(v, C.yy));
+    vec2 x0 = v -   i + dot(i, C.xx);
+    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+    vec4 x12 = x0.xyxy + C.xxzz;
+    x12.xy -= i1;
+    i = mod289(i);
+    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+    m = m*m;
+    m = m*m;
+    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 h = abs(x) - 0.5;
+    vec3 ox = floor(x + 0.5);
+    vec3 a0 = x - ox;
+    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+    vec3 g;
+    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+    return 130.0 * dot(m, g);
+}
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+    float t = u_time * 0.15;
+    
+    float cellSize = 44.0;
+    vec2 pixelCoord = gl_FragCoord.xy;
+    vec2 gridDist = abs(fract(pixelCoord / cellSize) - 0.5) * cellSize;
+    float dist = min(gridDist.x, gridDist.y);
+    float gridLine = 1.0 - smoothstep(0.0, 1.5, dist);
+    
+    float n1 = snoise(p * 1.2 + vec2(t * 0.3, -t * 0.15));
+    float n2 = snoise(p * 2.4 - vec2(-t * 0.2, t * 0.35 + n1 * 0.4));
+    float wave = sin(p.y * 2.5 + n1 * 1.8 + t) * 0.5 + 0.5;
+    
+    vec3 colBase = vec3(0.03, 0.05, 0.08);
+    vec3 colDarkVoid = vec3(0.015, 0.02, 0.03);
+    vec3 neonEmerald = vec3(0.0, 0.96, 0.62);
+    vec3 deepCyan = vec3(0.04, 0.35, 0.30);
+    
+    float energy = pow(abs(n2 * 0.7 + wave * 0.3), 2.2);
+    vec3 color = mix(colDarkVoid, colBase, uv.y);
+    color += deepCyan * energy * 0.8;
+    color += neonEmerald * pow(energy, 3.5) * 0.75;
+    
+    float gridPulse = 0.035 + 0.015 * sin(t * 1.2);
+    color += neonEmerald * gridLine * gridPulse;
+    
+    float vignette = length(uv - 0.5);
+    color *= smoothstep(1.1, 0.2, vignette);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+
 <!-- Контейнер приложения -->
 <div class="max-w-6xl w-full mx-auto space-y-5 pb-32 relative z-10">
 <!-- 1. Верхняя панель: Загрузка / Инфо о файле -->
 <div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 relative overflow-hidden group shadow-lg backdrop-blur-md">
 <div class="flex items-center gap-4 relative z-10">
 <div class="p-3 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-<i class="w-6 h-6" data-lucide="package"></i>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-6 h-6"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
 </div>
 <div>
 <div class="font-bold text-white tracking-wide text-base font-sans flex items-center gap-2.5" id="fileTitle">Загрузите файл .mrpack</div>
@@ -144,17 +261,18 @@
 </div>
 </div>
 <div class="flex items-center gap-3 relative z-10">
-<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file"/>
+<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file">
 <button class="px-4 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-[#00f5a0]/30 hover:border-[#00f5a0]/60 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(0,245,160,0.2)] cursor-pointer" id="btnBrowse">
-<i class="w-3.5 h-3.5 text-[#00f5a0]" data-lucide="arrow-left-right"></i>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-left-right" aria-hidden="true" class="lucide lucide-arrow-left-right w-3.5 h-3.5 text-[#00f5a0]"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg>
 <span class="font-sans">Выбрать файл</span>
 </button>
 <button class="px-4 py-2 bg-red-950/20 hover:bg-red-900/30 text-xs font-semibold text-red-400 border border-red-900/40 hover:border-red-600/50 rounded-xl flex items-center gap-2 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear">
-<i class="w-3.5 h-3.5" data-lucide="trash-2"></i>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" aria-hidden="true" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 <span class="font-sans">Очистить</span>
 </button>
 </div>
 </div>
+
 <!-- 2. Сводные метрики -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
 <div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
@@ -186,15 +304,16 @@
 <span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statTargetSize">—</span>
 </div>
 </div>
+
 <!-- 3. Режимы сборки (Обычный / Для сервера) -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative" id="normalModeCard">
 <div class="flex items-center justify-between">
 <label class="cursor-pointer flex items-center gap-3">
-<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal"/>
+<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal">
 <span class="font-bold text-sm text-[#00f5a0] font-sans" id="lblNormalTitle">Обычный (клиентский)</span>
 </label>
-<span class="text-[10px] bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 px-2 py-0.5 rounded-full font-mono font-medium" id="badgeNormal">Активен</span>
+<span id="badgeNormal" class="text-[10px] bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 px-2 py-0.5 rounded-full font-mono font-medium">Активен</span>
 </div>
 <div class="text-xs text-gray-400 pl-7 mt-3 flex items-center justify-between font-mono">
 <span class="text-gray-400">Включает все моды, клиентские твики и ресурспаки</span>
@@ -204,36 +323,32 @@
 <div class="border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative" id="serverModeCard">
 <div class="flex items-center justify-between mb-3">
 <label class="cursor-pointer flex items-center gap-3">
-<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server"/>
+<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server">
 <span class="font-medium text-sm text-gray-300 font-sans" id="lblServerTitle">Для сервера</span>
 </label>
-<span class="hidden text-[10px] bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 px-2 py-0.5 rounded-full font-mono font-medium" id="badgeServer">Активен</span>
+<span id="badgeServer" class="hidden text-[10px] bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 px-2 py-0.5 rounded-full font-mono font-medium">Активен</span>
 </div>
-<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono">
-<label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300">
-<input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox"/>
-<span class="text-xs font-mono text-[#00f5a0]">eula=true</span>
-</label>
+<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono"><label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300"><input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox"><span class="text-xs font-mono text-[#00f5a0]">eula=true</span></label></div>
 </div>
 </div>
-</div>
+
 <!-- 4. Проводник файлов (Интерактивное иерархическое дерево) -->
 <div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md">
 <div class="p-3.5 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
 <div class="flex items-center gap-3">
 <label class="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition font-mono text-[12px]">
-<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox"/>
-<span>Выбрать все подходящие компоненты</span>
+<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox">
+<span class="">Выбрать все подходящие компоненты</span>
 </label>
 <span class="text-gray-700">|</span>
 <div class="flex items-center gap-1.5">
 <button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnExpandAll" title="Развернуть все папки">
-<i class="w-3 h-3 text-[#00f5a0]" data-lucide="chevrons-down-up"></i>
-<span>Развернуть все</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-down-up" aria-hidden="true" class="lucide lucide-chevrons-down-up w-3 h-3 text-[#00f5a0]"><path d="m7 20 5-5 5 5"></path><path d="m7 4 5 5 5-5"></path></svg>
+<span class="">Развернуть все</span>
 </button>
 <button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnCollapseAll" title="Свернуть все папки">
-<i class="w-3 h-3 text-gray-400" data-lucide="chevrons-up-down"></i>
-<span>Свернуть все</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-up-down" aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 text-gray-400"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+<span class="">Свернуть все</span>
 </button>
 </div>
 </div>
@@ -249,13 +364,14 @@
 </div>
 </div>
 <div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] text-gray-400 font-mono flex justify-between items-center">
-<div id="treeSummary">Папок: 0 • Файлов в архиве: 0</div>
+<div id="treeSummary" class="">Папок: 0 • Файлов в архиве: 0</div>
 <div class="text-[#00f5a0] flex items-center gap-2" id="treeStatusNotice">
 <span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>Готово к сборке
-      </div>
 </div>
 </div>
 </div>
+</div>
+
 <!-- 5. Нижний фиксированный парящий стеклянный кибер-док -->
 <div class="fixed bottom-4 left-4 right-4 max-w-5xl mx-auto z-50">
 <div class="border border-[#00f5a0]/30 bg-[#070b10]/95 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
@@ -274,7 +390,7 @@
 <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnPause">Пауза</button>
 <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnCancel">Отмена</button>
 <button class="px-6 py-2 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wide rounded-xl flex items-center gap-2 transition duration-150 disabled:opacity-30 cursor-pointer shadow-[0_0_15px_rgba(0,245,160,0.25)]" disabled="" id="btnDownload">
-<i class="w-4 h-4" data-lucide="download"></i>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-4 h-4"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
 <span class="font-sans font-bold">Скачать .ZIP</span>
 </button>
 </div>
@@ -282,6 +398,7 @@
 </div>
 <div class="text-center mt-2 text-[10px] font-mono tracking-wider text-gray-500/60 select-none pointer-events-none">by Arnimaz21 for vunya100's server</div>
 </div>
+
 <script>
     if (window.lucide) {
       lucide.createIcons();
@@ -332,22 +449,24 @@
       btnFilterServer: document.getElementById('btnFilterServer'),
       btnFilterClient: document.getElementById('btnFilterClient'),
       checkSelectAll: document.getElementById('checkSelectAll'),
+      optNoClientMods: document.getElementById('optNoClientMods'),
+      optNoResourcepacks: document.getElementById('optNoResourcepacks'),
       optAddEula: document.getElementById('optAddEula'),
       modeRadios: document.querySelectorAll('input[name="packMode"]')
     };
 
-    DOM.btnBrowse?.addEventListener('click', () => DOM.fileInput?.click());
-    DOM.fileInput?.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files.length > 0) processMrpack(e.target.files[0]);
+    DOM.btnBrowse.addEventListener('click', () => DOM.fileInput.click());
+    DOM.fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) processMrpack(e.target.files[0]);
     });
 
     window.addEventListener('dragover', (e) => e.preventDefault());
     window.addEventListener('drop', (e) => {
       e.preventDefault();
-      if (e.dataTransfer && e.dataTransfer.files.length > 0) processMrpack(e.dataTransfer.files[0]);
+      if (e.dataTransfer.files.length > 0) processMrpack(e.dataTransfer.files[0]);
     });
 
-    DOM.normalModeCard?.addEventListener('click', (e) => {
+    DOM.normalModeCard.addEventListener('click', (e) => {
       if (e.target.tagName !== 'INPUT') {
         const radio = DOM.normalModeCard.querySelector('input[type="radio"]');
         if (radio && !radio.checked) {
@@ -357,7 +476,7 @@
       }
     });
 
-    DOM.serverModeCard?.addEventListener('click', (e) => {
+    DOM.serverModeCard.addEventListener('click', (e) => {
       if (e.target.tagName !== 'INPUT') {
         const radio = DOM.serverModeCard.querySelector('input[type="radio"]');
         if (radio && !radio.checked) {
@@ -370,28 +489,28 @@
     function setFilter(filter) {
       state.activeFilter = filter;
       [DOM.btnFilterAll, DOM.btnFilterServer, DOM.btnFilterClient].forEach(b => {
-        if (b) b.className = "px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer";
+        b.className = "px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer";
       });
-      if (filter === 'all' && DOM.btnFilterAll) DOM.btnFilterAll.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
-      if (filter === 'server' && DOM.btnFilterServer) DOM.btnFilterServer.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
-      if (filter === 'client' && DOM.btnFilterClient) DOM.btnFilterClient.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
+      if (filter === 'all') DOM.btnFilterAll.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
+      if (filter === 'server') DOM.btnFilterServer.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
+      if (filter === 'client') DOM.btnFilterClient.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
       renderDirectoryTree();
     }
-    DOM.btnFilterAll?.addEventListener('click', () => setFilter('all'));
-    DOM.btnFilterServer?.addEventListener('click', () => setFilter('server'));
-    DOM.btnFilterClient?.addEventListener('click', () => setFilter('client'));
+    DOM.btnFilterAll.addEventListener('click', () => setFilter('all'));
+    DOM.btnFilterServer.addEventListener('click', () => setFilter('server'));
+    DOM.btnFilterClient.addEventListener('click', () => setFilter('client'));
 
-    DOM.btnExpandAll?.addEventListener('click', () => {
+    DOM.btnExpandAll.addEventListener('click', () => {
       state.collapsedFolders.clear();
       renderDirectoryTree();
     });
-    DOM.btnCollapseAll?.addEventListener('click', () => {
+    DOM.btnCollapseAll.addEventListener('click', () => {
       const allFolders = getAllFolderPaths();
       allFolders.forEach(f => state.collapsedFolders.add(f));
       renderDirectoryTree();
     });
 
-    DOM.checkSelectAll?.addEventListener('change', (e) => {
+    DOM.checkSelectAll.addEventListener('change', (e) => {
       const checked = e.target.checked;
       state.allFiles.forEach(f => {
         if (!f.filteredOut) {
@@ -406,9 +525,9 @@
       try {
         updateStatus('Чтение архива...', 'Разбор modrinth.index.json');
         state.file = file;
-        if (DOM.fileTitle) DOM.fileTitle.innerText = file.name;
-        if (DOM.fileMeta) DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • Чтение...`;
-        if (DOM.btnClear) DOM.btnClear.disabled = false;
+        DOM.fileTitle.innerText = file.name;
+        DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • Чтение...`;
+        DOM.btnClear.disabled = false;
 
         state.sourceZip = await JSZip.loadAsync(file);
         const indexEntry = state.sourceZip.file("modrinth.index.json");
@@ -468,12 +587,12 @@
 
         const loader = state.manifest.dependencies?.fabric ? `Fabric ${state.manifest.dependencies.fabric}` : (state.manifest.dependencies?.forge ? `Forge ${state.manifest.dependencies.forge}` : 'Modrinth');
         const mcVer = `MC ${state.manifest.dependencies?.minecraft || '1.20.x'}`;
-        if (DOM.fileMeta) DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • ${loader} • ${mcVer}`;
+        DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • ${loader} • ${mcVer}`;
 
         applyModeFilters();
-        if (DOM.btnDownload) DOM.btnDownload.disabled = false;
+        DOM.btnDownload.disabled = false;
         updateStatus('Готов к конвертации', 'Выберите параметры и нажмите «Скачать .ZIP»', '#00f5a0');
-        if (DOM.treeContainer) DOM.treeContainer.scrollTop = 0;
+        DOM.treeContainer.scrollTop = 0;
       } catch (err) {
         console.error(err);
         alert("Не удалось прочесть файл: " + err.message);
@@ -499,30 +618,33 @@
       const isServerMode = document.querySelector('input[name="packMode"]:checked')?.value === 'server';
       
       if (isServerMode) {
-        if (DOM.normalModeCard) DOM.normalModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
-        if (DOM.serverModeCard) DOM.serverModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
-        if (DOM.lblNormalTitle) DOM.lblNormalTitle.className = "font-medium text-sm text-gray-300 font-sans";
-        if (DOM.lblServerTitle) DOM.lblServerTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
-        DOM.badgeNormal?.classList.add('hidden');
-        DOM.badgeServer?.classList.remove('hidden');
+        DOM.normalModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
+        DOM.serverModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
+        DOM.lblNormalTitle.className = "font-medium text-sm text-gray-300 font-sans";
+        DOM.lblServerTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
+        if (DOM.badgeNormal) DOM.badgeNormal.classList.add('hidden');
+        if (DOM.badgeServer) DOM.badgeServer.classList.remove('hidden');
       } else {
-        if (DOM.normalModeCard) DOM.normalModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
-        if (DOM.serverModeCard) DOM.serverModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
-        if (DOM.lblNormalTitle) DOM.lblNormalTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
-        if (DOM.lblServerTitle) DOM.lblServerTitle.className = "font-medium text-sm text-gray-300 font-sans";
-        DOM.badgeNormal?.classList.remove('hidden');
-        DOM.badgeServer?.classList.add('hidden');
+        DOM.normalModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
+        DOM.serverModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
+        DOM.lblNormalTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
+        DOM.lblServerTitle.className = "font-medium text-sm text-gray-300 font-sans";
+        if (DOM.badgeNormal) DOM.badgeNormal.classList.remove('hidden');
+        if (DOM.badgeServer) DOM.badgeServer.classList.add('hidden');
       }
 
       if (!state.manifest) return;
 
+      const noClientMods = DOM.optNoClientMods.checked;
+      const noResourcepacks = DOM.optNoResourcepacks.checked;
+
       state.allFiles.forEach(f => {
         let shouldSelect = true;
         if (isServerMode) {
-          if (f.isClientOnly && f.type === 'mod') {
+          if (noClientMods && f.isClientOnly && f.type === 'mod') {
             shouldSelect = false;
           }
-          if (f.path.startsWith('resourcepacks/') || f.path.startsWith('shaderpacks/')) {
+          if (noResourcepacks && (f.path.startsWith('resourcepacks/') || f.path.startsWith('shaderpacks/'))) {
             shouldSelect = false;
           }
         }
@@ -541,15 +663,14 @@
       const selectedFiles = state.allFiles.filter(f => f.selected);
       const totalSelectedSize = selectedFiles.reduce((acc, cur) => acc + (cur.fileSize || 0), 0);
 
-      if (DOM.statTotalMods) DOM.statTotalMods.innerText = `${mods.length} JAR`;
-      if (DOM.statClientMods) DOM.statClientMods.innerText = `${clientMods.length} модов`;
-      if (DOM.statConfigs) DOM.statConfigs.innerText = `${overrides.length} файлов`;
-      if (DOM.statTargetSize) DOM.statTargetSize.innerText = `~${(totalSelectedSize / (1024 * 1024)).toFixed(1)} MB`;
-      if (DOM.lblNormalCount) DOM.lblNormalCount.innerText = `${state.allFiles.length} файлов`;
+      DOM.statTotalMods.innerText = `${mods.length} JAR`;
+      DOM.statClientMods.innerText = `${clientMods.length} модов`;
+      DOM.statConfigs.innerText = `${overrides.length} файлов`;
+      DOM.statTargetSize.innerText = `~${(totalSelectedSize / (1024 * 1024)).toFixed(1)} MB`;
+      DOM.lblNormalCount.innerText = `${state.allFiles.length} файлов`;
     }
 
     function renderDirectoryTree() {
-      if (!DOM.treeContainer) return;
       if (!state.manifest || state.allFiles.length === 0) {
         DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono">Загрузите архив .mrpack для отображения файлов</div>';
         return;
@@ -602,7 +723,7 @@
       DOM.treeContainer.innerHTML = html || '<div class="p-8 text-center text-gray-500 font-mono">Нет файлов, соответствующих выбранному фильтру</div>';
       
       const totalSelected = state.allFiles.filter(f => f.selected).length;
-      if (DOM.treeSummary) DOM.treeSummary.innerText = `Папок: ${folderCount} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
+      DOM.treeSummary.innerText = `Папок: ${folderCount} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
 
       if (window.lucide) {
         lucide.createIcons();
@@ -734,22 +855,24 @@
         file.selected = isChecked;
         updateStats();
         const totalSelected = state.allFiles.filter(f => f.selected).length;
-        if (DOM.treeSummary) DOM.treeSummary.innerText = `Папок: ${getAllFolderPaths().length} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
+        DOM.treeSummary.innerText = `Папок: ${getAllFolderPaths().length} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
       }
     };
 
-    DOM.modeRadios?.forEach(r => r.addEventListener('change', applyModeFilters));
+    DOM.modeRadios.forEach(r => r.addEventListener('change', applyModeFilters));
+    if (DOM.optNoClientMods) DOM.optNoClientMods.addEventListener('change', applyModeFilters);
+    if (DOM.optNoResourcepacks) DOM.optNoResourcepacks.addEventListener('change', applyModeFilters);
 
-    DOM.btnDownload?.addEventListener('click', startBuildAndDownload);
+    DOM.btnDownload.addEventListener('click', startBuildAndDownload);
 
     async function startBuildAndDownload() {
       if (state.isProcessing) return;
       state.isProcessing = true;
       state.abortController = new AbortController();
 
-      if (DOM.btnDownload) DOM.btnDownload.disabled = true;
-      if (DOM.btnCancel) DOM.btnCancel.disabled = false;
-      if (DOM.progressBar) DOM.progressBar.style.width = '0%';
+      DOM.btnDownload.disabled = true;
+      DOM.btnCancel.disabled = false;
+      DOM.progressBar.style.width = '0%';
 
       const outZip = new JSZip();
       const selectedMods = state.allFiles.filter(f => f.type === 'mod' && f.selected);
@@ -781,7 +904,7 @@
           await Promise.all(batch.map(async (mod) => {
             const url = mod.downloads[0];
             const fileName = mod.path.split('/').pop();
-            if (DOM.statusDetail) DOM.statusDetail.innerText = `[GET] ${fileName}`;
+            DOM.statusDetail.innerText = `[GET] ${fileName}`;
             
             const resp = await fetch(url, { signal: state.abortController.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status} для ${fileName}`);
@@ -790,24 +913,24 @@
             outZip.file(mod.path, buf);
             loadedMods++;
             const pct = Math.round((loadedMods / totalMods) * 90);
-            if (DOM.progressBar) DOM.progressBar.style.width = `${pct}%`;
-            if (DOM.statusText) DOM.statusText.innerText = `Загрузка модов: ${pct}% (${loadedMods} / ${totalMods})`;
+            DOM.progressBar.style.width = `${pct}%`;
+            DOM.statusText.innerText = `Загрузка модов: ${pct}% (${loadedMods} / ${totalMods})`;
           }));
         }
 
-        if (DOM.statusText) DOM.statusText.innerText = 'Сжатие ZIP-архива...';
-        if (DOM.statusDetail) DOM.statusDetail.innerText = 'Упаковка файлов в итоговый zip';
+        DOM.statusText.innerText = 'Сжатие ZIP-архива...';
+        DOM.statusDetail.innerText = 'Упаковка файлов в итоговый zip';
 
         const finalBlob = await outZip.generateAsync({ type: 'blob' }, (meta) => {
           const compressPct = 90 + Math.round(meta.percent * 0.1);
-          if (DOM.progressBar) DOM.progressBar.style.width = `${compressPct}%`;
+          DOM.progressBar.style.width = `${compressPct}%`;
         });
 
         const originalName = state.file ? state.file.name.replace(/\.(mrpack|zip)$/i, '') : 'modpack';
         const targetName = `${originalName}${isServerMode ? '-server' : ''}.zip`;
         saveAs(finalBlob, targetName);
 
-        if (DOM.progressBar) DOM.progressBar.style.width = '100%';
+        DOM.progressBar.style.width = '100%';
         updateStatus('Готово!', `Архив ${targetName} успешно сохранён`, '#00f5a0');
       } catch (err) {
         if (err.name === 'AbortError') {
@@ -819,18 +942,18 @@
         }
       } finally {
         state.isProcessing = false;
-        if (DOM.btnDownload) DOM.btnDownload.disabled = false;
-        if (DOM.btnCancel) DOM.btnCancel.disabled = true;
+        DOM.btnDownload.disabled = false;
+        DOM.btnCancel.disabled = true;
       }
     }
 
-    DOM.btnCancel?.addEventListener('click', () => {
+    DOM.btnCancel.addEventListener('click', () => {
       if (state.abortController) {
         state.abortController.abort();
       }
     });
 
-    DOM.btnClear?.addEventListener('click', resetApp);
+    DOM.btnClear.addEventListener('click', resetApp);
 
     function resetApp() {
       state.file = null;
@@ -838,17 +961,17 @@
       state.manifest = null;
       state.allFiles = [];
       state.collapsedFolders.clear();
-      if (DOM.fileTitle) DOM.fileTitle.innerText = 'Загрузите файл .mrpack';
-      if (DOM.fileMeta) DOM.fileMeta.innerText = 'Перетащите сюда или выберите файл сборки Modrinth';
-      if (DOM.statTotalMods) DOM.statTotalMods.innerText = '—';
-      if (DOM.statClientMods) DOM.statClientMods.innerText = '—';
-      if (DOM.statConfigs) DOM.statConfigs.innerText = '—';
-      if (DOM.statTargetSize) DOM.statTargetSize.innerText = '—';
-      if (DOM.treeContainer) DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono">Загрузите архив .mrpack для отображения файлов</div>';
-      if (DOM.treeSummary) DOM.treeSummary.innerText = 'Папок: 0 • Файлов в архиве: 0';
-      if (DOM.progressBar) DOM.progressBar.style.width = '0%';
-      if (DOM.btnDownload) DOM.btnDownload.disabled = true;
-      if (DOM.btnClear) DOM.btnClear.disabled = true;
+      DOM.fileTitle.innerText = 'Загрузите файл .mrpack';
+      DOM.fileMeta.innerText = 'Перетащите сюда или выберите файл сборки Modrinth';
+      DOM.statTotalMods.innerText = '—';
+      DOM.statClientMods.innerText = '—';
+      DOM.statConfigs.innerText = '—';
+      DOM.statTargetSize.innerText = '—';
+      DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono">Загрузите архив .mrpack для отображения файлов</div>';
+      DOM.treeSummary.innerText = 'Папок: 0 • Файлов в архиве: 0';
+      DOM.progressBar.style.width = '0%';
+      DOM.btnDownload.disabled = true;
+      DOM.btnClear.disabled = true;
       
       const normalRadio = document.querySelector('input[name="packMode"][value="normal"]');
       if (normalRadio) normalRadio.checked = true;
@@ -858,19 +981,19 @@
     }
 
     function updateStatus(title, detail, color = '#00f5a0') {
-      if (DOM.statusText) DOM.statusText.innerText = title;
-      if (DOM.statusDetail) {
-        DOM.statusDetail.innerText = detail || '';
-        DOM.statusDetail.classList.toggle('hidden', !detail);
-      }
-      if (DOM.statusIndicatorDot) {
-        DOM.statusIndicatorDot.style.backgroundColor = color;
-        if (color === '#00f5a0') {
-          DOM.statusIndicatorDot.style.boxShadow = '0 0 10px #00f5a0';
-        } else {
-          DOM.statusIndicatorDot.style.boxShadow = 'none';
-        }
+      DOM.statusText.innerText = title;
+      DOM.statusDetail.innerText = detail || '';
+      DOM.statusDetail.classList.toggle('hidden', !detail);
+      DOM.statusIndicatorDot.style.backgroundColor = color;
+      if (color === '#00f5a0') {
+        DOM.statusIndicatorDot.style.boxShadow = '0 0 10px #00f5a0';
+      } else {
+        DOM.statusIndicatorDot.style.boxShadow = 'none';
       }
     }
-</script>
+  </script>
+
+
+
+
 </body></html>
