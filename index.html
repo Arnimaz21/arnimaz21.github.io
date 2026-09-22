@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-
-<html lang="ru" style=""><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>.mrpack to .zip</title><link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png"/>
+<!DOCTYPE html><html lang="ru" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>.mrpack to .zip</title><link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Fonts -->
-<link href="https://fonts.preconnect.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.preconnect.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
 <!-- JSZip & FileSaver -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -111,13 +109,11 @@
   }
 </style>
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
-<canvas height="240" id="shader-canvas-ANIMATION_26" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="426"></canvas>
+<canvas height="288" id="shader-canvas-ANIMATION_26" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="422"></canvas>
 <script>
 (function() {
   const canvas = document.getElementById('shader-canvas-ANIMATION_26');
   
-  // 1. Stable, clamped low-resolution buffer: exactly 0.33x scale factor clamped to max 512x288
-  // This drastically slashes fill-rate by >88% and guarantees deterministic, tiny GPU workload across all display sizes.
   function syncSize() {
     const displayW = window.innerWidth || 1280;
     const displayH = window.innerHeight || 720;
@@ -146,7 +142,6 @@ void main() {
   gl_Position = vec4(a_position, 0.0, 1.0);
 }`;
 
-  // Streamlined fragment shader: strictly mediump, branchless math, lightweight uniform noise
   const fs = `precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
@@ -182,13 +177,11 @@ void main() {
     vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
     float t = u_time * 0.15;
     
-    // Constant-cost ambient grid calculation
     float cellSize = 16.0;
     vec2 gridDist = abs(fract(gl_FragCoord.xy / cellSize) - 0.5) * cellSize;
     float dist = min(gridDist.x, gridDist.y);
     float gridLine = 1.0 - smoothstep(0.0, 1.1, dist);
 
-    // Uniform, lightweight waves
     float n1 = snoise(p * 1.1 + vec2(t * 0.28, -t * 0.14));
     float n2 = snoise(p * 2.1 - vec2(-t * 0.18, t * 0.3 + n1 * 0.35));
     float wave = sin(p.y * 2.2 + n1 * 1.5 + t) * 0.5 + 0.5;
@@ -236,7 +229,6 @@ void main() {
   const uTime = gl.getUniformLocation(prog, 'u_time');
   const uRes = gl.getUniformLocation(prog, 'u_resolution');
 
-  // 2. Strict Frame Pacing: solid 28 FPS cap (~35.7ms per frame) & auto-pause when tab is hidden
   let lastFrameTime = 0;
   const frameInterval = 35.7;
 
@@ -260,29 +252,28 @@ void main() {
 </script>
 </div>
 <!-- Контейнер приложения -->
-<div class="max-w-6xl w-full mx-auto space-y-5 pb-32 relative z-10">
+<div class="max-w-6xl w-full mx-auto space-y-5 relative z-10" style="padding-bottom: 9.5rem;">
 <!-- 1. Верхняя панель: Загрузка / Инфо о файле -->
-<div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 relative overflow-hidden group shadow-lg backdrop-blur-md">
-<div class="flex items-center gap-4 relative z-10">
-<div class="p-3 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-<svg aria-hidden="true" class="lucide lucide-package w-6 h-6" data-lucide="package" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-</div>
+<!-- 1.1 Раскрывающийся блок синхронизации с GitHub Releases -->
+<div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden" id="topUploadBar"><input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file"><div class="flex items-center gap-3.5"><div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]"><svg class="lucide lucide-package" fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg></div><div><h2 class="text-base font-bold text-white font-sans tracking-wide" id="fileTitle">Загрузите файл .mrpack</h2><p class="text-xs text-gray-400 font-mono mt-0.5" id="fileMeta">Перетащите или выберите файл сборки</p></div></div><div class="flex flex-wrap items-center gap-2.5"><button class="px-3.5 py-2 text-xs font-sans font-semibold text-[#00f5a0] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnTogglePresets" title="Скрыть готовые сборки"><svg class="lucide lucide-package w-3.5 h-3.5 text-[#00f5a0]" fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg><span class="">Готовые сборки</span><span class="px-2 py-0.5 rounded-full bg-[#00f5a0] text-[#070b10] font-mono font-bold text-[10px] tracking-wide shadow-[0_0_8px_rgba(0,245,160,0.5)]" id="presetsCountBadge">1 СБОРКА</span></button><button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse"><svg class="lucide lucide-arrow-left-right text-[#00f5a0]" fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path d="m9 7-5 5 5 5"></path><path d="m15 7 5 5-5 5"></path><path d="M4 12h16"></path></svg><span class="">Выбрать файл</span></button><button class="px-3 py-2 text-xs font-sans font-semibold text-red-400 bg-red-950/20 hover:bg-red-950/40 border border-red-900/30 rounded-xl flex items-center gap-1.5 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear" title="Очистить текущий файл"><svg class="lucide lucide-trash-2" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg><span class="">Очистить</span></button></div></div><div class="border border-[#00f5a0]/40 bg-[#091117]/95 rounded-2xl p-5 shadow-[0_0_35px_rgba(0,245,160,0.12)] backdrop-blur-xl relative overflow-hidden transition-all duration-300" id="presetsPanel">
+<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
 <div>
-<div class="font-bold text-white tracking-wide text-base font-sans flex items-center gap-2.5" id="fileTitle">Загрузите файл .mrpack</div>
-<div class="text-xs text-gray-400 mt-1 font-mono tracking-tight" id="fileMeta">Перетащите или выберите файл сборки</div>
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></div>
+<h3 class="font-bold text-white text-base font-sans tracking-wide">Готовые сборки</h3>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="repoStatusBadge">1 сборка</span>
 </div>
 </div>
-<div class="flex items-center gap-3 relative z-10">
-<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file"/>
-<button class="px-4 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-[#00f5a0]/30 hover:border-[#00f5a0]/60 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(0,245,160,0.2)] cursor-pointer" id="btnBrowse">
-<svg aria-hidden="true" class="lucide lucide-arrow-left-right w-3.5 h-3.5 text-[#00f5a0]" data-lucide="arrow-left-right" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg>
-<span class="font-sans">Выбрать файл</span>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm group/sync" id="btnSyncRepo" title="Синхронизировать с GitHub">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="syncIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+<span class="font-sans font-semibold">Синхронизировать</span>
 </button>
-<button class="px-4 py-2 bg-red-950/20 hover:bg-red-900/30 text-xs font-semibold text-red-400 border border-red-900/40 hover:border-red-600/50 rounded-xl flex items-center gap-2 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear">
-<svg aria-hidden="true" class="lucide lucide-trash-2 w-3.5 h-3.5" data-lucide="trash-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-<span class="font-sans">Очистить</span>
-</button>
+<button class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition cursor-pointer" id="btnClosePresets" title="Свернуть блок сборок"><svg class="lucide lucide-x" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
 </div>
+<!-- Динамический контейнер карточек из GitHub API Releases -->
+<div class="pt-4" id="presetsCardsContainer"><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div class="border border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)] bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative"><div><div class="flex items-center justify-between gap-2 mb-2"></div><h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="CreepyCloud.mrpack">CreepyCloud</h4><p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="CreepyCloud.mrpack">CreepyCloud.mrpack</p><div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono"><span class="">22.09.2026</span></div></div><div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2"><a class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/packs" rel="noopener noreferrer" target="_blank" title="Релиз на GitHub"><svg class="lucide lucide-package text-[#00f5a0]" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg><span class="truncate max-w-[90px]">packs</span></a><span class="text-[10px] text-gray-400 font-mono flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5">111.9 MB</span><a class="px-3.5 py-1.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer ml-auto" download="CreepyCloud.mrpack" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/CreepyCloud.mrpack" rel="noopener noreferrer" target="_blank" title="Скачать .mrpack с GitHub"><svg class="lucide lucide-download" fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg><span class="">Скачать</span></a></div></div></div></div>
+<!-- Быстрая загрузка по произвольной ссылке -->
 </div>
 <!-- 2. Сводные метрики -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
@@ -320,7 +311,7 @@ void main() {
 <div class="border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative" id="normalModeCard">
 <div class="flex items-center justify-between">
 <label class="cursor-pointer flex items-center gap-3">
-<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal"/>
+<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal">
 <span class="font-bold text-sm text-[#00f5a0] font-sans" id="lblNormalTitle">Обычный (клиентский)</span>
 </label>
 </div>
@@ -332,11 +323,11 @@ void main() {
 <div class="border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]" id="serverModeCard">
 <div class="flex items-center justify-between mb-3">
 <label class="cursor-pointer flex items-center gap-3">
-<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server"/>
+<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server">
 <span class="font-medium text-sm text-gray-300 font-sans" id="lblServerTitle">Для сервера</span>
 </label>
 </div>
-<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono"><label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300"><input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox"/><span class="text-xs font-mono text-[#00f5a0]">eula=true</span></label></div>
+<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono"><label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300"><input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox"><span class="text-xs font-mono text-[#00f5a0]">eula=true</span></label></div>
 </div>
 </div>
 <!-- 4. Проводник файлов (Интерактивное иерархическое дерево) -->
@@ -344,17 +335,17 @@ void main() {
 <div class="p-3.5 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
 <div class="flex items-center gap-3">
 <label class="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition font-mono text-[12px]">
-<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox"/>
+<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox">
 <span class="">Выбрать все подходящие компоненты</span>
 </label>
 <span class="text-gray-700">|</span>
 <div class="flex items-center gap-1.5">
 <button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnExpandAll" title="Развернуть все папки">
-<svg aria-hidden="true" class="lucide lucide-chevrons-down-up w-3 h-3 text-[#00f5a0]" data-lucide="chevrons-down-up" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m7 20 5-5 5 5"></path><path d="m7 4 5 5 5-5"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-down-up" aria-hidden="true" class="lucide lucide-chevrons-down-up w-3 h-3 text-[#00f5a0]"><path d="m7 20 5-5 5 5"></path><path d="m7 4 5 5 5-5"></path></svg>
 <span class="">Развернуть все</span>
 </button>
 <button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnCollapseAll" title="Свернуть все папки">
-<svg aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 text-gray-400" data-lucide="chevrons-up-down" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-up-down" aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 text-gray-400"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
 <span class="">Свернуть все</span>
 </button>
 </div>
@@ -377,9 +368,9 @@ void main() {
 </div>
 </div>
 </div>
-</div>
+<div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl p-6 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="launcherGuidesSection"><div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></div><div><div class="flex items-center gap-2"><h3 class="text-base font-bold text-white font-sans tracking-wide">Гайды по установке сборки</h3></div></div></div><div class="flex flex-wrap gap-2 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono"><button class="px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5" id="tabGuideTl" onclick="switchGuideTab('tl')">TLauncher</button><button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuideTlLegacy" onclick="switchGuideTab('tllegacy')">TLauncher Legacy</button><button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuidePrism" onclick="switchGuideTab('prism')">PrismLauncher</button></div></div><div class="pt-5"><div class="space-y-4" id="guideContentTl"><div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5"><div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]"><svg class="lucide lucide-folder-open w-4 h-4" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg><span class="font-bold">Установка в TLauncher (TL)</span></div><span class="text-[11px] text-gray-300 font-mono">Ручной перенос файлов из .zip</span></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono"><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span><span class="text-white font-semibold font-sans">Конвертация в ZIP</span></div><p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте <code class="text-[#00f5a0]">.mrpack</code> сборки в стандартный <code class="text-[#00f5a0]">.zip</code> с помощью кнопки «Скачать .ZIP» в нижней панели сайта.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span><span class="text-white font-semibold font-sans">Выбор версии в TL</span></div><p class="text-gray-400 pl-7 leading-relaxed">В списке версий TLauncher выберите и установите версию Fabric или Forge, указанную в метаданных сборки (например, Fabric 1.20.1).</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span><span class="text-white font-semibold font-sans">Открытие .minecraft</span></div><p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в правом нижнем углу окна TLauncher, чтобы открыть проводник с системной папкой <code class="text-gray-200">.minecraft</code>.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span><span class="text-white font-semibold font-sans">Перенос и запуск</span></div><p class="text-gray-400 pl-7 leading-relaxed">Скопируйте папки <code class="text-white font-bold">mods</code>, <code class="text-white font-bold">config</code> из архива в <code class="text-gray-200">.minecraft</code> с заменой, после чего нажмите <strong class="text-[#00f5a0]">«Войти в игру»</strong>.</p></div></div></div><div class="space-y-4 hidden" id="guideContentTlLegacy"><div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5"><div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]"><svg class="lucide lucide-folder-open w-4 h-4" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg><span class="font-bold">Установка через ZIP архив</span></div><span class="text-[11px] text-gray-300 font-mono">Требуется конвертация в .zip</span></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono"><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span><span class="text-white font-semibold font-sans">Конвертация</span></div><p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте сборку в <code class="text-[#00f5a0]">.zip</code> через данный инструмент (выберите режим «Обычный (клиентский)» и нажмите «Скачать .ZIP»).</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span><span class="text-white font-semibold font-sans">Создание профиля</span></div><p class="text-gray-400 pl-7 leading-relaxed">В TL Legacy создайте профиль или выберите чистую версию Minecraft с соответствующим загрузчиком (например, Fabric или Forge).</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span><span class="text-white font-semibold font-sans">Открытие директории</span></div><p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в меню профиля TL Legacy, чтобы перейти в папку инстанса или корневой каталог <code class="text-gray-200">.minecraft</code>.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span><span class="text-white font-semibold font-sans">Распаковка файлов</span></div><p class="text-gray-400 pl-7 leading-relaxed">Распакуйте содержимое скачанного <code class="text-[#00f5a0]">.zip</code> архива (папки <code class="text-gray-200">mods</code>, <code class="text-gray-200">config</code>) прямо в эту папку с подтверждением замены файлов.</p></div></div></div><div class="space-y-4 hidden" id="guideContentPrism"><div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5"><div class="flex items-center gap-2.5 text-xs font-mono text-[#00f5a0]"><svg class="lucide lucide-package w-4 h-4" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg><span class="font-bold">Рекомендуемый лаунчер</span></div><span class="text-[11px] text-gray-300 font-mono">Нативная поддержка файлов .mrpack и .zip без распаковки</span></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono"><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span><span class="text-white font-semibold font-sans">Открыть лаунчер</span></div><p class="text-gray-400 pl-7 leading-relaxed">Запустите PrismLauncher на вашем компьютере.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span><span class="text-white font-semibold font-sans">Нажать кнопку «Создать экземпляр»</span></div><p class="text-gray-400 pl-7 leading-relaxed">Нажмите кнопку <strong class="text-white">«Создать экземпляр» (Add Instance)</strong> на верхней панели.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span><span class="text-white font-semibold font-sans">Нажать на кнопку «Импорт»</span></div><p class="text-gray-400 pl-7 leading-relaxed">Перейдите на вкладку <strong class="text-[#00f5a0]">«Импорт» (Import)</strong> в меню слева.</p></div><div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span><span class="text-white font-semibold font-sans">Выбрать файл и нажать ОК</span></div><p class="text-gray-400 pl-7 leading-relaxed">Выберите скачанный файл сборки (<code class="text-[#00f5a0]">.mrpack</code> или <code class="text-gray-200">.zip</code>) и нажмите кнопку «ОК».</p></div></div></div></div></div><script class="">function switchGuideTab(target){const tabs={prism:{btn:document.getElementById('tabGuidePrism'),content:document.getElementById('guideContentPrism')},tllegacy:{btn:document.getElementById('tabGuideTlLegacy'),content:document.getElementById('guideContentTlLegacy')},tl:{btn:document.getElementById('tabGuideTl'),content:document.getElementById('guideContentTl')}};Object.keys(tabs).forEach(k=>{const item=tabs[k];if(!item.btn||!item.content)return;if(k===target){item.btn.className='px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5';item.content.classList.remove('hidden');}else{item.btn.className='px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5';item.content.classList.add('hidden');}});if(window.lucide)lucide.createIcons();}window.switchGuideTab=switchGuideTab;if(window.lucide)lucide.createIcons();</script><div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider text-gray-500/70 select-none">by Arnimaz21 for vunya100's server</div></div>
 <!-- 5. Нижний фиксированный парящий стеклянный кибер-док -->
-<div class="fixed bottom-4 left-4 right-4 max-w-5xl mx-auto z-50">
+<div class="fixed left-4 right-4 max-w-5xl mx-auto z-50 bottom-8">
 <div class="border border-[#00f5a0]/30 bg-[#070b10]/95 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
 <div class="w-full bg-[#0e1620] h-1 overflow-hidden relative">
 <div class="bg-[#00f5a0] h-full w-0 transition-all duration-150" id="progressBar"></div>
@@ -396,14 +387,15 @@ void main() {
 <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnPause">Пауза</button>
 <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnCancel">Отмена</button>
 <button class="px-6 py-2 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wide rounded-xl flex items-center gap-2 transition duration-150 disabled:opacity-30 cursor-pointer shadow-[0_0_15px_rgba(0,245,160,0.25)]" disabled="" id="btnDownload">
-<svg aria-hidden="true" class="lucide lucide-download w-4 h-4" data-lucide="download" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-4 h-4"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
 <span class="font-sans font-bold">Скачать .ZIP</span>
 </button>
 </div>
 </div>
 </div>
-<div class="text-center mt-2 text-[10px] font-mono tracking-wider text-gray-500/60 select-none pointer-events-none">by Arnimaz21 for vunya100's server</div>
 </div>
+<!-- Модальное окно резервной загрузки при блокировке CORS браузером -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 hidden" id="fallbackModal"><div class="border border-[#00f5a0]/40 bg-[#0b1017] text-gray-200 rounded-2xl max-w-lg w-full p-6 shadow-[0_0_40px_rgba(0,245,160,0.25)] relative space-y-4"><div class="flex items-center justify-between pb-3 border-b border-[#00f5a0]/20"><div class="flex items-center gap-2.5"><div class="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_12px_rgba(245,158,11,0.2)]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" aria-hidden="true" class="lucide lucide-shield-alert"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg></div><div class="text-left"><h3 class="text-base font-bold font-sans text-white">Большой файл (&gt;50-100 МБ)</h3><p class="text-[11px] font-mono text-gray-400" id="fallbackModalFilename">CreepyCloud.mrpack</p></div></div><button class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition cursor-pointer" onclick="closeFallbackModal()"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div><p class="text-xs text-gray-300 leading-relaxed font-mono">Файлы сборок свыше 50 МБ блокируются сторонними веб-прокси по размеру и таймауту, а браузер запрещает прямой доступ к GitHub Releases по правилам безопасности (CORS).</p><div class="p-4 rounded-xl bg-[#0e1822] border border-[#00f5a0]/30 space-y-2.5 shadow-inner"><div class="text-[11px] font-sans font-bold text-[#00f5a0] flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" aria-hidden="true" class="lucide lucide-sparkles"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg> Быстрое решение в 2 шага:</div><ol class="text-xs font-mono text-gray-300 list-decimal list-inside space-y-2 leading-relaxed"><li class="pl-1">Нажмите <strong class="text-[#00f5a0]">«Скачать на диск»</strong> — начнётся скачивание оригинального файла на максимальной скорости с GitHub.</li><li class="pl-1">Нажмите <strong class="text-white">«Выбрать скачанный файл»</strong> или просто перетащите файл в окно сайта!</li></ol></div><div class="pt-2 flex flex-col sm:flex-row gap-2.5"><a class="flex-1 py-2.5 px-4 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-[0_0_15px_rgba(0,245,160,0.25)] text-center cursor-pointer" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/CreepyCloud.mrpack" id="modalDirectDownloadLink" rel="noopener noreferrer" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg><span class="">Скачать на диск</span></a><button class="flex-1 py-2.5 px-4 bg-[#121c26] hover:bg-[#1a2836] border border-[#00f5a0]/40 text-[#00f5a0] text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition cursor-pointer" onclick="closeFallbackModal(); DOM.fileInput.click();"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="folder-open" aria-hidden="true" class="lucide lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg><span class="">Выбрать скачанный файл</span></button></div></div></div>
 <script>
     if (window.lucide) {
       lucide.createIcons();
@@ -418,13 +410,25 @@ void main() {
       activeFilter: 'all',
       isProcessing: false,
       isPaused: false,
-      abortController: null
+      abortController: null,
+      repoPacks: [],
+      activeLoadedName: null
     };
 
     const DOM = {
       fileInput: document.getElementById('fileInput'),
       btnBrowse: document.getElementById('btnBrowse'),
       btnClear: document.getElementById('btnClear'),
+      btnTogglePresets: document.getElementById('btnTogglePresets'),
+      btnClosePresets: document.getElementById('btnClosePresets'),
+      presetsPanel: document.getElementById('presetsPanel'),
+      presetsCountBadge: document.getElementById('presetsCountBadge'),
+      presetsCardsContainer: document.getElementById('presetsCardsContainer'),
+      btnSyncRepo: document.getElementById('btnSyncRepo'),
+      syncIcon: document.getElementById('syncIcon'),
+      repoStatusBadge: document.getElementById('repoStatusBadge'),
+      btnLoadByUrl: document.getElementById('btnLoadByUrl'),
+      customUrlInput: document.getElementById('customUrlInput'),
       fileTitle: document.getElementById('fileTitle'),
       fileMeta: document.getElementById('fileMeta'),
       statTotalMods: document.getElementById('statTotalMods'),
@@ -453,12 +457,250 @@ void main() {
       btnFilterClient: document.getElementById('btnFilterClient'),
       checkSelectAll: document.getElementById('checkSelectAll'),
       optAddEula: document.getElementById('optAddEula'),
-      modeRadios: document.querySelectorAll('input[name="packMode"]')
+      modeRadios: document.querySelectorAll('input[name="packMode"]'),
+      fallbackModal: document.getElementById('fallbackModal'),
+      modalDirectDownloadLink: document.getElementById('modalDirectDownloadLink')
     };
+
+    function showFallbackModal(downloadUrl, filename) {
+      if (DOM.modalDirectDownloadLink) {
+        DOM.modalDirectDownloadLink.href = downloadUrl;
+        DOM.modalDirectDownloadLink.setAttribute('download', filename);
+      }
+      if (DOM.fallbackModal) {
+        DOM.fallbackModal.classList.remove('hidden');
+      }
+    }
+
+    function closeFallbackModal() {
+      if (DOM.fallbackModal) {
+        DOM.fallbackModal.classList.add('hidden');
+      }
+    }
+    window.closeFallbackModal = closeFallbackModal;
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes <= 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    // Автоматическая синхронизация с GitHub Releases API
+    async function fetchGithubPacks() {
+      if (DOM.syncIcon) DOM.syncIcon.classList.add('animate-spin');
+      DOM.repoStatusBadge.innerText = 'Синхронизация...';
+      DOM.presetsCardsContainer.innerHTML = `
+        <div class="p-8 text-center text-gray-400 font-mono flex flex-col items-center justify-center gap-3">
+          <div class="w-7 h-7 border-2 border-[#00f5a0]/30 border-t-[#00f5a0] rounded-full animate-spin"></div>
+          <span class="text-xs text-[#00f5a0]">Синхронизация с GitHub Releases...</span>
+        </div>
+      `;
+
+      const apiEndpoint = 'https://api.github.com/repos/Arnimaz21/arnimaz21.github.io/releases';
+      
+      try {
+        let releases = [];
+        const res = await fetch(apiEndpoint, {
+          headers: { 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (res.ok) {
+          releases = await res.json();
+        } else {
+          console.warn('GitHub API request failed with status:', res.status);
+        }
+
+        let packFiles = [];
+        if (Array.isArray(releases)) {
+          releases.forEach(release => {
+            if (Array.isArray(release.assets)) {
+              release.assets.forEach(asset => {
+                const name = (asset.name || '').toLowerCase();
+                if (name.endsWith('.mrpack') || name.endsWith('.zip')) {
+                  packFiles.push({
+                    name: asset.name,
+                    size: (asset.size / (1024 * 1024)).toFixed(1) + ' MB',
+                    rawSizeBytes: asset.size,
+                    download_url: asset.browser_download_url,
+                    release_tag: release.tag_name || release.name || 'Release',
+                    release_name: release.name || release.tag_name || 'Release',
+                    published_at: release.published_at ? new Date(release.published_at).toLocaleDateString('ru-RU') : '',
+                    downloads_count: asset.download_count || 0
+                  });
+                }
+              });
+            }
+          });
+        }
+
+        // Если API отдал пустой список из-за лимита, сохраним дефолтную сборку CreepyCloud
+        if (packFiles.length === 0) {
+          packFiles = [{
+            name: 'CreepyCloud.mrpack',
+            size: '111.9 MB',
+            rawSizeBytes: 117335040,
+            download_url: 'https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/CreepyCloud.mrpack',
+            release_tag: 'packs',
+            release_name: 'packs',
+            published_at: '22.09.2026',
+            downloads_count: 0
+          }];
+        }
+
+        state.repoPacks = packFiles;
+        renderPresetCards();
+      } catch (e) {
+        console.error('Ошибка синхронизации каталога Releases:', e);
+        DOM.presetsCardsContainer.innerHTML = `
+          <div class="p-6 text-center font-mono border border-red-900/30 bg-red-950/20 rounded-xl">
+            <p class="text-xs text-red-400 mb-2">Не удалось связаться с GitHub API (возможно превышен лимит запросов)</p>
+            <button onclick="fetchGithubPacks()" class="px-3 py-1 text-xs text-[#00f5a0] bg-[#121c24] border border-[#00f5a0]/40 rounded-lg cursor-pointer">
+              Повторить попытку
+            </button>
+          </div>
+        `;
+      } finally {
+        if (DOM.syncIcon) DOM.syncIcon.classList.remove('animate-spin');
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    function renderPresetCards() {
+      const count = state.repoPacks.length;
+      DOM.presetsCountBadge.innerText = count > 0 ? `${count} ПАКОВ` : '0 ПАКОВ';
+      DOM.repoStatusBadge.innerText = count > 0 ? `${count} файлов` : 'GitHub Releases';
+
+      let cardsHtml = `<div class="grid grid-cols-1 md:grid-cols-3 gap-4">`;
+      state.repoPacks.forEach((fileItem) => {
+        const cleanTitle = fileItem.name.replace(/\.(mrpack|zip)$/i, '');
+        const isMrpack = fileItem.name.toLowerCase().endsWith('.mrpack');
+        const isActive = state.activeLoadedName === fileItem.name;
+
+        cardsHtml += `
+          <div class="border ${isActive ? 'border-[#00f5a0] ring-1 ring-[#00f5a0] shadow-[0_0_25px_rgba(0,245,160,0.3)]' : 'border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)]'} bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5 truncate">
+                  <span class="text-[10px] px-2 py-0.5 rounded-full ${isMrpack ? 'bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30' : 'bg-cyan-950/40 text-cyan-300 border border-cyan-800/40'} font-mono font-semibold">
+                    ${isMrpack ? 'Modrinth Pack' : 'ZIP Архив'}
+                  </span>
+                  ${isActive ? '<span class="text-[10px] px-2 py-0.5 rounded-md bg-[#00f5a0] text-[#070b10] font-mono font-bold">АКТИВНА</span>' : ''}
+                  <span class="text-[10px] px-2 py-0.5 rounded-md bg-white/5 text-gray-300 font-mono border border-white/10 truncate" title="${fileItem.release_tag}">
+                    ${fileItem.release_tag}
+                  </span>
+                </div>
+                <span class="text-[10px] text-gray-400 font-mono flex-shrink-0">${fileItem.size}</span>
+              </div>
+              <h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="${fileItem.name}">
+                ${cleanTitle}
+              </h4>
+              <p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="${fileItem.name}">
+                ${fileItem.name}
+              </p>
+              <div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono">
+                ${fileItem.published_at ? `<span>📅 ${fileItem.published_at}</span>` : ''}
+                <span>📥 ${fileItem.downloads_count} скачиваний</span>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+              <a href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/${encodeURIComponent(fileItem.release_tag)}" target="_blank" rel="noopener noreferrer" class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" title="Открыть релиз на GitHub">
+                <i data-lucide="tag" class="w-3 h-3 text-[#00f5a0]"></i>
+                <span class="truncate max-w-[90px]">${fileItem.release_tag}</span>
+              </a>
+              <button class="px-3 py-1.5 ${isActive ? 'bg-[#153427] text-[#00f5a0] border border-[#00f5a0]/60' : 'bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111]'} font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer" onclick="downloadReleasePack('${encodeURIComponent(fileItem.download_url)}', '${escapeQuotes(fileItem.name)}')">
+                <i data-lucide="${isActive ? 'check' : 'download-cloud'}" class="w-3.5 h-3.5"></i>
+                <span>${isActive ? 'Загружено' : 'Загрузить'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      cardsHtml += `</div>`;
+      DOM.presetsCardsContainer.innerHTML = cardsHtml;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    window.fetchGithubPacks = fetchGithubPacks;
+
+    DOM.btnSyncRepo.addEventListener('click', () => {
+      fetchGithubPacks();
+    });
 
     DOM.btnBrowse.addEventListener('click', () => DOM.fileInput.click());
     DOM.fileInput.addEventListener('change', (e) => {
       if (e.target.files.length > 0) processMrpack(e.target.files[0]);
+    });
+
+    DOM.btnTogglePresets.addEventListener('click', () => {
+      DOM.presetsPanel.classList.toggle('hidden');
+      if (!DOM.presetsPanel.classList.contains('hidden')) {
+        DOM.presetsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+    DOM.btnClosePresets.addEventListener('click', () => {
+      DOM.presetsPanel.classList.add('hidden');
+    });
+
+    // Функция загрузки сборки с обходом CORS (через proxy + graceful fallback)
+    window.downloadReleasePack = async function(encodedDownloadUrl, filename) {
+      const downloadUrl = decodeURIComponent(encodedDownloadUrl);
+      
+      updateStatus('Загрузка сборки...', filename, '#00f5a0');
+      DOM.progressBar.style.width = '20%';
+
+      // Список вариантов для обхода CORS политики браузера
+      const proxyCandidates = [
+        `https://corsproxy.io/?url=${encodeURIComponent(downloadUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(downloadUrl)}`,
+        downloadUrl
+      ];
+
+      let blob = null;
+      let lastError = null;
+
+      for (let i = 0; i < proxyCandidates.length; i++) {
+        const candidateUrl = proxyCandidates[i];
+        try {
+          DOM.progressBar.style.width = `${30 + (i * 20)}%`;
+          updateStatus('Получение файла сборки...', `Попытка ${i + 1} из ${proxyCandidates.length}`, '#00f5a0');
+
+          const response = await fetch(candidateUrl);
+          if (response.ok) {
+            blob = await response.blob();
+            if (blob && blob.size > 1000) {
+              break;
+            }
+          }
+        } catch (err) {
+          console.warn(`Не удалось загрузить через ${candidateUrl}:`, err);
+          lastError = err;
+        }
+      }
+
+      if (blob && blob.size > 1000) {
+        DOM.progressBar.style.width = '80%';
+        updateStatus('Распаковка и чтение сборки...', filename, '#00f5a0');
+        const file = new File([blob], filename || 'modpack.mrpack', { type: 'application/x-modpack' });
+        state.activeLoadedName = filename;
+        renderPresetCards();
+        await processMrpack(file);
+      } else {
+        DOM.progressBar.style.width = '0%';
+        updateStatus('Блокировка CORS в браузере', filename, '#ffb4ab');
+        showFallbackModal(downloadUrl, filename);
+      }
+    };
+
+    // Загрузка по прямой ссылке из инпута
+    DOM.btnLoadByUrl.addEventListener('click', async () => {
+      const url = DOM.customUrlInput.value.trim();
+      if (!url) {
+        alert('Пожалуйста, введите прямую ссылку на файл .mrpack или .zip');
+        return;
+      }
+      const filename = url.split('/').pop().split('?')[0] || 'remote-modpack.mrpack';
+      await window.downloadReleasePack(encodeURIComponent(url), filename);
     });
 
     window.addEventListener('dragover', (e) => e.preventDefault());
@@ -524,7 +766,7 @@ void main() {
 
     async function processMrpack(file) {
       try {
-        updateStatus('Чтение архива...', 'Разбор modrinth.index.json');
+        updateStatus('Чтение архива...', 'Разбор структуры пакета');
         state.file = file;
         DOM.fileTitle.innerText = file.name;
         DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • Чтение...`;
@@ -532,39 +774,41 @@ void main() {
 
         state.sourceZip = await JSZip.loadAsync(file);
         const indexEntry = state.sourceZip.file("modrinth.index.json");
-        if (!indexEntry) {
-          alert("Ошибка: файл не является валидным Modrinth .mrpack (нет modrinth.index.json)!");
-          resetApp();
-          return;
-        }
-
-        const indexJson = await indexEntry.async("string");
-        state.manifest = JSON.parse(indexJson);
-
+        
         state.allFiles = [];
         let modIdCounter = 0;
 
-        if (Array.isArray(state.manifest.files)) {
-          state.manifest.files.forEach(f => {
-            const isClientOnly = f.env && f.env.client === 'required' && f.env.server === 'unsupported';
-            state.allFiles.push({
-              id: `mod_${modIdCounter++}`,
-              type: 'mod',
-              path: f.path.startsWith('/') ? f.path.slice(1) : f.path,
-              fileSize: f.fileSize || 0,
-              hashes: f.hashes,
-              downloads: f.downloads,
-              isClientOnly: isClientOnly,
-              selected: true,
-              filteredOut: false
+        if (indexEntry) {
+          const indexJson = await indexEntry.async("string");
+          state.manifest = JSON.parse(indexJson);
+
+          if (Array.isArray(state.manifest.files)) {
+            state.manifest.files.forEach(f => {
+              const isClientOnly = f.env && f.env.client === 'required' && f.env.server === 'unsupported';
+              state.allFiles.push({
+                id: `mod_${modIdCounter++}`,
+                type: 'mod',
+                path: f.path.startsWith('/') ? f.path.slice(1) : f.path,
+                fileSize: f.fileSize || 0,
+                hashes: f.hashes,
+                downloads: f.downloads,
+                isClientOnly: isClientOnly,
+                selected: true,
+                filteredOut: false
+              });
             });
-          });
+          }
+        } else {
+          state.manifest = { files: [] };
         }
 
         state.sourceZip.forEach((zipPath, zipEntry) => {
-          if (zipPath.startsWith("overrides/") && !zipEntry.dir) {
-            const cleanPath = zipPath.replace(/^overrides\//, "");
-            if (!cleanPath) return;
+          if (!zipEntry.dir) {
+            let cleanPath = zipPath;
+            if (cleanPath.startsWith("overrides/")) {
+              cleanPath = cleanPath.replace(/^overrides\//, "");
+            }
+            if (!cleanPath || cleanPath === "modrinth.index.json") return;
 
             const isJar = cleanPath.toLowerCase().endsWith('.jar') || cleanPath.startsWith("mods/");
             const isClientOnly = isJar
@@ -584,19 +828,22 @@ void main() {
           }
         });
 
+        // Схлопываем только вложенные папки, а папки верхнего уровня (mods, config) оставляем развернутыми для моментального выбора
         state.collapsedFolders.clear();
         const folders = getAllFolderPaths();
         folders.forEach(p => {
-          state.collapsedFolders.add(p);
+          if (p.includes('/')) {
+            state.collapsedFolders.add(p);
+          }
         });
 
-        const loader = state.manifest.dependencies?.fabric ? `Fabric ${state.manifest.dependencies.fabric}` : (state.manifest.dependencies?.forge ? `Forge ${state.manifest.dependencies.forge}` : 'Modrinth');
-        const mcVer = `MC ${state.manifest.dependencies?.minecraft || '1.20.x'}`;
+        const loader = state.manifest?.dependencies?.fabric ? `Fabric ${state.manifest.dependencies.fabric}` : (state.manifest?.dependencies?.forge ? `Forge ${state.manifest.dependencies.forge}` : 'Modrinth');
+        const mcVer = `MC ${state.manifest?.dependencies?.minecraft || '1.20.x'}`;
         DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • ${loader} • ${mcVer}`;
 
         applyModeFilters();
         DOM.btnDownload.disabled = false;
-        updateStatus('Готов к конвертации', 'Выберите параметры и нажмите «Скачать .ZIP»', '#00f5a0');
+        updateStatus('Готов к сборке', 'Отметьте файлы галочками и нажмите «Скачать .ZIP»', '#00f5a0');
         DOM.treeContainer.scrollTop = 0;
       } catch (err) {
         console.error(err);
@@ -634,7 +881,7 @@ void main() {
         DOM.lblServerTitle.className = "font-medium text-sm text-gray-300 font-sans";
       }
 
-      if (!state.manifest) return;
+      if (!state.allFiles || state.allFiles.length === 0) return;
 
       state.allFiles.forEach(f => {
         let shouldSelect = true;
@@ -670,8 +917,8 @@ void main() {
     }
 
     function renderDirectoryTree() {
-      if (!state.manifest || state.allFiles.length === 0) {
-        DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono">Загрузите архив .mrpack для отображения файлов</div>';
+      if (state.allFiles.length === 0) {
+        DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2"><span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span></div>';
         return;
       }
 
@@ -828,7 +1075,7 @@ void main() {
     }
 
     function escapeQuotes(str) {
-      return str.replace(/'/g, "\\'");
+      return (str || '').replace(/'/g, "\\'");
     }
 
     window.toggleFolder = function(folderPath) {
@@ -908,7 +1155,14 @@ void main() {
               const fileName = mod.path.split('/').pop();
               DOM.statusDetail.innerText = `[GET] ${fileName}`;
               
-              const resp = await fetch(url, { signal: state.abortController.signal });
+              let resp;
+              try {
+                resp = await fetch(url, { signal: state.abortController.signal });
+              } catch (fetchErr) {
+                // Запасной fallback через CORS-прокси при загрузке мода с CDN
+                resp = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, { signal: state.abortController.signal });
+              }
+
               if (!resp.ok) throw new Error(`HTTP ${resp.status} для ${fileName}`);
               const buf = await resp.arrayBuffer();
 
@@ -966,6 +1220,7 @@ void main() {
       state.manifest = null;
       state.allFiles = [];
       state.collapsedFolders.clear();
+      state.activeLoadedName = null;
       DOM.fileTitle.innerText = 'Загрузите файл .mrpack';
       DOM.fileMeta.innerText = 'Перетащите сюда или выберите файл сборки Modrinth';
       DOM.statTotalMods.innerText = '—';
@@ -981,6 +1236,7 @@ void main() {
       const normalRadio = document.querySelector('input[name="packMode"][value="normal"]');
       if (normalRadio) normalRadio.checked = true;
       applyModeFilters();
+      renderPresetCards();
 
       updateStatus('Ожидание файла', '', '#6b7280');
     }
@@ -996,5 +1252,10 @@ void main() {
         DOM.statusIndicatorDot.style.boxShadow = 'none';
       }
     }
+
+    // Первоначальный автоматический запрос списка релизов с GitHub
+    fetchGithubPacks();
   </script>
+
+
 </body></html>
