@@ -165,7 +165,7 @@ float snoise(vec2 v) {
     vec3 a0 = x - ox;
     m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
     vec3 g;
-    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+    g.x  * a0.x  * x0.x  + h.x  * x0.y;
     g.yz = a0.yz * x12.xz + h.yz * x12.yw;
     return 130.0 * dot(m, g);
 }
@@ -555,10 +555,14 @@ void main() {
             const cleanPath = zipPath.replace(/^overrides\//, "");
             if (!cleanPath) return;
 
-            const isClientOnly = cleanPath.startsWith("resourcepacks/") || cleanPath.startsWith("shaderpacks/");
+            const isJar = cleanPath.toLowerCase().endsWith('.jar') || cleanPath.startsWith("mods/");
+            const isClientOnly = isJar
+              ? /-(client|gui|visual|hud|sound|recording|replay|voice)\b/i.test(cleanPath)
+              : (cleanPath.startsWith("resourcepacks/") || cleanPath.startsWith("shaderpacks/"));
+
             state.allFiles.push({
-              id: `override_${zipPath}`,
-              type: 'override',
+              id: isJar ? `mod_override_${modIdCounter++}` : `override_${zipPath}`,
+              type: isJar ? 'mod' : 'override',
               path: cleanPath,
               zipPath: zipPath,
               fileSize: zipEntry._data ? zipEntry._data.uncompressedSize || 0 : 0,
@@ -623,8 +627,9 @@ void main() {
 
       state.allFiles.forEach(f => {
         let shouldSelect = true;
+        const isMod = f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar');
         if (isServerMode) {
-          if (f.isClientOnly && f.type === 'mod') {
+          if (f.isClientOnly && isMod) {
             shouldSelect = false;
           }
           if (f.path.startsWith('resourcepacks/') || f.path.startsWith('shaderpacks/')) {
@@ -639,16 +644,16 @@ void main() {
     }
 
     function updateStats() {
-      const mods = state.allFiles.filter(f => f.type === 'mod');
+      const mods = state.allFiles.filter(f => f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar'));
       const clientMods = mods.filter(m => m.isClientOnly);
-      const overrides = state.allFiles.filter(f => f.type === 'override');
+      const configs = state.allFiles.filter(f => !(f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar')));
       
       const selectedFiles = state.allFiles.filter(f => f.selected);
       const totalSelectedSize = selectedFiles.reduce((acc, cur) => acc + (cur.fileSize || 0), 0);
 
       DOM.statTotalMods.innerText = `${mods.length} JAR`;
       DOM.statClientMods.innerText = `${clientMods.length} модов`;
-      DOM.statConfigs.innerText = `${overrides.length} файлов`;
+      DOM.statConfigs.innerText = `${configs.length} файлов`;
       DOM.statTargetSize.innerText = `~${(totalSelectedSize / (1024 * 1024)).toFixed(1)} MB`;
       DOM.lblNormalCount.innerText = `${state.allFiles.length} файлов`;
     }
@@ -784,16 +789,18 @@ void main() {
       const sizeStr = file.fileSize ? `${(file.fileSize / (1024 * 1024)).toFixed(2)} MB` : '0 KB';
 
       let tag = '';
-      if (file.type === 'mod') {
+      const isJar = file.path.toLowerCase().endsWith('.jar') || file.path.startsWith('mods/') || file.type === 'mod';
+
+      if (isJar) {
         tag = file.isClientOnly 
           ? '<span class="text-[10px] px-1.5 py-0.2 bg-red-950/40 text-red-400 border border-red-900/40 rounded flex-shrink-0">Клиент</span>' 
           : '<span class="text-[10px] px-1.5 py-0.2 bg-[#00f5a0]/10 text-[#00f5a0] border border-[#00f5a0]/30 rounded flex-shrink-0">Сервер</span>';
+      } else if (file.path.startsWith('resourcepacks/') || file.path.startsWith('shaderpacks/')) {
+        tag = '<span class="text-[10px] px-1.5 py-0.2 bg-amber-950/40 text-amber-400 border border-amber-900/40 rounded flex-shrink-0">Ресурспак</span>';
+      } else if (file.path.startsWith('config/') || file.path.endsWith('.json') || file.path.endsWith('.toml') || file.path.endsWith('.cfg') || file.path.endsWith('.txt') || file.path.endsWith('.properties')) {
+        tag = '<span class="text-[10px] px-1.5 py-0.2 bg-cyan-950/40 text-cyan-400 border border-cyan-900/40 rounded flex-shrink-0">Конфиг</span>';
       } else {
-        if (file.path.startsWith('resourcepacks/') || file.path.startsWith('shaderpacks/')) {
-          tag = '<span class="text-[10px] px-1.5 py-0.2 bg-amber-950/40 text-amber-400 border border-amber-900/40 rounded flex-shrink-0">Ресурспак</span>';
-        } else {
-          tag = '<span class="text-[10px] px-1.5 py-0.2 bg-cyan-950/40 text-cyan-400 border border-cyan-900/40 rounded flex-shrink-0">Конфиг</span>';
-        }
+        tag = '<span class="text-[10px] px-1.5 py-0.2 bg-cyan-950/40 text-cyan-400 border border-cyan-900/40 rounded flex-shrink-0">Файл</span>';
       }
 
       return `
@@ -857,15 +864,16 @@ void main() {
       DOM.progressBar.style.width = '0%';
 
       const outZip = new JSZip();
-      const selectedMods = state.allFiles.filter(f => f.type === 'mod' && f.selected);
-      const selectedOverrides = state.allFiles.filter(f => f.type === 'override' && f.selected);
-      const totalMods = selectedMods.length;
+      const allSelectedFiles = state.allFiles.filter(f => f.selected);
+      const selectedModsToDownload = state.allFiles.filter(f => f.type === 'mod' && f.selected && !f.zipPath && f.downloads && f.downloads.length > 0);
+      const selectedZipEntries = state.allFiles.filter(f => f.selected && f.zipPath);
+      const totalMods = selectedModsToDownload.length;
       let loadedMods = 0;
 
       updateStatus('Сборка архива...', `0 / ${totalMods} модов`, '#00f5a0');
 
       try {
-        for (const fileItem of selectedOverrides) {
+        for (const fileItem of selectedZipEntries) {
           const zipEntry = state.sourceZip.file(fileItem.zipPath);
           if (zipEntry) {
             const data = await zipEntry.async("arraybuffer");
@@ -878,26 +886,30 @@ void main() {
           outZip.file("eula.txt", "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).\neula=true\n");
         }
 
-        const BATCH_SIZE = 4;
-        for (let i = 0; i < totalMods; i += BATCH_SIZE) {
-          if (!state.isProcessing) break;
+        if (totalMods > 0) {
+          const BATCH_SIZE = 4;
+          for (let i = 0; i < totalMods; i += BATCH_SIZE) {
+            if (!state.isProcessing) break;
 
-          const batch = selectedMods.slice(i, i + BATCH_SIZE);
-          await Promise.all(batch.map(async (mod) => {
-            const url = mod.downloads[0];
-            const fileName = mod.path.split('/').pop();
-            DOM.statusDetail.innerText = `[GET] ${fileName}`;
-            
-            const resp = await fetch(url, { signal: state.abortController.signal });
-            if (!resp.ok) throw new Error(`HTTP ${resp.status} для ${fileName}`);
-            const buf = await resp.arrayBuffer();
+            const batch = selectedModsToDownload.slice(i, i + BATCH_SIZE);
+            await Promise.all(batch.map(async (mod) => {
+              const url = mod.downloads[0];
+              const fileName = mod.path.split('/').pop();
+              DOM.statusDetail.innerText = `[GET] ${fileName}`;
+              
+              const resp = await fetch(url, { signal: state.abortController.signal });
+              if (!resp.ok) throw new Error(`HTTP ${resp.status} для ${fileName}`);
+              const buf = await resp.arrayBuffer();
 
-            outZip.file(mod.path, buf);
-            loadedMods++;
-            const pct = Math.round((loadedMods / totalMods) * 90);
-            DOM.progressBar.style.width = `${pct}%`;
-            DOM.statusText.innerText = `Загрузка модов: ${pct}% (${loadedMods} / ${totalMods})`;
-          }));
+              outZip.file(mod.path, buf);
+              loadedMods++;
+              const pct = Math.round((loadedMods / totalMods) * 90);
+              DOM.progressBar.style.width = `${pct}%`;
+              DOM.statusText.innerText = `Загрузка модов: ${pct}% (${loadedMods} / ${totalMods})`;
+            }));
+          }
+        } else {
+          DOM.progressBar.style.width = '70%';
         }
 
         DOM.statusText.innerText = 'Сжатие ZIP-архива...';
