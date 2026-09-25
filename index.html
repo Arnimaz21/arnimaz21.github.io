@@ -325,23 +325,22 @@
             <script class="">/* sync spin handler */(function(){const btn=document.getElementById('btnSyncPresets')||document.getElementById('btnSyncRepo');if(!btn)return;btn.id='btnSyncPresets';btn.addEventListener('click',function(){const getIcon=()=>btn.querySelector('svg, [data-lucide="refresh-cw"], .lucide-refresh-cw');const icon=getIcon();if(icon)icon.classList.add('animate-spin');btn.disabled=true;const origFetch=window.fetchGithubPacks;if(typeof fetchGithubPacks==='function'){const checkDone=setInterval(()=>{if(!btn.disabled){const cur=getIcon();if(cur)cur.classList.remove('animate-spin');clearInterval(checkDone);}},100);setTimeout(()=>{btn.disabled=false;const cur=getIcon();if(cur)cur.classList.remove('animate-spin');clearInterval(checkDone);},5000);}});})();</script></div>
           </div>
         </div></div>
-</div><div class="border border-[#00f5a0]/30 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="serverStatusPanel"><div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20"><div><div class="flex items-center gap-2.5"><div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]" id="serverStatusDot"></div><h3 class="font-bold text-white text-base font-sans tracking-wide">Игроки онлайн</h3><span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="serverOnlineBadge">Онлайн: 0 / 20</span></div><div class="flex items-center gap-2 mt-1.5"></div></div><div class="flex items-center gap-2"><button type="button" class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm disabled:opacity-30 disabled:pointer-events-none" id="btnRefreshServerStatus" title="Обновить статус сервера"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="serverRefreshIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg><span class="font-sans font-semibold">Обновить</span></button></div></div><div class="pt-4" id="serverPlayersContainer">
-          <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              </div>
-              <div>
-                <h4 class="text-sm font-bold text-white font-sans">Сервер доступен (0 / 20)</h4>
-                <p class="text-xs text-gray-400 font-mono mt-0.5">Сейчас на сервере нет игроков.</p>
-              </div>
+</div><div class="border border-[#00f5a0]/30 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="serverStatusPanel"><div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20"><div><div class="flex items-center gap-2.5"><div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]" id="serverStatusDot"></div><h3 class="font-bold text-white text-base font-sans tracking-wide">Игроки онлайн</h3><span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="serverOnlineBadge">Онлайн: 0 / 20</span></div><div class="flex items-center gap-2 mt-1.5"></div></div><div class="flex items-center gap-2"><div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#101922] border border-[#00f5a0]/25 text-[11px] font-mono text-gray-300 shadow-inner"><span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></span><span class="text-gray-400">Авто:</span></div><button type="button" class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm disabled:opacity-30 disabled:pointer-events-none" id="btnRefreshServerStatus" title="Обновить статус сервера"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="serverRefreshIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg><span class="font-sans font-semibold">Обновить</span></button></div></div><div id="serverActivityToasts" class="flex flex-col gap-2 pt-2 empty:hidden"></div><div class="pt-4" id="serverPlayersContainer">
+        <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
-            <div class="text-right text-[11px] font-mono text-gray-400">
-              <div class="">Версия: <span class="text-[#00f5a0]">26.3</span></div>
-              <div class="text-gray-500 truncate max-w-xs">CloudMine  Второй сезон</div>
+            <div>
+              <h4 class="text-sm font-bold text-white font-sans">Нет игроков онлайн</h4>
+              <p class="text-xs text-gray-400 font-mono mt-0.5">Сервер доступен (0 / 20). Заходите первым!</p>
             </div>
           </div>
-        </div></div>
+          <div class="text-right text-[11px] font-mono text-gray-400">
+            <div class="">Версия: <span class="text-[#00f5a0]">26.3</span></div>
+          </div>
+        </div>
+      </div></div>
 <!-- 2. Сводные метрики -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
 <div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
@@ -1538,7 +1537,7 @@
               </div>
               <div>
                 <h4 class="text-sm font-bold text-white font-sans">Сервер доступен (${count} / ${max})</h4>
-                <p class="text-xs text-gray-400 font-mono mt-0.5">${count === 0 ? 'Сейчас на сервере нет игроков.' : 'Список ников игроков скрыт настройками сервера.'}</p>
+                <p class="text-xs text-gray-400 font-mono mt-0.5">${count === 0 ? 'Сейчас на сервере нет игроков. Заходите первым!' : 'Список ников игроков скрыт настройками сервера.'}</p>
               </div>
             </div>
             <div class="text-right text-[11px] font-mono text-gray-400">
@@ -1584,6 +1583,184 @@
   }
 
   updateMinecraftStatus();
+})();</script>
+
+<script>(function(){
+  const SERVER_HOST = '185.9.145.7';
+  const SERVER_PORT = '27019';
+  const SERVER_ADDRESS = `${SERVER_HOST}:${SERVER_PORT}`;
+  const container = document.getElementById('serverPlayersContainer');
+  const onlineBadge = document.getElementById('serverOnlineBadge');
+  const statusDot = document.getElementById('serverStatusDot');
+  const countdownEl = document.getElementById('autoRefreshCountdown');
+  const toastsContainer = document.getElementById('serverActivityToasts');
+  const refreshIcon = document.getElementById('serverRefreshIcon');
+  const btnRefresh = document.getElementById('btnRefreshServerStatus');
+
+  let knownPlayers = null;
+  const REFRESH_INTERVAL = 12;
+  let timeLeft = REFRESH_INTERVAL;
+  let isPolling = false;
+
+  function showToast(username, type) {
+    if (!toastsContainer) return;
+    const toast = document.createElement('div');
+    const isJoin = type === 'join';
+    const avatar = `https://skin.ely.by/avatars/${encodeURIComponent(username)}`;
+    const borderCls = isJoin ? 'border-[#00f5a0]/40 bg-[#00f5a0]/10 text-white' : 'border-amber-500/40 bg-amber-500/10 text-amber-200';
+    const badgeCls = isJoin ? 'bg-[#00f5a0] text-[#070b10]' : 'bg-amber-500 text-[#070b10]';
+    const textMsg = isJoin ? 'зашел на сервер' : 'вышел с сервера';
+    const prefix = isJoin ? '+' : '−';
+
+    toast.className = `flex items-center justify-between gap-3 p-2.5 rounded-xl border backdrop-blur-md transition-all duration-300 font-mono text-xs shadow-lg ${borderCls}`;
+    toast.innerHTML = `
+      <div class="flex items-center gap-2.5">
+        <span class="w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${badgeCls}">${prefix}</span>
+        <img src="${avatar}" alt="${username}" class="w-6 h-6 rounded bg-[#070b10] border border-white/10" style="image-rendering: pixelated;" onerror="this.onerror=null; this.src='https://minotar.net/avatar/${encodeURIComponent(username)}/24';">
+        <span><strong class="font-bold text-white">${username}</strong> ${textMsg}</span>
+      </div>
+      <span class="text-[10px] opacity-60">только что</span>
+    `;
+    toastsContainer.prepend(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(-4px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 6000);
+  }
+
+  function checkPlayerDiff(newList) {
+    const currentSet = new Set(newList.map(p => (p.name || p).toLowerCase()));
+    if (knownPlayers !== null) {
+      newList.forEach(p => {
+        const name = p.name || p;
+        if (!knownPlayers.has(name.toLowerCase())) {
+          showToast(name, 'join');
+        }
+      });
+      knownPlayers.forEach(prevName => {
+        if (!currentSet.has(prevName)) {
+          showToast(prevName, 'leave');
+        }
+      });
+    }
+    knownPlayers = currentSet;
+  }
+
+  async function pollStatus() {
+    if (isPolling) return;
+    isPolling = true;
+    if (refreshIcon) refreshIcon.classList.add('animate-spin');
+    try {
+      const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_ADDRESS}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Primary error');
+      const data = await res.json();
+      handleServerData(data);
+    } catch (e) {
+      try {
+        const res2 = await fetch(`https://api.mcstatus.io/v2/status/java/${SERVER_ADDRESS}`, { cache: 'no-store' });
+        if (!res2.ok) throw new Error('Secondary error');
+        const d2 = await res2.json();
+        handleMcStatusData(d2);
+      } catch (err2) {
+        console.warn('Polling fallback error:', err2);
+      }
+    } finally {
+      if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      isPolling = false;
+      timeLeft = REFRESH_INTERVAL;
+      updateTimerDisplay();
+    }
+  }
+
+  function handleMcStatusData(d) {
+    if (!d || !d.online) return;
+    const count = d.players ? d.players.online : 0;
+    const max = d.players ? d.players.max : '?';
+    const list = (d.players && d.players.list) || [];
+    const normalized = list.map(item => typeof item === 'string' ? { name: item } : { name: item.name_clean || item.name_raw });
+    renderServerPlayers(count, max, normalized, d.version ? d.version.name_clean : 'Minecraft');
+  }
+
+  function handleServerData(data) {
+    if (!data || !data.online) return;
+    const count = (data.players && typeof data.players.online === 'number') ? data.players.online : 0;
+    const max = (data.players && typeof data.players.max === 'number') ? data.players.max : '?';
+    const rawList = (data.players && data.players.list) || [];
+    const players = rawList.map(p => typeof p === 'string' ? { name: p } : p);
+    renderServerPlayers(count, max, players, data.version || 'Minecraft');
+  }
+
+  function renderServerPlayers(count, max, players, version) {
+    checkPlayerDiff(players);
+    if (onlineBadge) {
+      onlineBadge.innerText = `Онлайн: ${count} / ${max}`;
+      onlineBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold';
+    }
+    if (statusDot) {
+      statusDot.className = 'w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]';
+    }
+    if (!container) return;
+    if (players.length > 0) {
+      let html = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">';
+      players.forEach(p => {
+        const name = p.name || 'Игрок';
+        const avatar = `https://skin.ely.by/avatars/${encodeURIComponent(name)}`;
+        html += `
+          <div class="border border-[#00f5a0]/25 hover:border-[#00f5a0]/60 bg-[#0d1620]/90 rounded-xl p-2.5 flex items-center gap-2.5 transition-all duration-150 hover:bg-[#121c24] group">
+            <img src="${avatar}" alt="${name}" class="w-9 h-9 rounded-lg bg-[#070b10] border border-[#00f5a0]/30 group-hover:border-[#00f5a0] flex-shrink-0 shadow-sm" style="image-rendering: pixelated;" onerror="this.onerror=null; this.src='https://minotar.net/avatar/${encodeURIComponent(name)}/36';">
+            <div class="overflow-hidden flex-1">
+              <div class="font-mono font-semibold text-xs text-white group-hover:text-[#00f5a0] truncate transition" title="${name}">${name}</div>
+              <div class="text-[10px] text-gray-500 font-mono flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0]"></span>в игре</div>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = `
+        <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white font-sans">Нет игроков онлайн</h4>
+              <p class="text-xs text-gray-400 font-mono mt-0.5">Сервер доступен (${count} / ${max}). Заходите первым!</p>
+            </div>
+          </div>
+          <div class="text-right text-[11px] font-mono text-gray-400">
+            <div>Версия: <span class="text-[#00f5a0]">${version}</span></div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  function updateTimerDisplay() {
+    if (countdownEl) countdownEl.innerText = `${timeLeft}с`;
+  }
+
+  setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      timeLeft = REFRESH_INTERVAL;
+      pollStatus();
+    }
+    updateTimerDisplay();
+  }, 1000);
+
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', () => {
+      timeLeft = REFRESH_INTERVAL;
+      updateTimerDisplay();
+      pollStatus();
+    });
+  }
+
+  updateTimerDisplay();
+  setTimeout(pollStatus, 1500);
 })();</script>
 
 </body></html>
