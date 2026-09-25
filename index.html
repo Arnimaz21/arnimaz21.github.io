@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<!DOCTYPE html><html lang="ru" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>.mrpack to .zip</title>
@@ -10,7 +8,7 @@
 <!-- Fonts -->
 <link href="https://fonts.preconnect.com" rel="preconnect">
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
 <!-- JSZip & FileSaver -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -101,8 +99,8 @@
 <body class="min-h-screen flex flex-col justify-between p-6 antialiased select-none relative bg-[#070b10]">
 <!-- WebGL Background -->
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
-  <canvas id="shader-canvas" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="422" height="288"></canvas>
-  <script>
+<canvas height="288" id="shader-canvas" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="422"></canvas>
+<script>
     (function() {
       const canvas = document.getElementById('shader-canvas');
       function syncSize() {
@@ -239,403 +237,392 @@
     })();
   </script>
 </div>
-
 <!-- Main App Container -->
 <div class="max-w-6xl w-full mx-auto space-y-5 relative z-10" style="padding-bottom: 9.5rem;">
-  
-  <!-- 1. Top Upload Bar -->
-  <div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden" id="topUploadBar">
-    <input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file">
-    <div class="flex items-center gap-3.5">
-      <div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-        <i data-lucide="package" class="w-5 h-5 text-[#00f5a0]"></i>
-      </div>
-      <div>
-        <h2 class="text-base font-bold text-white font-sans tracking-wide" id="fileTitle">Загрузите файл .mrpack</h2>
-        <p class="text-xs text-gray-400 font-mono mt-0.5" id="fileMeta">Перетащите или выберите файл сборки</p>
-      </div>
-    </div>
-    <div class="flex flex-wrap items-center gap-2.5">
-      <button class="px-3.5 py-2 text-xs font-sans font-semibold text-[#00f5a0] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnTogglePresets" title="Скрыть / показать готовые сборки">
-        <i data-lucide="package" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
-        <span>Готовые сборки</span>
-        <span class="px-2 py-0.5 rounded-full bg-[#00f5a0] text-[#070b10] font-mono font-bold text-[10px] tracking-wide shadow-[0_0_8px_rgba(0,245,160,0.5)]" id="presetsCountBadge">1 СБОРКА</span>
-      </button>
-      <button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse">
-        <i data-lucide="arrow-left-right" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
-        <span>Выбрать файл</span>
-      </button>
-      <button class="px-3 py-2 text-xs font-sans font-semibold text-red-400 bg-red-950/20 hover:bg-red-950/40 border border-red-900/30 rounded-xl flex items-center gap-1.5 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear" title="Очистить текущий файл">
-        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-        <span>Очистить</span>
-      </button>
-      <a href="https://discord.gg/kQkRgbFZeK" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-xs font-semibold text-[#8ea1e1] hover:text-white border border-[#5865F2]/40 hover:border-[#5865F2]/80 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(88,101,242,0.25)]">
-        <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
-        <span class="font-sans">Discord</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- 1.1 Presets Panel -->
-  <div class="border border-[#00f5a0]/40 bg-[#091117]/95 rounded-2xl p-5 shadow-[0_0_35px_rgba(0,245,160,0.12)] backdrop-blur-xl relative overflow-hidden transition-all duration-300" id="presetsPanel">
-    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></div>
-          <h3 class="font-bold text-white text-base font-sans tracking-wide">Готовые сборки</h3>
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="repoStatusBadge">1 сборка</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm group/sync disabled:opacity-30 disabled:pointer-events-none" id="btnSyncPresets" title="Синхронизировать с GitHub">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-[#00f5a0]" id="syncIcon"></i>
-          <span class="font-sans font-semibold">Синхронизировать</span>
-        </button>
-        <button class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition cursor-pointer" id="btnClosePresets" title="Свернуть блок сборок">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-    </div>
-    <!-- Cards Container -->
-    <div class="pt-4" id="presetsCardsContainer">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="border border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)] bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative">
-          <div>
-            <h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="Cloud.Tech.mrpack">
+<!-- 1. Top Upload Bar -->
+<div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden" id="topUploadBar">
+<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file">
+<div class="flex items-center gap-3.5">
+<div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-5 h-5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+</div>
+<div>
+<h2 class="text-base font-bold text-white font-sans tracking-wide" id="fileTitle">Загрузите файл .mrpack</h2>
+<p class="text-xs text-gray-400 font-mono mt-0.5" id="fileMeta">Перетащите или выберите файл сборки</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-2.5">
+<button class="px-3.5 py-2 text-xs font-sans font-semibold text-[#00f5a0] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnTogglePresets" title="Скрыть / показать готовые сборки">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-3.5 h-3.5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+<span class="">Готовые сборки</span>
+<span class="px-2 py-0.5 rounded-full bg-[#00f5a0] text-[#070b10] font-mono font-bold text-[10px] tracking-wide shadow-[0_0_8px_rgba(0,245,160,0.5)]" id="presetsCountBadge">1 СБОРКА</span>
+</button>
+<button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-left-right" aria-hidden="true" class="lucide lucide-arrow-left-right w-3.5 h-3.5 text-[#00f5a0]"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg>
+<span class="">Выбрать файл</span>
+</button>
+<button class="px-3 py-2 text-xs font-sans font-semibold text-red-400 bg-red-950/20 hover:bg-red-950/40 border border-red-900/30 rounded-xl flex items-center gap-1.5 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear" title="Очистить текущий файл">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" aria-hidden="true" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+<span class="">Очистить</span>
+</button>
+<a class="px-4 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-xs font-semibold text-[#8ea1e1] hover:text-white border border-[#5865F2]/40 hover:border-[#5865F2]/80 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(88,101,242,0.25)]" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg>
+<span class="font-sans">Discord</span>
+</a>
+</div>
+</div>
+<!-- 1.1 Presets Panel -->
+<div class="border border-[#00f5a0]/40 bg-[#091117]/95 rounded-2xl p-5 shadow-[0_0_35px_rgba(0,245,160,0.12)] backdrop-blur-xl relative overflow-hidden transition-all duration-300" id="presetsPanel">
+<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
+<div>
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></div>
+<h3 class="font-bold text-white text-base font-sans tracking-wide">Готовые сборки</h3>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="repoStatusBadge">1 сборка</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm group/sync disabled:opacity-30 disabled:pointer-events-none" id="btnSyncPresets" title="Синхронизировать с GitHub">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="syncIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+<span class="font-sans font-semibold">Синхронизировать</span>
+</button>
+<button class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition cursor-pointer" id="btnClosePresets" title="Свернуть блок сборок">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+</div>
+<!-- Cards Container -->
+<div class="pt-4" id="presetsCardsContainer">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="border border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)] bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative">
+<div>
+<h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="Cloud.Tech.mrpack">
               Cloud.Tech
             </h4>
-            <p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="Cloud.Tech.mrpack">
+<p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="Cloud.Tech.mrpack">
               Cloud.Tech.mrpack
             </p>
-            <div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono">
-              <span>22.09.2026</span>
-            </div>
-          </div>
-          <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-            <a class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/packs" rel="noopener noreferrer" target="_blank" title="Релиз на GitHub">
-              <i data-lucide="package" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
-              <span class="truncate max-w-[90px]">packs</span>
-            </a>
-            <span class="text-[10px] text-gray-400 font-mono flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5">111.9 MB</span>
-            <a class="px-3.5 py-1.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer ml-auto" download="Cloud.Tech.mrpack" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/Cloud.Tech.mrpack" rel="noopener noreferrer" target="_blank" title="Скачать .mrpack с GitHub">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i>
-              <span>Скачать</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Server Status Panel -->
-  <div class="border border-[#00f5a0]/30 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="serverStatusPanel">
-    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]" id="serverStatusDot"></div>
-          <h3 class="font-bold text-white text-base font-sans tracking-wide">Игроки онлайн</h3>
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="serverOnlineBadge">Онлайн: 0 / 20</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button type="button" class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm disabled:opacity-30 disabled:pointer-events-none" id="btnRefreshServerStatus" title="Обновить статус сервера">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-[#00f5a0]" id="serverRefreshIcon"></i>
-          <span class="font-sans font-semibold">Обновить</span>
-        </button>
-      </div>
-    </div>
-    <div class="pt-4" id="serverPlayersContainer">
-      <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
-            <i data-lucide="users" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-white font-sans">Нет игроков онлайн</h4>
-            <p class="text-xs text-gray-400 font-mono mt-0.5">Сервер доступен (0 / 20). Заходите первым!</p>
-          </div>
-        </div>
-        <div class="text-right text-[11px] font-mono text-gray-400">
-          <div>Версия: <span class="text-[#00f5a0]">26.3</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Metrics Bar -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-    <div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-      <div class="flex items-center justify-between mb-1.5">
-        <span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">МОДЫ ВСЕГО</span>
-        <div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
-      </div>
-      <span class="text-lg font-bold text-white tracking-wide font-mono" id="statTotalMods">—</span>
-    </div>
-    <div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-      <div class="flex items-center justify-between mb-1.5">
-        <span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">КЛИЕНТСКИЕ</span>
-        <div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
-      </div>
-      <span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statClientMods">—</span>
-    </div>
-    <div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-      <div class="flex items-center justify-between mb-1.5">
-        <span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">КОНФИГУРАЦИИ</span>
-        <div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
-      </div>
-      <span class="text-lg font-bold text-white tracking-wide font-mono" id="statConfigs">—</span>
-    </div>
-    <div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-      <div class="flex items-center justify-between mb-1.5">
-        <span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">ИТОГОВЫЙ РАЗМЕР</span>
-        <div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
-      </div>
-      <span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statTargetSize">—</span>
-    </div>
-  </div>
-
-  <!-- 3. Pack Modes -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative" id="normalModeCard">
-      <div class="flex items-center justify-between">
-        <label class="cursor-pointer flex items-center gap-3">
-          <input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal">
-          <span class="font-bold text-sm text-[#00f5a0] font-sans" id="lblNormalTitle">Обычный (клиентский)</span>
-        </label>
-      </div>
-      <div class="text-xs text-gray-400 pl-7 mt-3 flex items-center justify-between font-mono">
-        <span class="text-gray-400">Включает все моды, клиентские твики и ресурспаки</span>
-        <span class="text-[11px] text-gray-300 font-mono px-2 py-0.5 rounded-md bg-[#131c26] border border-white/10 shadow-inner" id="lblNormalCount">0 файлов</span>
-      </div>
-    </div>
-    <div class="border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]" id="serverModeCard">
-      <div class="flex items-center justify-between mb-3">
-        <label class="cursor-pointer flex items-center gap-3">
-          <input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server">
-          <span class="font-medium text-sm text-gray-300 font-sans" id="lblServerTitle">Для сервера</span>
-        </label>
-      </div>
-      <div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono">
-        <label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300">
-          <input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox">
-          <span class="text-xs font-mono text-[#00f5a0]">eula=true</span>
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. File Explorer Tree -->
-  <div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md">
-    <div class="p-3.5 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-3">
-        <label class="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition font-mono text-[12px]">
-          <input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox">
-          <span>Выбрать все подходящие компоненты</span>
-        </label>
-        <span class="text-gray-700">|</span>
-        <div class="flex items-center gap-1.5">
-          <button type="button" class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnExpandAll" title="Развернуть все папки">
-            <i data-lucide="chevrons-down-up" class="w-3 h-3 text-[#00f5a0]"></i>
-            <span>Развернуть все</span>
-          </button>
-          <button type="button" class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnCollapseAll" title="Свернуть все папки">
-            <i data-lucide="chevrons-up-down" class="w-3 h-3 text-gray-400"></i>
-            <span>Свернуть все</span>
-          </button>
-        </div>
-      </div>
-      <div class="flex gap-1.5 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
-        <button class="px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer" id="btnFilterAll">Все</button>
-        <button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterServer">Сервер</button>
-        <button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterClient">Клиент</button>
-      </div>
-    </div>
-    <div class="p-4 space-y-1 text-xs max-h-[520px] overflow-y-auto custom-scroll" id="treeContainer">
-      <div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2">
-        <span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span>
-      </div>
-    </div>
-    <div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] text-gray-400 font-mono flex justify-between items-center">
-      <div id="treeSummary">Папок: 0 • Файлов в архиве: 0</div>
-      <div class="text-[#00f5a0] flex items-center gap-2" id="treeStatusNotice">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>Готово к сборке
-      </div>
-    </div>
-  </div>
-
-  <!-- Launcher Guides Section -->
-  <div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl p-6 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="launcherGuidesSection">
-    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
-      <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-          <i data-lucide="book-open" class="w-5 h-5 text-[#00f5a0]"></i>
-        </div>
-        <div>
-          <h3 class="text-base font-bold text-white font-sans tracking-wide">Гайды по установке сборки</h3>
-        </div>
-      </div>
-      <div class="flex flex-wrap gap-2 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
-        <button class="px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5" id="tabGuideTl" onclick="switchGuideTab('tl')">TLauncher</button>
-        <button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuideTlLegacy" onclick="switchGuideTab('tllegacy')">TLauncher Legacy</button>
-        <button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuidePrism" onclick="switchGuideTab('prism')">PrismLauncher</button>
-      </div>
-    </div>
-    <div class="pt-5">
-      <!-- TLauncher Guide -->
-      <div class="space-y-4" id="guideContentTl">
-        <div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-          <div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
-            <i data-lucide="folder-open" class="w-4 h-4 text-[#00f5a0]"></i>
-            <span class="font-bold">Установка в TLauncher (TL)</span>
-          </div>
-          <span class="text-[11px] text-gray-300 font-mono">Ручной перенос файлов из .zip</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-              <span class="text-white font-semibold font-sans">Конвертация в ZIP</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте <code class="text-[#00f5a0]">.mrpack</code> сборки в стандартный <code class="text-[#00f5a0]">.zip</code> с помощью кнопки «Скачать .ZIP» в нижней панели сайта.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-              <span class="text-white font-semibold font-sans">Выбор версии в TL</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">В списке версий TLauncher выберите и установите версию Fabric или Forge, указанную в метаданных сборки (например, Fabric 1.20.1).</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-              <span class="text-white font-semibold font-sans">Открытие .minecraft</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в правом нижнем углу окна TLauncher, чтобы открыть проводник с системной папкой <code class="text-gray-200">.minecraft</code>.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-              <span class="text-white font-semibold font-sans">Перенос и запуск</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Скопируйте папки <code class="text-white font-bold">mods</code>, <code class="text-white font-bold">config</code> из архива в <code class="text-gray-200">.minecraft</code> с заменой, после чего нажмите <strong class="text-[#00f5a0]">«Войти в игру»</strong>.</p>
-          </div>
-        </div>
-      </div>
-      <!-- TLauncher Legacy Guide -->
-      <div class="space-y-4 hidden" id="guideContentTlLegacy">
-        <div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-          <div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
-            <i data-lucide="folder-open" class="w-4 h-4 text-[#00f5a0]"></i>
-            <span class="font-bold">Установка через ZIP архив</span>
-          </div>
-          <span class="text-[11px] text-gray-300 font-mono">Требуется конвертация в .zip</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-              <span class="text-white font-semibold font-sans">Конвертация</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте сборку в <code class="text-[#00f5a0]">.zip</code> через данный инструмент (выберите режим «Обычный (клиентский)» и нажмите «Скачать .ZIP»).</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-              <span class="text-white font-semibold font-sans">Создание профиля</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">В TL Legacy создайте профиль или выберите чистую версию Minecraft с соответствующим загрузчиком (например, Fabric или Forge).</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-              <span class="text-white font-semibold font-sans">Открытие директории</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в меню профиля TL Legacy, чтобы перейти в папку инстанса или корневой каталог <code class="text-gray-200">.minecraft</code>.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-              <span class="text-white font-semibold font-sans">Распаковка файлов</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Распакуйте содержимое скачанного <code class="text-[#00f5a0]">.zip</code> архива (папки <code class="text-gray-200">mods</code>, <code class="text-gray-200">config</code>) прямо в эту папку с подтверждением замены файлов.</p>
-          </div>
-        </div>
-      </div>
-      <!-- PrismLauncher Guide -->
-      <div class="space-y-4 hidden" id="guideContentPrism">
-        <div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-          <div class="flex items-center gap-2.5 text-xs font-mono text-[#00f5a0]">
-            <i data-lucide="package" class="w-4 h-4 text-[#00f5a0]"></i>
-            <span class="font-bold">Рекомендуемый лаунчер</span>
-          </div>
-          <span class="text-[11px] text-gray-300 font-mono">Нативная поддержка файлов .mrpack и .zip без распаковки</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-              <span class="text-white font-semibold font-sans">Открыть лаунчер</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Запустите PrismLauncher на вашем компьютере.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-              <span class="text-white font-semibold font-sans">Нажать кнопку «Создать экземпляр»</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Нажмите кнопку <strong class="text-white">«Создать экземпляр» (Add Instance)</strong> на верхней панели.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-              <span class="text-white font-semibold font-sans">Нажать на кнопку «Импорт»</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Перейдите на вкладку <strong class="text-[#00f5a0]">«Импорт» (Import)</strong> в меню слева.</p>
-          </div>
-          <div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-              <span class="text-white font-semibold font-sans">Выбрать файл и нажать ОК</span>
-            </div>
-            <p class="text-gray-400 pl-7 leading-relaxed">Выберите скачанный файл сборки (<code class="text-[#00f5a0]">.mrpack</code> или <code class="text-gray-200">.zip</code>) и нажмите кнопку «ОК».</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer Signature -->
-  <div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider select-none text-gray-300" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 8px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.8);">
-    by Arnimaz21 for <a href="https://discord.gg/kQkRgbFZeK" target="_blank" rel="noopener noreferrer" class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold"><span>vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg></a>
-  </div>
+<div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono">
+<span class="">22.09.2026</span>
 </div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+<a class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/packs" rel="noopener noreferrer" target="_blank" title="Релиз на GitHub">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-3.5 h-3.5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+<span class="truncate max-w-[90px]">packs</span>
+</a>
+<span class="text-[10px] text-gray-400 font-mono flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5">21.4 MB</span>
+<a class="px-3.5 py-1.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer ml-auto" download="Cloud.Tech.mrpack" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/Cloud.Tech.mrpack" rel="noopener noreferrer" target="_blank" title="Скачать .mrpack с GitHub">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-3.5 h-3.5"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+<span class="">Скачать</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Server Status Panel -->
+<div class="border border-[#00f5a0]/30 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="serverStatusPanel">
+<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
+<div>
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]" id="serverStatusDot"></div>
+<h3 class="font-bold text-white text-base font-sans tracking-wide">Игроки онлайн</h3>
+<span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="serverOnlineBadge">Онлайн: 0 / 20</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm disabled:opacity-30 disabled:pointer-events-none" id="btnRefreshServerStatus" title="Обновить статус сервера" type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="serverRefreshIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+<span class="font-sans font-semibold">Обновить</span>
+</button>
+</div>
+</div>
+<div class="pt-4" id="serverPlayersContainer">
+<div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" aria-hidden="true" class="lucide lucide-users w-5 h-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white font-sans">Нет игроков онлайн</h4>
 
+</div>
+</div>
+<div class="text-right text-[11px] font-mono text-gray-400">
+<div class="">Версия: <span class="text-[#00f5a0]">26.3</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Metrics Bar -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+<div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">МОДЫ ВСЕГО</span>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
+</div>
+<span class="text-lg font-bold text-white tracking-wide font-mono" id="statTotalMods">—</span>
+</div>
+<div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">КЛИЕНТСКИЕ</span>
+<div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
+</div>
+<span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statClientMods">—</span>
+</div>
+<div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">КОНФИГУРАЦИИ</span>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
+</div>
+<span class="text-lg font-bold text-white tracking-wide font-mono" id="statConfigs">—</span>
+</div>
+<div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">ИТОГОВЫЙ РАЗМЕР</span>
+<div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
+</div>
+<span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statTargetSize">—</span>
+</div>
+</div>
+<!-- 3. Pack Modes -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative" id="normalModeCard">
+<div class="flex items-center justify-between">
+<label class="cursor-pointer flex items-center gap-3">
+<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal">
+<span class="font-bold text-sm text-[#00f5a0] font-sans" id="lblNormalTitle">Обычный (клиентский)</span>
+</label>
+</div>
+<div class="text-xs text-gray-400 pl-7 mt-3 flex items-center justify-between font-mono">
+<span class="text-gray-400">Включает все моды, клиентские твики и ресурспаки</span>
+<span class="text-[11px] text-gray-300 font-mono px-2 py-0.5 rounded-md bg-[#131c26] border border-white/10 shadow-inner" id="lblNormalCount">0 файлов</span>
+</div>
+</div>
+<div class="border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]" id="serverModeCard">
+<div class="flex items-center justify-between mb-3">
+<label class="cursor-pointer flex items-center gap-3">
+<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server">
+<span class="font-medium text-sm text-gray-300 font-sans" id="lblServerTitle">Для сервера</span>
+</label>
+</div>
+<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono">
+<label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300">
+<input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox">
+<span class="text-xs font-mono text-[#00f5a0]">eula=true</span>
+</label>
+</div>
+</div>
+</div>
+<!-- 4. File Explorer Tree -->
+<div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md">
+<div class="p-3.5 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
+<div class="flex items-center gap-3">
+<label class="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition font-mono text-[12px]">
+<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox">
+<span class="">Выбрать все подходящие компоненты</span>
+</label>
+<span class="text-gray-700">|</span>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnExpandAll" title="Развернуть все папки" type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-down-up" aria-hidden="true" class="lucide lucide-chevrons-down-up w-3 h-3 text-[#00f5a0]"><path d="m7 20 5-5 5 5"></path><path d="m7 4 5 5 5-5"></path></svg>
+<span class="">Развернуть все</span>
+</button>
+<button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnCollapseAll" title="Свернуть все папки" type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-up-down" aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 text-gray-400"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+<span class="">Свернуть все</span>
+</button>
+</div>
+</div>
+<div class="flex gap-1.5 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
+<button class="px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer" id="btnFilterAll">Все</button>
+<button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterServer">Сервер</button>
+<button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterClient">Клиент</button>
+</div>
+</div>
+<div class="p-4 space-y-1 text-xs max-h-[520px] overflow-y-auto custom-scroll" id="treeContainer">
+<div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2">
+<span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span>
+</div>
+</div>
+<div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] text-gray-400 font-mono flex justify-between items-center">
+<div class="" id="treeSummary">Папок: 0 • Файлов в архиве: 0</div>
+<div class="text-[#00f5a0] flex items-center gap-2" id="treeStatusNotice">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>Готово к сборке
+      </div>
+</div>
+</div>
+<!-- Launcher Guides Section -->
+<div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl p-6 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="launcherGuidesSection">
+<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="book-open" aria-hidden="true" class="lucide lucide-book-open w-5 h-5 text-[#00f5a0]"><path d="M12 5v16"></path><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg>
+</div>
+<div>
+<h3 class="text-base font-bold text-white font-sans tracking-wide">Гайды по установке сборки</h3>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
+<button class="px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5" id="tabGuideTl" onclick="switchGuideTab('tl')">TLauncher</button>
+<button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuideTlLegacy" onclick="switchGuideTab('tllegacy')">TLauncher Legacy</button>
+<button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuidePrism" onclick="switchGuideTab('prism')">PrismLauncher</button>
+</div>
+</div>
+<div class="pt-5">
+<!-- TLauncher Guide -->
+<div class="space-y-4" id="guideContentTl">
+<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
+<div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="folder-open" aria-hidden="true" class="lucide lucide-folder-open w-4 h-4 text-[#00f5a0]"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
+<span class="font-bold">Установка в TLauncher (TL)</span>
+</div>
+<span class="text-[11px] text-gray-300 font-mono">Ручной перенос файлов из .zip</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
+<span class="text-white font-semibold font-sans">Конвертация в ZIP</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте <code class="text-[#00f5a0]">.mrpack</code> сборки в стандартный <code class="text-[#00f5a0]">.zip</code> с помощью кнопки «Скачать .ZIP» в нижней панели сайта.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
+<span class="text-white font-semibold font-sans">Выбор версии в TL</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">В списке версий TLauncher выберите и установите версию Fabric или Forge, указанную в метаданных сборки (например, Fabric 1.20.1).</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
+<span class="text-white font-semibold font-sans">Открытие .minecraft</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в правом нижнем углу окна TLauncher, чтобы открыть проводник с системной папкой <code class="text-gray-200">.minecraft</code>.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
+<span class="text-white font-semibold font-sans">Перенос и запуск</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Скопируйте папки <code class="text-white font-bold">mods</code>, <code class="text-white font-bold">config</code> из архива в <code class="text-gray-200">.minecraft</code> с заменой, после чего нажмите <strong class="text-[#00f5a0]">«Войти в игру»</strong>.</p>
+</div>
+</div>
+</div>
+<!-- TLauncher Legacy Guide -->
+<div class="space-y-4 hidden" id="guideContentTlLegacy">
+<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
+<div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="folder-open" aria-hidden="true" class="lucide lucide-folder-open w-4 h-4 text-[#00f5a0]"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
+<span class="font-bold">Установка через ZIP архив</span>
+</div>
+<span class="text-[11px] text-gray-300 font-mono">Требуется конвертация в .zip</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
+<span class="text-white font-semibold font-sans">Конвертация</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте сборку в <code class="text-[#00f5a0]">.zip</code> через данный инструмент (выберите режим «Обычный (клиентский)» и нажмите «Скачать .ZIP»).</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
+<span class="text-white font-semibold font-sans">Создание профиля</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">В TL Legacy создайте профиль или выберите чистую версию Minecraft с соответствующим загрузчиком (например, Fabric или Forge).</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
+<span class="text-white font-semibold font-sans">Открытие директории</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в меню профиля TL Legacy, чтобы перейти в папку инстанса или корневой каталог <code class="text-gray-200">.minecraft</code>.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
+<span class="text-white font-semibold font-sans">Распаковка файлов</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Распакуйте содержимое скачанного <code class="text-[#00f5a0]">.zip</code> архива (папки <code class="text-gray-200">mods</code>, <code class="text-gray-200">config</code>) прямо в эту папку с подтверждением замены файлов.</p>
+</div>
+</div>
+</div>
+<!-- PrismLauncher Guide -->
+<div class="space-y-4 hidden" id="guideContentPrism">
+<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
+<div class="flex items-center gap-2.5 text-xs font-mono text-[#00f5a0]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-4 h-4 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+<span class="font-bold">Рекомендуемый лаунчер</span>
+</div>
+<span class="text-[11px] text-gray-300 font-mono">Нативная поддержка файлов .mrpack и .zip без распаковки</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
+<span class="text-white font-semibold font-sans">Открыть лаунчер</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Запустите PrismLauncher на вашем компьютере.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
+<span class="text-white font-semibold font-sans">Нажать кнопку «Создать экземпляр»</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Нажмите кнопку <strong class="text-white">«Создать экземпляр» (Add Instance)</strong> на верхней панели.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
+<span class="text-white font-semibold font-sans">Нажать на кнопку «Импорт»</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Перейдите на вкладку <strong class="text-[#00f5a0]">«Импорт» (Import)</strong> в меню слева.</p>
+</div>
+<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
+<div class="flex items-center gap-2">
+<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
+<span class="text-white font-semibold font-sans">Выбрать файл и нажать ОК</span>
+</div>
+<p class="text-gray-400 pl-7 leading-relaxed">Выберите скачанный файл сборки (<code class="text-[#00f5a0]">.mrpack</code> или <code class="text-gray-200">.zip</code>) и нажмите кнопку «ОК».</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Signature -->
+<div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider select-none text-gray-300" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 8px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.8);">
+    by Arnimaz21 for <a class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><span class="">vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg></a>
+</div>
+</div>
 <!-- 5. Floating Bottom Dock -->
 <div class="fixed left-4 right-4 max-w-5xl mx-auto z-50 bottom-8">
-  <div class="border border-[#00f5a0]/30 bg-[#070b10]/95 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
-    <div class="w-full bg-[#0e1620] h-1 overflow-hidden relative">
-      <div class="bg-[#00f5a0] h-full w-0 transition-all duration-150" id="progressBar"></div>
-    </div>
-    <div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-4 text-xs font-mono">
-        <div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0e151d] border border-white/10 shadow-inner">
-          <span class="w-2 h-2 rounded-full bg-gray-500 ring-2 ring-gray-700/50" id="statusIndicatorDot"></span>
-          <span class="text-gray-200 font-medium" id="statusText">Ожидание файла</span>
-        </div>
-        <span class="text-gray-400 text-[11px] truncate max-w-md hidden md:inline font-mono" id="statusDetail"></span>
-      </div>
-      <div class="flex items-center gap-3 font-sans">
-        <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnPause">Пауза</button>
-        <button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnCancel">Отмена</button>
-        <button class="px-6 py-2 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wide rounded-xl flex items-center gap-2 transition duration-150 disabled:opacity-30 cursor-pointer shadow-[0_0_15px_rgba(0,245,160,0.25)]" disabled="" id="btnDownload">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span class="font-sans font-bold">Скачать .ZIP</span>
-        </button>
-      </div>
-    </div>
-  </div>
+<div class="border border-[#00f5a0]/30 bg-[#070b10]/95 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+<div class="w-full bg-[#0e1620] h-1 overflow-hidden relative">
+<div class="bg-[#00f5a0] h-full w-0 transition-all duration-150" id="progressBar"></div>
 </div>
-
+<div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-4 text-xs font-mono">
+<div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0e151d] border border-white/10 shadow-inner">
+<span class="w-2 h-2 rounded-full bg-gray-500 ring-2 ring-gray-700/50" id="statusIndicatorDot"></span>
+<span class="text-gray-200 font-medium" id="statusText">Ожидание файла</span>
+</div>
+<span class="text-gray-400 text-[11px] truncate max-w-md hidden md:inline font-mono" id="statusDetail"></span>
+</div>
+<div class="flex items-center gap-3 font-sans">
+<button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnPause">Пауза</button>
+<button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnCancel">Отмена</button>
+<button class="px-6 py-2 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wide rounded-xl flex items-center gap-2 transition duration-150 disabled:opacity-30 cursor-pointer shadow-[0_0_15px_rgba(0,245,160,0.25)]" disabled="" id="btnDownload">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-4 h-4"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+<span class="font-sans font-bold">Скачать .ZIP</span>
+</button>
+</div>
+</div>
+</div>
+</div>
 <script>
   if (window.lucide) {
     lucide.createIcons();
@@ -1264,6 +1251,34 @@
   }
   window.startBuildAndDownload = startBuildAndDownload;
 
+  async function downloadModWithFallbacks(mod, signal) {
+    const urls = Array.isArray(mod.downloads) && mod.downloads.length > 0 ? mod.downloads : [];
+    if (urls.length === 0) return null;
+
+    for (let uIdx = 0; uIdx < urls.length; uIdx++) {
+      const url = urls[uIdx];
+      try {
+        let resp = await fetch(url, { signal });
+        if (resp && resp.ok) {
+          return await resp.arrayBuffer();
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') throw err;
+      }
+
+      // Пробуем через CORS-прокси
+      try {
+        let respProxy = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, { signal });
+        if (respProxy && respProxy.ok) {
+          return await respProxy.arrayBuffer();
+        }
+      } catch (proxyErr) {
+        if (proxyErr.name === 'AbortError') throw proxyErr;
+      }
+    }
+    return null;
+  }
+
   async function startBuildAndDownload() {
     if (state.isProcessing || !state.sourceZip) return;
     state.isProcessing = true;
@@ -1287,7 +1302,7 @@
         const zipEntry = state.sourceZip.file(fileItem.zipPath);
         if (zipEntry) {
           const data = await zipEntry.async("arraybuffer");
-          outZip.file(fileItem.path, data);
+          outZip.file(fileItem.path, data, { compression: "STORE" });
         }
       }
 
@@ -1295,32 +1310,32 @@
       const isServerMode = document.querySelector('input[name="packMode"]:checked')?.value === 'server';
       const addEula = document.getElementById('optAddEula')?.checked ?? true;
       if (isServerMode && addEula) {
-        outZip.file("eula.txt", "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).\neula=true\n");
+        outZip.file("eula.txt", "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).\neula=true\n", { compression: "STORE" });
       }
 
-      // 3. Загружаем моды
+      // 3. Загружаем моды с высоким параллелизмом и динамическим статусом текущего файла
       if (totalMods > 0) {
-        const BATCH_SIZE = 4;
-        for (let i = 0; i < totalMods; i += BATCH_SIZE) {
-          if (!state.isProcessing) break;
+        const CONCURRENCY = 8;
+        let queueIndex = 0;
 
-          const batch = selectedModsToDownload.slice(i, i + BATCH_SIZE);
-          await Promise.all(batch.map(async (mod) => {
-            const url = mod.downloads[0];
+        const worker = async () => {
+          while (queueIndex < totalMods && state.isProcessing) {
+            const currentIdx = queueIndex++;
+            const mod = selectedModsToDownload[currentIdx];
             const fileName = mod.path.split('/').pop();
-            if (DOM.statusDetail) DOM.statusDetail.innerText = `[GET] ${fileName}`;
-            
-            try {
-              let resp;
-              try {
-                resp = await fetch(url, { signal: state.abortController.signal });
-              } catch (fetchErr) {
-                resp = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, { signal: state.abortController.signal });
-              }
 
-              if (resp && resp.ok) {
-                const buf = await resp.arrayBuffer();
-                outZip.file(mod.path, buf);
+            // Мгновенное обновление статуса на скачиваемый прямо сейчас файл
+            const currentPct = Math.round((loadedMods / totalMods) * 88);
+            if (DOM.statusText) DOM.statusText.innerText = `Загрузка: ${currentPct}% (${loadedMods + 1} / ${totalMods})`;
+            if (DOM.statusDetail) {
+              DOM.statusDetail.innerText = `[GET] ${fileName}`;
+              DOM.statusDetail.classList.remove('hidden');
+            }
+
+            try {
+              const buf = await downloadModWithFallbacks(mod, state.abortController.signal);
+              if (buf) {
+                outZip.file(mod.path, buf, { compression: "STORE" });
               } else {
                 console.warn(`Не удалось загрузить ${fileName}, пропуск.`);
               }
@@ -1333,13 +1348,24 @@
             const pct = Math.round((loadedMods / totalMods) * 88);
             if (DOM.progressBar) DOM.progressBar.style.width = `${pct}%`;
             if (DOM.statusText) DOM.statusText.innerText = `Загрузка: ${pct}% (${loadedMods} / ${totalMods})`;
-          }));
+            if (DOM.statusDetail) {
+              DOM.statusDetail.innerText = `[OK] ${fileName}`;
+              DOM.statusDetail.classList.remove('hidden');
+            }
+          }
+        };
+
+        const workers = [];
+        const actualWorkersCount = Math.min(CONCURRENCY, totalMods);
+        for (let w = 0; w < actualWorkersCount; w++) {
+          workers.push(worker());
         }
+        await Promise.all(workers);
       }
 
-      // 4. Сжатие и отдача пользователю
+      // 4. Сжатие и отдача пользователю без лишнего пережатия CPU
       updateStatus('Сжатие архива...', 'Упаковка и генерация .zip файла', '#00f5a0');
-      const finalBlob = await outZip.generateAsync({ type: 'blob' }, (meta) => {
+      const finalBlob = await outZip.generateAsync({ type: 'blob', compression: 'STORE' }, (meta) => {
         const compressPct = 88 + Math.round(meta.percent * 0.12);
         if (DOM.progressBar) DOM.progressBar.style.width = `${compressPct}%`;
       });
@@ -1417,5 +1443,8 @@
     }
   }
 </script>
-</body>
-</html>
+
+
+
+
+</body></html>
