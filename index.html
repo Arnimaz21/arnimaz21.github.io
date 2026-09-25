@@ -252,7 +252,7 @@
 <div class="max-w-6xl w-full mx-auto space-y-5 relative z-10" style="padding-bottom: 9.5rem;">
 <!-- 1. Верхняя панель: Загрузка / Инфо о файле -->
 <div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden" id="topUploadBar">
-<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file">
+<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file" onchange="if (this.files &amp;&amp; this.files.length &gt; 0) { if (typeof processMrpack === 'function') { processMrpack(this.files[0]); } }">
 <div class="flex items-center gap-3.5">
 <div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-5 h-5"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
@@ -268,7 +268,7 @@
 <span class="">Готовые сборки</span>
 <span class="px-2 py-0.5 rounded-full bg-[#00f5a0] text-[#070b10] font-mono font-bold text-[10px] tracking-wide shadow-[0_0_8px_rgba(0,245,160,0.5)]" id="presetsCountBadge">1 СБОРКА</span>
 </button>
-<button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse">
+<button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse" onclick="document.getElementById('fileInput').click()">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-left-right" aria-hidden="true" class="lucide lucide-arrow-left-right w-3.5 h-3.5 text-[#00f5a0]"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg>
 <span class="">Выбрать файл</span>
 </button>
@@ -1762,6 +1762,8 @@
   updateTimerDisplay();
   setTimeout(pollStatus, 1500);
 })();</script>
+
+
 
 
 
