@@ -1,12 +1,14 @@
-<!DOCTYPE html><html class="dark" lang="ru" style=""><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!DOCTYPE html>
+
+<html class="dark" lang="ru" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title class="">Статистика</title>
-<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
+<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png"/>
 <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS with Forms & Container Plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script>
@@ -122,7 +124,7 @@
 </head>
 <body class="relative min-h-screen flex flex-col justify-between selection:bg-emerald-glow/20 selection:text-emerald-glow">
 <!-- BEGIN: WebGL Canvas Background -->
-<canvas id="shader-canvas-ANIMATION_26" width="1280" height="620"></canvas>
+<canvas height="667" id="shader-canvas-ANIMATION_26" width="1280"></canvas>
 <!-- END: WebGL Canvas Background -->
 <!-- BEGIN: Main Page Wrapper -->
 <div class="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -132,7 +134,7 @@
 <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
 <div class="flex items-center gap-3.5">
 <div class="w-11 h-11 rounded-xl bg-obsidian-850 border border-emerald-glow/30 flex items-center justify-center text-emerald-glow shadow-glow-sm relative group overflow-hidden">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-6 h-6"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+<svg aria-hidden="true" class="lucide lucide-server w-6 h-6" data-lucide="server" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="8" rx="2" ry="2" width="20" x="2" y="2"></rect><rect height="8" rx="2" ry="2" width="20" x="2" y="14"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
 <div class="absolute inset-0 bg-emerald-glow/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 </div>
 <div>
@@ -149,7 +151,7 @@
 </div>
 <!-- Mobile Auto-refresh toggle button -->
 <button class="lg:hidden p-2 rounded-lg bg-obsidian-800 border border-slate-700/50 text-slate-300 hover:text-emerald-glow" id="refresh-btn-mobile" title="Обновить сейчас">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-4 h-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-refresh-cw w-4 h-4" data-lucide="refresh-cw" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
 </button>
 </div>
 <!-- Controls & External Navigation Links -->
@@ -157,24 +159,19 @@
 <!-- Live auto-refresh toggle indicator -->
 <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-obsidian-850 border border-cyber-border text-xs font-mono text-slate-300 mr-1">
 <span class="w-1.5 h-1.5 rounded-full bg-emerald-glow" id="autorefresh-dot"></span>
-<span class="">Авто: <span class="text-emerald-glow font-semibold" id="timer-countdown">8s</span></span>
+<span class="">Авто: <span class="text-emerald-glow font-semibold" id="timer-countdown">10s</span></span>
 <button class="ml-1 text-slate-400 hover:text-emerald-glow cursor-pointer transition-colors p-0.5 rounded" id="toggle-autorefresh" title="Пауза / Запуск таймера">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="pause" aria-hidden="true" class="lucide lucide-pause w-3.5 h-3.5" id="toggle-icon"><rect x="14" y="3" width="5" height="18" rx="1"></rect><rect x="5" y="3" width="5" height="18" rx="1"></rect></svg>
+<svg aria-hidden="true" class="lucide lucide-pause w-3.5 h-3.5" data-lucide="pause" fill="none" height="24" id="toggle-icon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="18" rx="1" width="5" x="14" y="3"></rect><rect height="18" rx="1" width="5" x="5" y="3"></rect></svg>
 </button>
 </div>
-<!-- Manual refresh button -->
-<button class="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 border border-cyber-border hover:border-emerald-glow/40 text-xs font-mono text-slate-200 transition-all cursor-pointer" id="manual-refresh-btn">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-emerald-glow animate-spin" id="manual-refresh-icon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
-<span class="">Обновить</span>
-</button>
 <!-- Navigation: Конвертер .mrpack -->
 <a class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 border border-cyber-border hover:border-emerald-glow/40 text-xs font-mono text-slate-300 hover:text-white transition-all" href="https://arnimaz21.github.io/mrpack-to-zip/" rel="noopener noreferrer" target="_blank">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="box" aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-emerald-glow"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-emerald-glow" data-lucide="box" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
 <span class="">.mrpack Конвертер</span>
 </a>
 <!-- Navigation: Discord -->
 <a class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#5865F2]/15 hover:bg-[#5865F2]/25 border border-[#5865F2]/40 text-xs font-mono text-indigo-200 hover:text-white transition-all" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 127.14 96.36">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 127.14 96.36">
 <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,0,106,106,0,0,0,22.75,8.08C6.18,32.65,1.7,56.63,3.93,80.25a106.12,106.12,0,0,0,32.48,16.11,79.52,79.52,0,0,0,6.91-11.23,68.41,68.41,0,0,1-10.87-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,79.08,79.08,0,0,0,6.89,11.22A106,106,0,0,0,123.2,80.25C125.82,52.84,118.09,29.1,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
 </svg>
 <span class="">Discord</span>
@@ -183,7 +180,7 @@
 </header>
 <!-- END: MainHeader -->
 <!-- BEGIN: QuickStatsOverview -->
-<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4" data-purpose="metrics-overview">
+<section class="grid grid-cols-1 gap-4 sm:grid-cols-2" data-purpose="metrics-overview">
 <!-- Card 1: Online Right Now -->
 <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
 <div class="absolute -right-3 -top-3 w-20 h-20 bg-emerald-glow/10 rounded-full blur-xl group-hover:bg-emerald-glow/20 transition-all"></div>
@@ -195,23 +192,21 @@
 </span>
 </div>
 <div class="flex items-baseline gap-2">
-<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-online-count">1</span>
+<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-online-count">0</span>
 <span class="text-sm font-mono text-slate-500" id="metric-max-slots">/ 20</span>
 </div>
 </div>
 <!-- Card 2: Total in DB -->
 <div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-<div class="absolute -right-3 -top-3 w-20 h-20 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition-all"></div>
+<div class="absolute -right-3 -top-3 w-20 h-20 bg-emerald-glow/10 rounded-full blur-xl group-hover:bg-emerald-glow/20 transition-all"></div>
 <div class="flex items-center justify-between text-slate-400 mb-2">
-<span class="text-xs font-mono tracking-wider uppercase">Всего в базе</span>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="layers" aria-hidden="true" class="lucide lucide-layers w-4 h-4 text-indigo-400"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"></path><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"></path><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"></path></svg>
+<span class="text-xs font-mono tracking-wider uppercase">Игроков в б.д.</span>
+<svg class="lucide w-4 h-4 text-emerald-glow" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
 </div>
 <div class="flex items-baseline gap-2">
-<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-total-players-count">1</span>
-<span class="text-xs font-mono text-slate-500">профилей</span>
+<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-total-players-count">0</span>
 </div>
-</div>
-</section>
+</div></section>
 <!-- END: QuickStatsOverview -->
 <!-- BEGIN: MainContentGrid (Table + Activity Feed) -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
@@ -221,82 +216,17 @@
 <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-cyber-border">
 <div class="flex items-center gap-2">
 <h2 class="text-base font-semibold text-white flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="swords" aria-hidden="true" class="lucide lucide-swords w-4 h-4 text-emerald-glow"><path d="m13 19 6-6"></path><path d="M14.5 17.5 3.586 6.586A2 2 0 013 5.172V3h2.172a2 2 0 011.414.586L17.5 14.5"></path><path d="m14.828 6.172 2.586-2.586A2 2 0 0118.828 3H21v2.172a2 2 0 01-.586 1.414l-2.586 2.586"></path><path d="m16 16 4 4"></path><path d="m19 21 2-2"></path><path d="m5 14 4 4"></path><path d="m5 21-2-2"></path><path d="M7.5 16.5 4 20"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-swords w-4 h-4 text-emerald-glow" data-lucide="swords" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m13 19 6-6"></path><path d="M14.5 17.5 3.586 6.586A2 2 0 013 5.172V3h2.172a2 2 0 011.414.586L17.5 14.5"></path><path d="m14.828 6.172 2.586-2.586A2 2 0 0118.828 3H21v2.172a2 2 0 01-.586 1.414l-2.586 2.586"></path><path d="m16 16 4 4"></path><path d="m19 21 2-2"></path><path d="m5 14 4 4"></path><path d="m5 21-2-2"></path><path d="M7.5 16.5 4 20"></path></svg>
               Игроки сервера
             </h2>
-<span class="text-xs font-mono text-emerald-glow bg-emerald-glow/10 border border-emerald-glow/20 px-2 py-0.5 rounded-full" id="filtered-players-count">1</span>
-</div>
-<!-- Search & Filter Controls -->
-<div class="flex items-center gap-2 flex-1 sm:justify-end">
-<!-- Search Input -->
-
-<!-- Filter Segmented Button -->
-<div class="flex bg-obsidian-850 p-0.5 rounded-lg border border-cyber-border text-xs font-mono">
-<button class="filter-btn px-2.5 py-1 rounded active-filter bg-emerald-glow/20 text-emerald-glow font-medium transition-colors" data-filter="all">Все</button>
-<button class="filter-btn px-2.5 py-1 rounded text-slate-400 hover:text-white transition-colors" data-filter="online">В игре</button>
-<button class="filter-btn px-2.5 py-1 rounded text-slate-400 hover:text-white transition-colors" data-filter="top">Топ по времени</button>
-</div>
+<span class="text-xs font-mono text-emerald-glow bg-emerald-glow/10 border border-emerald-glow/20 px-2 py-0.5 rounded-full" id="filtered-players-count">0</span>
 </div>
 </div>
 <!-- Players Container / Grid -->
 <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[640px] pr-1" id="players-card-container">
-            <div class="glass-panel rounded-xl p-3.5 hover:border-emerald-glow/40 transition-all border-emerald-glow/30 bg-emerald-glow/[0.02]">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="relative">
-                    <img src="https://mc-heads.net/avatar/Arnimaz21/48" alt="Arnimaz21" class="w-11 h-11 rounded-lg pixelated border border-emerald-glow/60 shadow-glow-sm bg-obsidian-850 object-cover" onerror="this.onerror=null; this.src='https://mc-heads.net/avatar/Arnimaz21/48';">
-                    <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-obsidian-900 bg-emerald-glow live-pulse"></span>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="font-bold text-sm text-white font-mono tracking-tight">Arnimaz21</span>
-                      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-glow/15 text-emerald-glow border border-emerald-glow/30 font-medium">
-                        В СЕТИ
-                      </span>
-                    </div>
-
-                    <div class="text-xs font-mono text-slate-400 mt-1 flex items-center gap-1.5">
-                      
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="play" aria-hidden="true" class="lucide lucide-play w-3 h-3 text-emerald-glow fill-emerald-glow"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>
-                        <span class="">В игре: <b class="text-emerald-glow session-ticker" data-user="Arnimaz21">9м 34с</b></span>
-                      
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-6 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-cyber-border text-right">
-                  <div class="text-left sm:text-right font-mono text-[11px] text-slate-400">
-                    <div class="">Вход: <span class="text-slate-300">Сегодня, 17:16</span></div>
-                    <div class="">Выход: <span class="text-emerald-glow">В игре сейчас...</span></div>
-                  </div>
-
-                  <div class="font-mono text-left sm:text-right min-w-[100px]">
-                    <div class="text-[11px] text-slate-400">Наиграно:</div>
-                    <div class="text-xs font-bold text-white">9м 32с</div>
-                    <div class="text-[10px] text-slate-500">1 заходов</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center gap-2">
-                <div class="flex-1 bg-obsidian-850 h-1.5 rounded-full overflow-hidden border border-cyber-border">
-                  <div class="h-full bg-gradient-to-r from-emerald-deep to-emerald-glow rounded-full transition-all duration-500" style="width: 100%"></div>
-                </div>
-                <span class="text-[10px] font-mono text-slate-500 whitespace-nowrap">Активность 100%</span>
-              </div>
-            </div>
-          </div>
-<!-- JSON Import / Export & Storage Actions -->
-<div class="pt-3 border-t border-cyber-border flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2 font-mono">
-<div class="flex items-center gap-1.5">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hard-drive" aria-hidden="true" class="lucide lucide-hard-drive w-3.5 h-3.5 text-emerald-glow"><path d="M10 16h.01"></path><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><path d="M21.946 12.013H2.054"></path><path d="M6 16h.01"></path></svg>
-<span class="">Локальная БД: <span class="text-white" id="storage-status-count">1</span> игроков</span>
-</div>
-<div class="flex items-center gap-2">
-
-
-
+<div class="flex flex-col items-center justify-center py-12 text-center text-slate-500">
+<svg aria-hidden="true" class="lucide lucide-search-x w-6 h-6 mb-2 text-slate-600" data-lucide="search-x" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<p class="text-xs font-mono">Никого не найдено</p>
 </div>
 </div>
 </section>
@@ -307,7 +237,7 @@
 <div class="flex items-center justify-between pb-2 border-b border-cyber-border">
 <div class="flex items-center gap-2">
 <h2 class="text-base font-semibold text-white flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" aria-hidden="true" class="lucide lucide-activity w-4 h-4 text-emerald-glow"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-activity w-4 h-4 text-emerald-glow" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
               Журнал событий
             </h2>
 </div>
@@ -322,38 +252,23 @@
 </div>
 <!-- Activity Feed List -->
 <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[640px] pr-1" id="activity-feed-list">
-            <div class="p-2.5 rounded-xl bg-obsidian-850/80 border border-emerald-glow/20 bg-emerald-glow/[0.01] flex items-center justify-between gap-2.5 text-xs font-mono">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <img src="https://mc-heads.net/avatar/Arnimaz21/48" alt="Arnimaz21" class="w-7 h-7 rounded-lg pixelated border border-slate-700 bg-obsidian-900 object-cover flex-shrink-0" onerror="this.onerror=null; this.src='https://mc-heads.net/avatar/Arnimaz21/48';">
-                <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-emerald-glow font-bold">[+]</span>
-                    <span class="text-white font-medium truncate">Arnimaz21</span>
-                    <span class="text-slate-400">зашёл на сервер</span>
-                  </div>
-                  
-                </div>
-              </div>
-              <div class="text-[10px] text-slate-500 whitespace-nowrap flex-shrink-0">
-                17:16:39
-              </div>
-            </div>
-          </div>
+<div class="flex flex-col items-center justify-center py-16 text-center text-slate-500">
+<svg aria-hidden="true" class="lucide lucide-check-circle w-6 h-6 mb-2 text-slate-600" data-lucide="check-circle" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+<p class="text-xs font-mono">Событий пока нет</p>
+</div>
+</div>
 <!-- Feed Help / Note -->
 <div class="pt-2 border-t border-cyber-border text-[11px] font-mono text-slate-500 flex items-center justify-between">
-<span class="">Синхронизация с сессией</span>
-<span id="last-sync-time" class="">Синхр: 17:26:11</span>
+<span class="">Синхронизация с Cloudflare Worker</span>
+<span class="" id="last-sync-time">Синхр: ожидание...</span>
 </div>
 </section>
 <!-- END: ActivityFeedSection -->
 </div>
 <!-- END: MainContentGrid -->
-<!-- BEGIN: QuickInstructions -->
-
-<!-- END: QuickInstructions -->
 <!-- BEGIN: MainFooter -->
 <div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider select-none text-gray-300" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 8px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.8);">
-    by Arnimaz21 for <a class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><span class="">vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg></a>
+    by Arnimaz21 for <a class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><span class="">vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg></a>
 </div>
 <!-- END: MainFooter -->
 </div>
@@ -477,7 +392,7 @@
       const FEED_STORAGE_KEY = 'cloudtech_mc_feed_v1';
       const REFRESH_INTERVAL_SEC = 10;
 
-      // State Management
+      // State Management - строго чистый старт без демонстрационных игроков
       let autoRefreshEnabled = true;
       let countdown = REFRESH_INTERVAL_SEC;
       let tickInterval = null;
@@ -491,32 +406,20 @@
       function loadStorage() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) playersData = JSON.parse(raw);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              // Удаляем устаревшие фиктивные демо-записи, если они присутствовали в кэше
+              delete parsed['init_arnimaz21'];
+              playersData = parsed;
+            }
+          }
           const rawFeed = localStorage.getItem(FEED_STORAGE_KEY);
-          if (rawFeed) feedEvents = JSON.parse(rawFeed);
-
-          // Если база пуста, добавляем начального демонстрационного игрока Arnimaz21
-          if (Object.keys(playersData).length === 0) {
-            const now = Date.now();
-            playersData['Arnimaz21'] = {
-              username: 'Arnimaz21',
-              name: 'Arnimaz21',
-              avatar: getPlayerAvatarUrl('Arnimaz21'),
-              isOnline: true,
-              sessionStart: now,
-              lastSeen: now,
-              totalPlaytimeSec: 0,
-              sessionCount: 1,
-              longestSessionSec: 0
-            };
-            feedEvents.unshift({
-              id: 'init_arnimaz21',
-              type: 'join',
-              username: 'Arnimaz21',
-              timestamp: now,
-              avatar: getPlayerAvatarUrl('Arnimaz21'),
-              durationText: ''
-            });
+          if (rawFeed) {
+            const parsedFeed = JSON.parse(rawFeed);
+            if (Array.isArray(parsedFeed)) {
+              feedEvents = parsedFeed.filter(ev => ev && ev.id !== 'init_arnimaz21');
+            }
           }
         } catch (e) {
           console.warn('Storage read failed', e);
@@ -579,9 +482,6 @@
       }
 
       async function queryServer() {
-        const icon = document.getElementById('manual-refresh-icon');
-        if (icon) icon.classList.add('animate-spin');
-
         try {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 6000);
@@ -636,8 +536,6 @@
           console.error('Error fetching server status:', err);
           const lastSyncEl = document.getElementById('last-sync-time');
           if (lastSyncEl) lastSyncEl.textContent = 'Ошибка сети';
-        } finally {
-          if (icon) icon.classList.remove('animate-spin');
         }
       }
 
@@ -702,9 +600,6 @@
         const totalPlayersCountEl = document.getElementById('metric-total-players-count');
         if (totalPlayersCountEl) totalPlayersCountEl.textContent = playersArray.length;
 
-        const storageCountEl = document.getElementById('storage-status-count');
-        if (storageCountEl) storageCountEl.textContent = playersArray.length;
-
         if (window.lucide && typeof lucide.createIcons === 'function') {
           lucide.createIcons();
         }
@@ -742,7 +637,7 @@
           container.innerHTML = `
             <div class="flex flex-col items-center justify-center py-12 text-center text-slate-500">
               <i data-lucide="search-x" class="w-6 h-6 mb-2 text-slate-600"></i>
-              <p class="text-xs font-mono">Никого не найдено по критериям фильтра</p>
+              <p class="text-xs font-mono">Никого не найдено</p>
             </div>
           `;
           if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
@@ -750,19 +645,12 @@
         }
 
         const now = Date.now();
-        let maxPlaytimeAcrossAll = 1;
-        Object.values(playersData).forEach(p => {
-          const tot = (p.totalPlaytimeSec || 0) + (p.isOnline ? (now - p.sessionStart) / 1000 : 0);
-          if (tot > maxPlaytimeAcrossAll) maxPlaytimeAcrossAll = tot;
-        });
-
         let html = '';
         players.forEach(p => {
           const playerName = p.name || p.username;
           const isOnline = !!p.isOnline;
           const currentSessionSec = isOnline && p.sessionStart ? Math.floor((now - p.sessionStart) / 1000) : 0;
           const totalSec = (p.totalPlaytimeSec || 0) + currentSessionSec;
-          const percentActivity = Math.min(100, Math.max(5, Math.round((totalSec / maxPlaytimeAcrossAll) * 100)));
 
           html += `
             <div class="glass-panel rounded-xl p-3.5 hover:border-emerald-glow/40 transition-all ${isOnline ? 'border-emerald-glow/30 bg-emerald-glow/[0.02]' : 'border-cyber-border'}">
@@ -810,13 +698,6 @@
                     <div class="text-[10px] text-slate-500">${p.sessionCount || 1} заходов</div>
                   </div>
                 </div>
-              </div>
-
-              <div class="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center gap-2">
-                <div class="flex-1 bg-obsidian-850 h-1.5 rounded-full overflow-hidden border border-cyber-border">
-                  <div class="h-full bg-gradient-to-r from-emerald-deep to-emerald-glow rounded-full transition-all duration-500" style="width: ${percentActivity}%"></div>
-                </div>
-                <span class="text-[10px] font-mono text-slate-500 whitespace-nowrap">Активность ${percentActivity}%</span>
               </div>
             </div>
           `;
@@ -918,33 +799,6 @@
 
       function setupEventHandlers() {
         try {
-          const copyIpBtn = document.getElementById('copy-ip-btn');
-          copyIpBtn?.addEventListener('click', () => {
-            if (navigator.clipboard) {
-              navigator.clipboard.writeText('185.9.145.7:27019').catch(() => {});
-            }
-          });
-
-          const searchInput = document.getElementById('player-search-input');
-          searchInput?.addEventListener('input', (e) => {
-            searchQuery = e.target.value.trim();
-            renderPlayers();
-          });
-
-          const filterButtons = document.querySelectorAll('.filter-btn');
-          filterButtons.forEach(btn => {
-            btn?.addEventListener('click', () => {
-              filterButtons.forEach(b => {
-                b?.classList.remove('bg-emerald-glow/20', 'text-emerald-glow', 'font-medium');
-                b?.classList.add('text-slate-400');
-              });
-              btn?.classList.add('bg-emerald-glow/20', 'text-emerald-glow', 'font-medium');
-              btn?.classList.remove('text-slate-400');
-              currentFilter = btn.dataset.filter || 'all';
-              renderPlayers();
-            });
-          });
-
           const feedAll = document.getElementById('feed-filter-all');
           const feedJoins = document.getElementById('feed-filter-joins');
           const feedLeaves = document.getElementById('feed-filter-leaves');
@@ -989,91 +843,12 @@
             if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
           });
 
-          const manualRefreshBtn = document.getElementById('manual-refresh-btn');
-          manualRefreshBtn?.addEventListener('click', () => {
-            countdown = REFRESH_INTERVAL_SEC;
-            const timerEl = document.getElementById('timer-countdown');
-            if (timerEl) timerEl.textContent = `${countdown}s`;
-            queryServer();
-          });
-
           const refreshBtnMobile = document.getElementById('refresh-btn-mobile');
           refreshBtnMobile?.addEventListener('click', () => {
             countdown = REFRESH_INTERVAL_SEC;
             const timerEl = document.getElementById('timer-countdown');
             if (timerEl) timerEl.textContent = `${countdown}s`;
             queryServer();
-          });
-
-          const exportBtn = document.getElementById('export-json-btn');
-          exportBtn?.addEventListener('click', () => {
-            const exportPayload = {
-              exportDate: new Date().toISOString(),
-              server: 'Cloud.Tech (vunya100)',
-              players: playersData,
-              feed: feedEvents
-            };
-            const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `cloudtech_stats_${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-          });
-
-          const importInput = document.getElementById('import-json-input');
-          importInput?.addEventListener('change', (e) => {
-            const file = e.target?.files?.[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-              try {
-                const parsed = JSON.parse(event.target.result);
-                if (parsed.players) {
-                  playersData = Object.assign(playersData, parsed.players);
-                }
-                if (parsed.feed && Array.isArray(parsed.feed)) {
-                  feedEvents = parsed.feed.concat(feedEvents).slice(0, 100);
-                }
-                saveStorage();
-                updateMetrics();
-                renderPlayers();
-                renderActivityFeed();
-                alert('Статистика успешно импортирована!');
-              } catch (err) {
-                alert('Ошибка при чтении JSON файла.');
-              }
-            };
-            reader.readAsText(file);
-          });
-
-          const clearCacheBtn = document.getElementById('clear-cache-btn');
-          clearCacheBtn?.addEventListener('click', () => {
-            if (confirm('Сбросить сохраненную историю игроков и журнал?')) {
-              playersData = {};
-              feedEvents = [];
-              localStorage.removeItem(STORAGE_KEY);
-              localStorage.removeItem(FEED_STORAGE_KEY);
-              updateMetrics();
-              renderPlayers();
-              renderActivityFeed();
-            }
-          });
-
-          const mockJoinBtn = document.getElementById('mock-join-btn');
-          mockJoinBtn?.addEventListener('click', () => {
-            const testNicks = ['vunya100', 'Arnimaz21', 'Notch', 'Alex_Builder', 'CyberKnight', 'EmeraldPro'];
-            const randomNick = testNicks[Math.floor(Math.random() * testNicks.length)];
-            const currentOnline = Object.values(playersData).filter(p => p.isOnline).map(p => p.username || p.name);
-
-            let updated;
-            if (currentOnline.includes(randomNick)) {
-              updated = currentOnline.filter(n => n !== randomNick);
-            } else {
-              updated = [...currentOnline, randomNick];
-            }
-            handleServerOnlineState(updated, true);
           });
         } catch (err) {
           console.error('Safe event handler attachment caught an exception:', err);
@@ -1090,6 +865,4 @@
     })();
   </script>
 <!-- END: Minecraft Tracker & Monitoring Logic Script -->
-
-
 </body></html>
