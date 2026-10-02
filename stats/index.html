@@ -226,6 +226,12 @@
             </h2>
 <span class="text-xs font-mono text-emerald-glow bg-emerald-glow/10 border border-emerald-glow/20 px-2 py-0.5 rounded-full" id="filtered-players-count">0</span>
 </div>
+<!-- Players filter toggle: Все / В сети / Оффлайн -->
+<div class="flex items-center gap-1.5 text-xs font-mono">
+<button class="text-emerald-glow font-medium cursor-pointer px-2 py-0.5 rounded bg-emerald-glow/10 border border-emerald-glow/30" id="players-filter-all">Все</button>
+<button class="text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors" id="players-filter-online">В сети</button>
+<button class="text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors" id="players-filter-offline">Оффлайн</button>
+</div>
 </div>
 <!-- Players Container / Grid -->
 <div class="flex-1 space-y-2.5 overflow-y-auto max-h-[640px] pr-1" id="players-card-container">
@@ -386,43 +392,127 @@
 <!-- END: WebGL Waves & Cyber-Grid Shader Script -->
 <!-- BEGIN: Minecraft Tracker & Monitoring Logic Script -->
 <script data-purpose="server-tracker-logic">
-    // Функция получения скина Ely.by со 2-м слоем (шлемом)
-    function getPlayerAvatarUrl(username) {
-      return `https://skin.ely.by/helm/${encodeURIComponent(username)}`;
+    // Безотказная функция получения скина/головы игрока по нику
+    const DEFAULT_MINECRAFT_HEAD = 'https://minotar.net/helm/Steve/64.png';
+
+    function getAvatarUrl(nick) {
+      if (!nick) return DEFAULT_MINECRAFT_HEAD;
+      const cleanNick = String(nick).trim();
+      if (cleanNick.toLowerCase() === 'arnimaz21') {
+        return 'https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png';
+      }
+      return `https://minotar.net/helm/${encodeURIComponent(cleanNick)}/64.png`;
     }
 
+    // Обработчик ошибки загрузки аватара с двухуровневым fallback'ом
+    window.handleAvatarError = function(img, nick) {
+      if (!img) return;
+      const stage = parseInt(img.getAttribute('data-error-stage') || '0', 10);
+      if (stage === 0) {
+        img.setAttribute('data-error-stage', '1');
+        img.src = `https://mc-heads.net/avatar/${encodeURIComponent(nick)}/64`;
+      } else if (stage === 1) {
+        img.setAttribute('data-error-stage', '2');
+        img.src = DEFAULT_MINECRAFT_HEAD;
+      }
+    };
+
     (function initServerTracker() {
-      // Cloudflare Worker API Endpoint
-      const WORKER_ENDPOINT = 'https://cloud-stats.arnimaz27.workers.dev/update';
+      // Worker Endpoints
+      const WORKER_BASE = 'https://cloud-stats.arnimaz27.workers.dev';
+      const WORKER_UPDATE = 'https://cloud-stats.arnimaz27.workers.dev/update';
       const REFRESH_INTERVAL_SEC = 10;
+      const STORAGE_KEY = 'cloudmine_players_cache_v2';
 
       // State
       let autoRefreshEnabled = true;
       let countdown = REFRESH_INTERVAL_SEC;
       let tickInterval = null;
+      let minutePlaytimeTicker = null;
       let currentFeedFilter = 'all'; // 'all', 'joins', 'leaves'
+      let currentPlayersFilter = 'all'; // 'all', 'online', 'offline'
       let isFetching = false;
+      let pollCycleCounter = 0;
 
-      // Data state
+      // Safe load persistent players from localStorage
+      function loadCachedPlayers() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('cloudmine_players_cache_v1');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              return parsed;
+            }
+          }
+        } catch (e) {
+          console.warn('Could not read cached players from localStorage', e);
+        }
+        return {};
+      }
+
+      function saveCachedPlayers(playersObj) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(playersObj));
+        } catch (e) {
+          console.warn('Could not save players to localStorage', e);
+        }
+      }
+
+      // Initial statsData with merged persistent cache
       let statsData = {
         online: 0,
         max: 20,
         totalPlayersCount: 0,
         currentPlayers: [],
-        players: {},
+        players: loadCachedPlayers(),
         events: [],
         lastUpdated: null
       };
 
-      function formatDuration(sec) {
-        if (!sec || sec < 0) sec = 0;
-        const h = Math.floor(sec / 3600);
-        const m = Math.floor((sec % 3600) / 60);
-        const s = Math.floor(sec % 60);
+      // Расчет общего наигранного времени в минутах (динамически прямо в браузере)
+      function calculatePlayerTotalMinutes(player) {
+        if (!player) return 0;
+        // Базовые минуты
+        let baseMin = Number(player.totalTimeMinutes) || 0;
+        if (!baseMin && player.totalTime) {
+          // Если время было сохранено в секундах
+          baseMin = Math.floor(player.totalTime / 60);
+        }
 
-        if (h > 0) return `${h}ч ${m}м`;
-        if (m > 0) return `${m}м ${s}с`;
-        return `${s}с`;
+        if (player.isOnline) {
+          const sessionStartTimestamp = player.sessionStart 
+            ? new Date(player.sessionStart).getTime()
+            : (player.firstSeen ? new Date(player.firstSeen).getTime() : Date.now());
+          
+          const validSessionStart = isNaN(sessionStartTimestamp) ? Date.now() : sessionStartTimestamp;
+          const currentSessionMinutes = Math.max(0, Math.floor((Date.now() - validSessionStart) / 60000));
+          return baseMin + currentSessionMinutes;
+        }
+
+        return baseMin;
+      }
+
+      // Форматирование наигранного времени по правилам ТЗ:
+      // Меньше 1 минуты: "< 1 мин"
+      // До 60 минут: "X мин"
+      // Больше часа: "X ч Y мин"
+      // Дни: "X д Y ч"
+      function formatPlaytimeMinutes(totalMinutes) {
+        const m = Math.floor(totalMinutes || 0);
+        if (m < 1) {
+          return '< 1 мин';
+        }
+        if (m < 60) {
+          return `${m} мин`;
+        }
+        const hours = Math.floor(m / 60);
+        const remMinutes = m % 60;
+        if (hours < 24) {
+          return remMinutes > 0 ? `${hours} ч ${remMinutes} мин` : `${hours} ч`;
+        }
+        const days = Math.floor(hours / 24);
+        const remHours = hours % 24;
+        return remHours > 0 ? `${days} д ${remHours} ч` : `${days} д`;
       }
 
       function formatTimestamp(ts) {
@@ -454,18 +544,21 @@
       }
 
       // Главная функция опроса эндпоинта статистики Worker
-      async function pollServer() {
+      async function pollServer(forceUpdateEndpoint = false) {
         if (isFetching) return;
         isFetching = true;
 
         const syncLabelEl = document.getElementById('sync-status-label');
         if (syncLabelEl) syncLabelEl.textContent = 'Синхронизация с Cloudflare Worker...';
 
+        pollCycleCounter++;
+        const targetUrl = (forceUpdateEndpoint || pollCycleCounter % 3 === 0) ? WORKER_UPDATE : WORKER_BASE;
+
         try {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-          const response = await fetch(WORKER_ENDPOINT, {
+          const response = await fetch(targetUrl, {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
             signal: controller.signal
@@ -497,31 +590,106 @@
         }
       }
 
-      // Обработка данных от Cloudflare Worker
+      // Обработка данных от Cloudflare Worker с сохранением и мерджем базы
       function processWorkerData(data) {
         if (!data || typeof data !== 'object') return;
 
         statsData.online = typeof data.online === 'number' ? data.online : 0;
         statsData.max = typeof data.max === 'number' ? data.max : (data.players?.max || 20);
-        statsData.players = (data.players && typeof data.players === 'object' && !Array.isArray(data.players)) 
+
+        // Список онлайн игроков
+        let onlineList = [];
+        if (Array.isArray(data.currentPlayers)) {
+          onlineList = data.currentPlayers;
+        } else if (data.players && typeof data.players === 'object' && !Array.isArray(data.players)) {
+          onlineList = Object.keys(data.players).filter(k => data.players[k]?.isOnline);
+        }
+        statsData.currentPlayers = onlineList;
+
+        const incomingPlayers = (data.players && typeof data.players === 'object' && !Array.isArray(data.players)) 
           ? data.players 
           : {};
-        
-        // currentPlayers может приходить как массив никнеймов онлайн
-        if (Array.isArray(data.currentPlayers)) {
-          statsData.currentPlayers = data.currentPlayers;
-        } else {
-          statsData.currentPlayers = Object.keys(statsData.players).filter(k => statsData.players[k]?.isOnline);
+
+        // Обновляем статус существующих игроков
+        const existingKeys = Object.keys(statsData.players);
+        for (const name of existingKeys) {
+          const wasOnline = statsData.players[name].isOnline;
+          const isCurrentlyOnline = onlineList.includes(name);
+
+          // Если игрок только что зашёл и sessionStart не установлен
+          let sessionStart = statsData.players[name].sessionStart;
+          if (isCurrentlyOnline && (!wasOnline || !sessionStart)) {
+            sessionStart = Date.now();
+          }
+
+          statsData.players[name] = {
+            ...statsData.players[name],
+            isOnline: isCurrentlyOnline,
+            sessionStart: sessionStart,
+            lastSeen: isCurrentlyOnline ? Date.now() : (statsData.players[name].lastSeen || Date.now())
+          };
         }
 
-        // totalPlayersCount
-        const playersCount = Object.keys(statsData.players).length;
-        statsData.totalPlayersCount = typeof data.totalPlayersCount === 'number' 
-          ? data.totalPlayersCount 
-          : playersCount;
+        // Мерджим входящие данные от сервера с защитой от затирания времени нулём
+        for (const [name, incomingData] of Object.entries(incomingPlayers)) {
+          const prev = statsData.players[name] || {};
+          const isCurrentlyOnline = incomingData.isOnline === true || onlineList.includes(name);
+          
+          // Вычисляем входящие минуты
+          let incomingMin = incomingData.totalTimeMinutes;
+          if (incomingMin === undefined || incomingMin === null) {
+            incomingMin = incomingData.totalPlaytimeSec ? Math.floor(incomingData.totalPlaytimeSec / 60) : 0;
+          }
+          const prevMin = prev.totalTimeMinutes || (prev.totalTime ? Math.floor(prev.totalTime / 60) : 0);
+          
+          // При синхронизации сохранять максимальное значение (Math.max), не затирая нулем
+          const mergedMinutes = Math.max(Number(incomingMin) || 0, Number(prevMin) || 0);
+
+          let sessionStart = incomingData.sessionStart || prev.sessionStart;
+          if (isCurrentlyOnline && !sessionStart) {
+            sessionStart = Date.now();
+          }
+
+          statsData.players[name] = {
+            ...prev,
+            ...incomingData,
+            name: name,
+            isOnline: isCurrentlyOnline,
+            totalTimeMinutes: mergedMinutes,
+            totalTime: mergedMinutes * 60,
+            sessionStart: sessionStart,
+            lastSeen: incomingData.lastSeen || (isCurrentlyOnline ? Date.now() : prev.lastSeen) || Date.now(),
+            sessionCount: Math.max(incomingData.sessionCount || 1, prev.sessionCount || 1)
+          };
+        }
+
+        // Если в currentPlayers есть новые игроки, которых еще нет в базе
+        for (const onlineName of onlineList) {
+          if (!statsData.players[onlineName]) {
+            statsData.players[onlineName] = {
+              name: onlineName,
+              isOnline: true,
+              totalTimeMinutes: 0,
+              totalTime: 0,
+              sessionStart: Date.now(),
+              lastSeen: Date.now(),
+              sessionCount: 1
+            };
+          }
+        }
+
+        // Сохраняем объединенную базу в localStorage
+        saveCachedPlayers(statsData.players);
+
+        // Реальное количество игроков в б.д.
+        const totalUniqueInDb = Object.keys(statsData.players).length;
+        statsData.totalPlayersCount = Math.max(
+          typeof data.totalPlayersCount === 'number' ? data.totalPlayersCount : 0,
+          totalUniqueInDb
+        );
 
         // events
-        if (Array.isArray(data.events)) {
+        if (Array.isArray(data.events) && data.events.length > 0) {
           statsData.events = data.events;
         }
 
@@ -541,7 +709,11 @@
 
         const totalPlayersCountEl = document.getElementById('metric-total-players-count');
         if (totalPlayersCountEl) {
-          totalPlayersCountEl.textContent = statsData.totalPlayersCount || Object.keys(statsData.players).length || 0;
+          const totalInDatabase = Math.max(
+            statsData.totalPlayersCount || 0,
+            Object.keys(statsData.players || {}).length
+          );
+          totalPlayersCountEl.textContent = totalInDatabase;
         }
 
         if (window.lucide && typeof lucide.createIcons === 'function') {
@@ -553,27 +725,40 @@
         const container = document.getElementById('players-card-container');
         if (!container) return;
 
-        // Преобразуем объект players в массив
         const playerNames = Object.keys(statsData.players || {});
         let playerList = playerNames.map(name => {
           const item = statsData.players[name] || {};
           const isOnline = item.isOnline === true || statsData.currentPlayers.includes(name);
+          const computedTotalMinutes = calculatePlayerTotalMinutes({
+            ...item,
+            isOnline: isOnline
+          });
+
           return {
+            ...item,
             name: name,
             isOnline: isOnline,
-            totalTime: item.totalTime || item.totalPlaytimeSec || 0,
+            computedTotalMinutes: computedTotalMinutes,
             lastSeen: item.lastSeen || (isOnline ? Date.now() : null),
             sessionCount: item.sessionCount || 1
           };
         });
 
-        // Сортировка: онлайн вверху, затем по lastSeen или наигранному времени
+        // Фильтрация согласно выбранному табу: 'all', 'online', 'offline'
+        if (currentPlayersFilter === 'online') {
+          playerList = playerList.filter(p => p.isOnline);
+        } else if (currentPlayersFilter === 'offline') {
+          playerList = playerList.filter(p => !p.isOnline);
+        }
+
+        // Сортировка: онлайн вверху, затем по времени последнего захода или наигранному времени
         playerList.sort((a, b) => {
           if (a.isOnline && !b.isOnline) return -1;
           if (!a.isOnline && b.isOnline) return 1;
-          const aTime = typeof a.lastSeen === 'number' ? a.lastSeen : new Date(a.lastSeen).getTime() || 0;
-          const bTime = typeof b.lastSeen === 'number' ? b.lastSeen : new Date(b.lastSeen).getTime() || 0;
-          return bTime - aTime;
+          const aTime = typeof a.lastSeen === 'number' ? a.lastSeen : (a.lastSeen ? new Date(a.lastSeen).getTime() : 0);
+          const bTime = typeof b.lastSeen === 'number' ? b.lastSeen : (b.lastSeen ? new Date(b.lastSeen).getTime() : 0);
+          if (bTime !== aTime) return bTime - aTime;
+          return (b.computedTotalMinutes || 0) - (a.computedTotalMinutes || 0);
         });
 
         const countEl = document.getElementById('filtered-players-count');
@@ -594,27 +779,29 @@
         playerList.forEach(p => {
           const playerName = p.name;
           const isOnline = p.isOnline;
-          const totalSec = p.totalTime;
+          const safeName = escapeHtml(playerName);
+          const avatarUrl = getAvatarUrl(playerName);
+          const playtimeFormatted = formatPlaytimeMinutes(p.computedTotalMinutes);
 
           html += `
             <div class="glass-panel rounded-xl p-3.5 hover:border-emerald-glow/40 transition-all ${isOnline ? 'border-emerald-glow/30 bg-emerald-glow/[0.02]' : 'border-cyber-border'}">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                  <div class="relative">
+                  <div class="relative shrink-0">
                     <img 
-                      src="${getPlayerAvatarUrl(playerName)}" 
-                      alt="${escapeHtml(playerName)}" 
-                      class="w-11 h-11 rounded-lg pixelated border ${isOnline ? 'border-emerald-glow/60 shadow-glow-sm' : 'border-slate-700/60'} bg-obsidian-850 object-cover"
-                      onerror="this.onerror=null; this.src='https://skin.ely.by/avatars/${encodeURIComponent(playerName)}';"
+                      src="${avatarUrl}" 
+                      alt="${safeName}" 
+                      class="w-12 h-12 rounded-xl pixelated border border-[#00f5a0]/40 bg-obsidian-850 object-cover"
+                      onerror="window.handleAvatarError(this, '${safeName}')"
                     />
                     <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-obsidian-900 ${isOnline ? 'bg-emerald-glow live-pulse' : 'bg-slate-600'}"></span>
                   </div>
 
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-bold text-sm text-white font-mono tracking-tight">${escapeHtml(playerName)}</span>
+                      <span class="font-bold text-sm text-white font-mono tracking-tight">${safeName}</span>
                       <span class="text-[10px] font-mono px-2 py-0.5 rounded-full ${isOnline ? 'bg-emerald-glow/15 text-emerald-glow border border-emerald-glow/30 font-medium' : 'bg-slate-800 text-slate-400 border border-slate-700'}">
-                        ${isOnline ? 'В ИГРЕ' : 'ОФЛАЙН'}
+                        ${isOnline ? 'В сети' : 'Оффлайн'}
                       </span>
                     </div>
 
@@ -632,13 +819,13 @@
 
                 <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-6 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-cyber-border text-right">
                   <div class="text-left sm:text-right font-mono text-[11px] text-slate-400">
-                    <div>Статус: <span class="${isOnline ? 'text-emerald-glow font-semibold' : 'text-slate-300'}">${isOnline ? 'Онлайн' : 'Офлайн'}</span></div>
+                    <div>Статус: <span class="${isOnline ? 'text-emerald-glow font-semibold' : 'text-slate-300'}">${isOnline ? 'В сети' : 'Оффлайн'}</span></div>
                     <div>Был(а): <span class="${isOnline ? 'text-emerald-glow' : 'text-slate-400'}">${isOnline ? 'На сервере' : formatTimestamp(p.lastSeen)}</span></div>
                   </div>
 
                   <div class="font-mono text-left sm:text-right min-w-[100px]">
                     <div class="text-[11px] text-slate-400">Наиграно:</div>
-                    <div class="text-xs font-bold text-white">${formatDuration(totalSec)}</div>
+                    <div class="text-xs font-bold text-white tracking-tight">${playtimeFormatted}</div>
                     <div class="text-[10px] text-slate-500">${p.sessionCount || 1} сессий</div>
                   </div>
                 </div>
@@ -679,6 +866,7 @@
           const type = (ev.type || '').toLowerCase();
           const isJoin = type === 'join';
           const playerName = ev.player || ev.username || 'Игрок';
+          const safeName = escapeHtml(playerName);
           const evTime = ev.time || ev.timestamp;
           const timeString = evTime 
             ? new Date(evTime).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
@@ -688,15 +876,15 @@
             <div class="p-2.5 rounded-xl bg-obsidian-850/80 border ${isJoin ? 'border-emerald-glow/20 bg-emerald-glow/[0.01]' : 'border-cyber-border'} flex items-center justify-between gap-2.5 text-xs font-mono">
               <div class="flex items-center gap-2.5 min-w-0">
                 <img 
-                  src="${getPlayerAvatarUrl(playerName)}" 
-                  alt="${escapeHtml(playerName)}" 
+                  src="${getAvatarUrl(playerName)}" 
+                  alt="${safeName}" 
                   class="w-7 h-7 rounded-lg pixelated border border-slate-700 bg-obsidian-900 object-cover flex-shrink-0"
-                  onerror="this.onerror=null; this.src='https://skin.ely.by/avatars/${encodeURIComponent(playerName)}';"
+                  onerror="window.handleAvatarError(this, '${safeName}')"
                 />
                 <div class="truncate">
                   <div class="flex items-center gap-1.5 truncate">
                     <span class="${isJoin ? 'text-emerald-glow' : 'text-rose-400'} font-bold">${isJoin ? '[+]' : '[-]'}</span>
-                    <span class="text-white font-medium truncate">${escapeHtml(playerName)}</span>
+                    <span class="text-white font-medium truncate">${safeName}</span>
                     <span class="text-slate-400">${isJoin ? 'зашёл на сервер' : 'покинул сервер'}</span>
                   </div>
                   ${!isJoin && ev.durationText ? `
@@ -728,10 +916,51 @@
             if (timerEl) timerEl.textContent = `${countdown}s`;
           }
         }, 1000);
+
+        // Ежеминутный таймер для динамического прироста времени игроков онлайн
+        if (minutePlaytimeTicker) clearInterval(minutePlaytimeTicker);
+        minutePlaytimeTicker = setInterval(() => {
+          if (statsData.currentPlayers && statsData.currentPlayers.length > 0) {
+            renderPlayers();
+          }
+        }, 60000);
       }
 
       function setupEventHandlers() {
         try {
+          // Tabs for players filter
+          const pAll = document.getElementById('players-filter-all');
+          const pOnline = document.getElementById('players-filter-online');
+          const pOffline = document.getElementById('players-filter-offline');
+
+          function updatePlayerFilterTabs(activeTab) {
+            [pAll, pOnline, pOffline].forEach(el => {
+              if (el) el.className = 'text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors';
+            });
+            if (activeTab) {
+              activeTab.className = 'text-emerald-glow font-medium cursor-pointer px-2 py-0.5 rounded bg-emerald-glow/10 border border-emerald-glow/30';
+            }
+          }
+
+          pAll?.addEventListener('click', () => {
+            currentPlayersFilter = 'all';
+            updatePlayerFilterTabs(pAll);
+            renderPlayers();
+          });
+
+          pOnline?.addEventListener('click', () => {
+            currentPlayersFilter = 'online';
+            updatePlayerFilterTabs(pOnline);
+            renderPlayers();
+          });
+
+          pOffline?.addEventListener('click', () => {
+            currentPlayersFilter = 'offline';
+            updatePlayerFilterTabs(pOffline);
+            renderPlayers();
+          });
+
+          // Tabs for activity feed
           const feedAll = document.getElementById('feed-filter-all');
           const feedJoins = document.getElementById('feed-filter-joins');
           const feedLeaves = document.getElementById('feed-filter-leaves');
@@ -780,7 +1009,7 @@
             countdown = REFRESH_INTERVAL_SEC;
             const timerEl = document.getElementById('timer-countdown');
             if (timerEl) timerEl.textContent = `${countdown}s`;
-            pollServer();
+            pollServer(true);
           };
 
           const refreshBtnMobile = document.getElementById('refresh-btn-mobile');
@@ -798,7 +1027,7 @@
       renderPlayers();
       renderActivityFeed();
       startLiveTicker();
-      pollServer(); // Первый вызов опроса сервера Worker
+      pollServer(false);
     })();
   </script>
 <!-- END: Minecraft Tracker & Monitoring Logic Script -->
