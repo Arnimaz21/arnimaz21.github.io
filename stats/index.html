@@ -1,1098 +1,527 @@
-<!DOCTYPE html><html class="dark" lang="ru" style=""><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title class="">Статистика</title>
-<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
-<!-- Google Fonts: Space Grotesk & JetBrains Mono -->
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<!-- Tailwind CSS with Forms & Container Plugins -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            obsidian: {
-              950: '#04070a',
-              900: '#070b10',
-              850: '#0b1017',
-              800: '#111923',
-              700: '#192534',
-              600: '#233449'
-            },
-            cyber: {
-              border: '#1a2b27'
-            },
-            emerald: {
-              glow: '#00f5a0',
-              deep: '#00bd77',
-              dim: '#007a4d'
-            }
-          },
-          fontFamily: {
-            sans: ['Space Grotesk', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          },
-          boxShadow: {
-            'glow-sm': '0 0 15px rgba(0, 245, 160, 0.15)',
-            'glow-md': '0 0 25px rgba(0, 245, 160, 0.25)',
-            'glow-lg': '0 0 40px rgba(0, 245, 160, 0.35)'
-          }
-        }
-      }
-    }
-  </script>
-<!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
-<!-- Custom Core Styles -->
-<style data-purpose="custom-styling">
-    :root {
-      --emerald-glow: #00f5a0;
-      --bg-dark: #070b10;
-    }
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Шрифты Space Grotesk и JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
     body {
       background-color: #070b10;
       color: #e2e8f0;
-      font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-    .font-mono {
       font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
     }
-    /* WebGL Canvas Background */
-    #bg-canvas, #shader-canvas-ANIMATION_26 {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.65;
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
     }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(11, 16, 23, 0.6);
     }
-    ::-webkit-scrollbar-track {
-      background: #070b10;
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #1b282e;
+      border-radius: 4px;
     }
-    ::-webkit-scrollbar-thumb {
-      background: #192534;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
       background: #00f5a0;
     }
-    /* Glass Panel Effect */
-    .glass-panel {
-      background: rgba(11, 16, 23, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid #1a2b27;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    .text-outline-black {
+      text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+         0px  2px 4px rgba(0, 0, 0, 0.9);
     }
-    .glass-panel:hover {
-      border-color: rgba(0, 245, 160, 0.25);
-    }
-    .glass-panel-active {
-      border-color: rgba(0, 245, 160, 0.4);
-      box-shadow: 0 0 25px rgba(0, 245, 160, 0.08);
-    }
-    /* Pulsing Status Dot */
-    @keyframes pulse-emerald {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-    .live-pulse {
-      animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    /* Custom head render */
-    .pixelated {
+    .skin-head {
       image-rendering: pixelated;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: crisp-edges;
     }
   </style>
 </head>
-<body class="relative min-h-screen flex flex-col justify-between selection:bg-emerald-glow/20 selection:text-emerald-glow">
-<!-- BEGIN: WebGL Canvas Background -->
-<canvas height="601" id="shader-canvas-ANIMATION_26" width="1280"></canvas>
-<!-- END: WebGL Canvas Background -->
-<!-- BEGIN: Main Page Wrapper -->
-<div class="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-<!-- BEGIN: MainHeader -->
-<header class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row items-center justify-between gap-4">
-<!-- Server Brand and Status -->
-<div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
-<div class="flex items-center gap-3.5">
-<div class="w-11 h-11 rounded-xl bg-obsidian-850 border border-emerald-glow/30 flex items-center justify-center text-emerald-glow shadow-glow-sm relative group overflow-hidden">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-6 h-6"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
-<div class="absolute inset-0 bg-emerald-glow/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-</div>
-<div>
-<div class="flex items-center gap-2">
-<h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                Cloud.Mine
-              </h1>
-</div>
-<div class="flex items-center gap-2 mt-0.5">
-<span class="inline-block w-2 h-2 rounded-full bg-emerald-glow live-pulse"></span>
-<span class="text-xs text-slate-400 font-mono" id="server-version-tag">Minecraft Paper 26.3</span>
-</div>
-</div>
-</div>
-<!-- Mobile Auto-refresh toggle button -->
-<button class="lg:hidden p-2 rounded-lg bg-obsidian-800 border border-slate-700/50 text-slate-300 hover:text-emerald-glow" id="refresh-btn-mobile" title="Обновить сейчас">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-4 h-4"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
-</button>
-</div>
-<!-- Controls & External Navigation Links -->
-<div class="flex flex-wrap items-center justify-end gap-2.5 w-full lg:w-auto">
-<!-- Manual Refresh button -->
-<button class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 border border-cyber-border hover:border-emerald-glow/40 text-xs font-mono text-slate-300 hover:text-emerald-glow transition-all cursor-pointer" id="refresh-btn-desktop" title="Обновить данные сейчас">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-emerald-glow"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
-<span class="">Обновить</span>
-</button>
-<!-- Live auto-refresh toggle indicator -->
-<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-obsidian-850 border border-cyber-border text-xs font-mono text-slate-300 mr-1">
-<span class="w-1.5 h-1.5 rounded-full bg-emerald-glow" id="autorefresh-dot"></span>
-<span class="">Авто: <span class="text-emerald-glow font-semibold" id="timer-countdown">8s</span></span>
-<button class="ml-1 text-slate-400 hover:text-emerald-glow cursor-pointer transition-colors p-0.5 rounded" id="toggle-autorefresh" title="Пауза / Запуск таймера">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="pause" aria-hidden="true" class="lucide lucide-pause w-3.5 h-3.5" id="toggle-icon"><rect x="14" y="3" width="5" height="18" rx="1"></rect><rect x="5" y="3" width="5" height="18" rx="1"></rect></svg>
-</button>
-</div>
-<!-- Navigation: Конвертер .mrpack -->
-<a class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-obsidian-850 hover:bg-obsidian-800 border border-cyber-border hover:border-emerald-glow/40 text-xs font-mono text-slate-300 hover:text-white transition-all" href="https://arnimaz21.github.io/mrpack-to-zip/" rel="noopener noreferrer" target="_blank">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="box" aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-emerald-glow"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
-<span class="">.mrpack Конвертер</span>
-</a>
-<!-- Navigation: Discord -->
-<a class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#5865F2]/15 hover:bg-[#5865F2]/25 border border-[#5865F2]/40 text-xs font-mono text-indigo-200 hover:text-white transition-all" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-<svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 127.14 96.36">
-<path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,0,106,106,0,0,0,22.75,8.08C6.18,32.65,1.7,56.63,3.93,80.25a106.12,106.12,0,0,0,32.48,16.11,79.52,79.52,0,0,0,6.91-11.23,68.41,68.41,0,0,1-10.87-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,79.08,79.08,0,0,0,6.89,11.22A106,106,0,0,0,123.2,80.25C125.82,52.84,118.09,29.1,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
-</svg>
-<span class="">Discord</span>
-</a>
-</div>
-</header>
-<!-- END: MainHeader -->
-<!-- BEGIN: QuickStatsOverview -->
-<section class="grid grid-cols-1 gap-4 sm:grid-cols-2" data-purpose="metrics-overview">
-<!-- Card 1: Online Right Now -->
-<div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-<div class="absolute -right-3 -top-3 w-20 h-20 bg-emerald-glow/10 rounded-full blur-xl group-hover:bg-emerald-glow/20 transition-all"></div>
-<div class="flex items-center justify-between text-slate-400 mb-2">
-<span class="text-xs font-mono tracking-wider uppercase">Онлайн сейчас</span>
-<span class="flex h-2.5 w-2.5 relative">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-glow opacity-75"></span>
-<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-glow"></span>
-</span>
-</div>
-<div class="flex items-baseline gap-2">
-<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-online-count">0</span>
-<span class="text-sm font-mono text-slate-500" id="metric-max-slots">/ 20</span>
-</div>
-</div>
-<!-- Card 2: Total in DB -->
-<div class="glass-panel rounded-2xl p-5 relative overflow-hidden group">
-<div class="absolute -right-3 -top-3 w-20 h-20 bg-emerald-glow/10 rounded-full blur-xl group-hover:bg-emerald-glow/20 transition-all"></div>
-<div class="flex items-center justify-between text-slate-400 mb-2">
-<span class="text-xs font-mono tracking-wider uppercase">Игроков в б.д.</span>
-<svg class="lucide w-4 h-4 text-emerald-glow" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-</div>
-<div class="flex items-baseline gap-2">
-<span class="text-3xl font-bold font-mono text-white tracking-tight" id="metric-total-players-count">1</span>
-</div>
-</div></section>
-<!-- END: QuickStatsOverview -->
-<!-- BEGIN: MainContentGrid (Table + Activity Feed) -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
-<!-- BEGIN: PlayersListSection (2 Columns wide on LG) -->
-<section class="lg:col-span-2 glass-panel rounded-2xl p-5 flex flex-col space-y-4" data-purpose="players-monitoring-table">
-<!-- Controls Bar: Search & Filter Tabs -->
-<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-2 border-b border-cyber-border">
-<div class="flex items-center gap-2">
-<h2 class="text-base font-semibold text-white flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="swords" aria-hidden="true" class="lucide lucide-swords w-4 h-4 text-emerald-glow"><path d="m13 19 6-6"></path><path d="M14.5 17.5 3.586 6.586A2 2 0 013 5.172V3h2.172a2 2 0 011.414.586L17.5 14.5"></path><path d="m14.828 6.172 2.586-2.586A2 2 0 0118.828 3H21v2.172a2 2 0 01-.586 1.414l-2.586 2.586"></path><path d="m16 16 4 4"></path><path d="m19 21 2-2"></path><path d="m5 14 4 4"></path><path d="m5 21-2-2"></path><path d="M7.5 16.5 4 20"></path></svg>
-              Игроки сервера
-            </h2>
-<span class="text-xs font-mono text-emerald-glow bg-emerald-glow/10 border border-emerald-glow/20 px-2 py-0.5 rounded-full" id="filtered-players-count">1</span>
-</div>
-<!-- Players filter toggle: Все / В сети / Оффлайн -->
-<div class="flex items-center gap-1.5 text-xs font-mono">
-<button class="text-emerald-glow font-medium cursor-pointer px-2 py-0.5 rounded bg-emerald-glow/10 border border-emerald-glow/30" id="players-filter-all">Все</button>
-<button class="text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors" id="players-filter-online">В сети</button>
-<button class="text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors" id="players-filter-offline">Оффлайн</button>
-</div>
-</div>
-<!-- Players Container / Grid -->
-<div class="flex-1 space-y-2.5 overflow-y-auto max-h-[640px] pr-1" id="players-card-container">
-            <div class="glass-panel rounded-xl p-3.5 hover:border-emerald-glow/40 transition-all border-cyber-border">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="relative shrink-0">
-                    <img src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" alt="Arnimaz21" class="w-12 h-12 rounded-xl pixelated border border-[#00f5a0]/40 bg-obsidian-850 object-cover" onerror="window.handleAvatarError(this, 'Arnimaz21')">
-                    <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-obsidian-900 bg-slate-600"></span>
-                  </div>
+<body class="min-h-screen flex flex-col justify-between p-6 antialiased select-none relative bg-[#070b10]">
 
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="font-bold text-sm text-white font-mono tracking-tight">Arnimaz21</span>
-                      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
-                        Оффлайн
-                      </span>
-                    </div>
+  <!-- Живой WebGL Canvas фон -->
+  <div class="fixed inset-0 w-full h-full pointer-events-none -z-10">
+    <canvas id="shader-canvas" class="w-full h-full block"></canvas>
+  </div>
 
-                    <div class="text-xs font-mono text-slate-400 mt-1 flex items-center gap-1.5">
-                      
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" aria-hidden="true" class="lucide lucide-clock w-3 h-3 text-slate-500"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
-                        <span>Был(а): 2 мин назад</span>
-                      
-                    </div>
-                  </div>
-                </div>
+  <div class="max-w-6xl w-full mx-auto space-y-5 pb-12 relative z-10 flex-1">
+    
+    <!-- Шапка -->
+    <div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4 shadow-lg">
+      <div class="flex items-center gap-4">
+        <div class="p-3 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center">
+          <i data-lucide="server" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="font-bold text-white tracking-wide text-base font-sans flex items-center gap-2">
+            Cloud.Mine
+          </div>
+          <div class="text-xs text-gray-400 mt-1 font-mono flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#00f5a0] animate-pulse"></span>
+            Minecraft Paper 26.3
+          </div>
+        </div>
+      </div>
 
-                <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-6 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-cyber-border text-right">
-                  <div class="text-left sm:text-right font-mono text-[11px] text-slate-400">
-                    <div>Статус: <span class="text-slate-300">Оффлайн</span></div>
-                    <div>Был(а): <span class="text-slate-400">Сегодня, 17:39</span></div>
-                  </div>
+      <div class="flex items-center gap-3">
+        <button id="btnRefresh" class="px-4 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-[#00f5a0]/30 hover:border-[#00f5a0]/60 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm">
+          <i data-lucide="rotate-cw" id="refreshIcon" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
+          <span class="font-sans">Обновить</span>
+        </button>
 
-                  <div class="font-mono text-left sm:text-right min-w-[100px]">
-                    <div class="text-[11px] text-slate-400">Наиграно:</div>
-                    <div class="text-xs font-bold text-white tracking-tight">2 мин</div>
-                    <div class="text-[10px] text-slate-500">1 сессий</div>
-                  </div>
-                </div>
-              </div>
+        <div class="px-3.5 py-2 bg-[#121a22] border border-white/10 rounded-xl flex items-center gap-2 text-xs font-mono text-gray-300">
+          <span class="w-2 h-2 rounded-full bg-[#00f5a0]" id="timerDot"></span>
+          <span>Авто: <span id="timerCountdown" class="text-[#00f5a0]">10s</span></span>
+          <button id="btnToggleTimer" class="hover:text-white transition ml-1">
+            <i data-lucide="pause" id="timerIcon" class="w-3 h-3"></i>
+          </button>
+        </div>
+
+        <a href="/" class="px-4 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-white/20 rounded-xl flex items-center gap-2 transition duration-200">
+          <i data-lucide="box" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
+          <span class="font-sans">.mrpack Конвертер</span>
+        </a>
+
+        <a href="https://discord.gg/kQkRgbFZeK" target="_blank" rel="noopener" class="px-4 py-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 text-xs font-semibold text-indigo-200 border border-[#5865F2]/40 rounded-xl flex items-center gap-2 transition">
+          <i data-lucide="disc" class="w-3.5 h-3.5 text-[#5865F2]"></i>
+          <span class="font-sans">Discord</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Метрики онлайна и игроков -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-5 rounded-2xl relative overflow-hidden shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-gray-400 block text-[11px] font-semibold uppercase tracking-wider font-mono mb-2">ОНЛАЙН СЕЙЧАС</span>
+          <div class="text-3xl font-bold text-white font-mono flex items-baseline gap-2">
+            <span id="statOnline" class="text-white">0</span>
+            <span class="text-gray-500 text-lg">/ <span id="statMax">20</span></span>
+          </div>
+        </div>
+        <div class="w-3 h-3 rounded-full bg-[#00f5a0] shadow-[0_0_12px_#00f5a0]" id="onlinePulseDot"></div>
+      </div>
+
+      <div class="bg-[#0e151d]/90 border border-white/10 p-5 rounded-2xl relative overflow-hidden shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-gray-400 block text-[11px] font-semibold uppercase tracking-wider font-mono mb-2">ИГРОКОВ В Б.Д.</span>
+          <div class="text-3xl font-bold text-white font-mono">
+            <span id="statDbCount">0</span>
+          </div>
+        </div>
+        <i data-lucide="users" class="w-6 h-6 text-gray-500"></i>
+      </div>
+    </div>
+
+    <!-- Основной контент: Список игроков и Журнал событий -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      <!-- Колонка: Игроки сервера -->
+      <div class="lg:col-span-2 border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between">
+        <div>
+          <div class="p-4 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2 text-sm font-bold text-white font-sans">
+              <i data-lucide="swords" class="w-4 h-4 text-[#00f5a0]"></i>
+              <span>Игроки сервера</span>
+              <span id="badgePlayerTotal" class="text-[11px] px-2 py-0.5 rounded-full bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-mono">0</span>
+            </div>
+
+            <!-- Фильтры -->
+            <div class="flex gap-1.5 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
+              <button class="px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] transition" id="filterAll">Все</button>
+              <button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition" id="filterOnline">В сети</button>
+              <button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition" id="filterOffline">Оффлайн</button>
             </div>
           </div>
-</section>
-<!-- END: PlayersListSection -->
-<!-- BEGIN: ActivityFeedSection (1 Column wide on LG) -->
-<section class="glass-panel rounded-2xl p-5 flex flex-col space-y-4" data-purpose="live-activity-feed">
-<!-- Feed Header -->
-<div class="flex items-center justify-between pb-2 border-b border-cyber-border">
-<div class="flex items-center gap-2">
-<h2 class="text-base font-semibold text-white flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" aria-hidden="true" class="lucide lucide-activity w-4 h-4 text-emerald-glow"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
-              Журнал событий
-            </h2>
-</div>
-<!-- Event filter toggle -->
-<div class="flex items-center gap-1 text-[11px] font-mono">
-<button class="text-emerald-glow font-medium cursor-pointer" id="feed-filter-all">Все</button>
-<span class="text-slate-600">/</span>
-<button class="text-slate-400 hover:text-white cursor-pointer" id="feed-filter-joins">Входы</button>
-<span class="text-slate-600">/</span>
-<button class="text-slate-400 hover:text-white cursor-pointer" id="feed-filter-leaves">Выходы</button>
-</div>
-</div>
-<!-- Activity Feed List -->
-<div class="flex-1 space-y-2.5 overflow-y-auto max-h-[640px] pr-1" id="activity-feed-list">
-            <div class="p-2.5 rounded-xl bg-obsidian-850/80 border border-cyber-border flex items-center justify-between gap-2.5 text-xs font-mono">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <img src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" alt="Arnimaz21" class="w-7 h-7 rounded-lg pixelated border border-slate-700 bg-obsidian-900 object-cover flex-shrink-0" onerror="window.handleAvatarError(this, 'Arnimaz21')">
-                <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-rose-400 font-bold">[-]</span>
-                    <span class="text-white font-medium truncate">Arnimaz21</span>
-                    <span class="text-slate-400">покинул сервер</span>
-                  </div>
-                  
-                </div>
-              </div>
-              <div class="text-[10px] text-slate-500 whitespace-nowrap flex-shrink-0">
-                17:39:51
-              </div>
-            </div>
-          
-            <div class="p-2.5 rounded-xl bg-obsidian-850/80 border border-emerald-glow/20 bg-emerald-glow/[0.01] flex items-center justify-between gap-2.5 text-xs font-mono">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <img src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" alt="Arnimaz21" class="w-7 h-7 rounded-lg pixelated border border-slate-700 bg-obsidian-900 object-cover flex-shrink-0" onerror="window.handleAvatarError(this, 'Arnimaz21')">
-                <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-emerald-glow font-bold">[+]</span>
-                    <span class="text-white font-medium truncate">Arnimaz21</span>
-                    <span class="text-slate-400">зашёл на сервер</span>
-                  </div>
-                  
-                </div>
-              </div>
-              <div class="text-[10px] text-slate-500 whitespace-nowrap flex-shrink-0">
-                17:37:32
-              </div>
+
+          <!-- Список игроков -->
+          <div class="p-4 space-y-3 min-h-[360px] max-h-[500px] overflow-y-auto custom-scroll" id="playersContainer">
+            <div class="h-64 flex flex-col items-center justify-center text-gray-500 text-xs font-mono gap-2">
+              <i data-lucide="user-x" class="w-8 h-8 opacity-40"></i>
+              <span>Нет игроков в базе</span>
             </div>
           </div>
-<!-- Feed Help / Note -->
-<div class="pt-2 border-t border-cyber-border text-[11px] font-mono text-slate-500 flex items-center justify-between">
-<span class="truncate text-slate-400" id="sync-status-label"><br></span>
-<span class="shrink-0 ml-2" id="last-sync-time">Синхр: 17:41:52</span>
-</div>
-</section>
-<!-- END: ActivityFeedSection -->
-</div>
-<!-- END: MainContentGrid -->
-<!-- BEGIN: MainFooter -->
-<div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider select-none text-gray-300" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 8px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.8);">
-    by Arnimaz21 for <a class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><span class="">vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg></a>
-</div>
-<!-- END: MainFooter -->
-</div>
-<!-- END: Main Page Wrapper -->
-<!-- BEGIN: WebGL Waves & Cyber-Grid Shader Script -->
-<script data-purpose="webgl-background">
-    (function initWebGLBackground() {
-      const canvas = document.getElementById('shader-canvas-ANIMATION_26') || document.getElementById('bg-canvas');
-      if (!canvas) return;
-      const gl = canvas.getContext('webgl');
+        </div>
+      </div>
+
+      <!-- Колонка: Журнал событий -->
+      <div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between">
+        <div>
+          <div class="p-4 border-b border-white/10 bg-[#070b10]/90 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2 text-sm font-bold text-white font-sans">
+              <i data-lucide="activity" class="w-4 h-4 text-[#00f5a0]"></i>
+              <span>Журнал событий</span>
+            </div>
+          </div>
+
+          <div class="p-4 space-y-2.5 min-h-[360px] max-h-[500px] overflow-y-auto custom-scroll" id="eventsContainer">
+            <div class="h-64 flex flex-col items-center justify-center text-gray-500 text-xs font-mono gap-2">
+              <i data-lucide="clock" class="w-8 h-8 opacity-40"></i>
+              <span>Событий пока нет</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Подвал журнала: время синхронизации строго справа -->
+        <div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] font-mono flex items-center justify-end text-gray-400">
+          <span id="syncTime">Синхр: --:--:--</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Авторская подпись -->
+  <div class="text-center py-4 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black">
+    <span class="text-gray-300">by Arnimaz21 for </span>
+    <a href="https://discord.gg/kQkRgbFZeK" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1">
+      vunya100's server
+      <i data-lucide="disc" class="w-3 h-3 inline-block"></i>
+    </a>
+  </div>
+
+  <!-- JavaScript приложения -->
+  <script>
+    lucide.createIcons();
+
+    const WORKER_ENDPOINT = "https://cloud-stats.arnimaz27.workers.dev/update";
+
+    let state = {
+      online: 0,
+      max: 20,
+      totalPlayersCount: 0,
+      players: {},
+      events: [],
+      filter: 'all',
+      isTimerActive: true,
+      countdown: 10
+    };
+
+    const DOM = {
+      statOnline: document.getElementById('statOnline'),
+      statMax: document.getElementById('statMax'),
+      statDbCount: document.getElementById('statDbCount'),
+      badgePlayerTotal: document.getElementById('badgePlayerTotal'),
+      playersContainer: document.getElementById('playersContainer'),
+      eventsContainer: document.getElementById('eventsContainer'),
+      syncTime: document.getElementById('syncTime'),
+      btnRefresh: document.getElementById('btnRefresh'),
+      refreshIcon: document.getElementById('refreshIcon'),
+      timerCountdown: document.getElementById('timerCountdown'),
+      btnToggleTimer: document.getElementById('btnToggleTimer'),
+      timerIcon: document.getElementById('timerIcon'),
+      filterAll: document.getElementById('filterAll'),
+      filterOnline: document.getElementById('filterOnline'),
+      filterOffline: document.getElementById('filterOffline')
+    };
+
+    // Загрузка скина игрока
+    function getSkinUrl(username) {
+      if (!username) return 'https://minotar.net/helm/Steve/64.png';
+      if (username.toLowerCase() === 'arnimaz21') {
+        return 'https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png';
+      }
+      return `https://minotar.net/helm/${encodeURIComponent(username)}/64.png`;
+    }
+
+    function formatTime(minutes) {
+      if (!minutes || minutes <= 0) return 'Меньше минуты';
+      const m = Math.floor(minutes);
+      if (m < 60) return `${m} мин`;
+      const h = Math.floor(m / 60);
+      const remM = m % 60;
+      return remM > 0 ? `${h} ч ${remM} мин` : `${h} ч`;
+    }
+
+    function formatRelativeDate(isoStr) {
+      if (!isoStr) return 'Неизвестно';
+      try {
+        const d = new Date(isoStr);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      } catch (e) {
+        return isoStr;
+      }
+    }
+
+    // Запрос данных с Cloudflare Worker
+    async function fetchStats() {
+      DOM.refreshIcon.classList.add('animate-spin');
+      try {
+        const res = await fetch(WORKER_ENDPOINT, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        state.online = typeof data.online === 'number' ? data.online : 0;
+        state.max = typeof data.max === 'number' ? data.max : 20;
+
+        // Защита от случайного сброса базы: если с сервера пришел пустой players, сохраняем локально известных
+        if (data.players && Object.keys(data.players).length > 0) {
+          state.players = data.players;
+          state.totalPlayersCount = Object.keys(data.players).length;
+        } else if (typeof data.totalPlayersCount === 'number' && data.totalPlayersCount > 0) {
+          state.totalPlayersCount = data.totalPlayersCount;
+        }
+
+        if (Array.isArray(data.events) && data.events.length > 0) {
+          state.events = data.events;
+        }
+
+        const now = new Date();
+        DOM.syncTime.innerText = `Синхр: ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+
+        renderUI();
+      } catch (err) {
+        console.error("Fetch stats error:", err);
+      } finally {
+        DOM.refreshIcon.classList.remove('animate-spin');
+      }
+    }
+
+    function renderUI() {
+      DOM.statOnline.innerText = state.online;
+      DOM.statMax.innerText = state.max;
+      DOM.statDbCount.innerText = state.totalPlayersCount || Object.keys(state.players).length;
+      DOM.badgePlayerTotal.innerText = state.totalPlayersCount || Object.keys(state.players).length;
+
+      renderPlayers();
+      renderEvents();
+      lucide.createIcons();
+    }
+
+    function renderPlayers() {
+      const playerList = Object.values(state.players || {});
+      
+      const filtered = playerList.filter(p => {
+        if (state.filter === 'online') return p.isOnline;
+        if (state.filter === 'offline') return !p.isOnline;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        DOM.playersContainer.innerHTML = `
+          <div class="h-64 flex flex-col items-center justify-center text-gray-500 text-xs font-mono gap-2">
+            <i data-lucide="user-x" class="w-8 h-8 opacity-40"></i>
+            <span>${playerList.length === 0 ? 'Нет игроков в базе' : 'Никого не найдено по фильтру'}</span>
+          </div>`;
+        return;
+      }
+
+      // Сортировка: сначала онлайн, затем по времени последнего визита
+      filtered.sort((a, b) => {
+        if (a.isOnline && !b.isOnline) return -1;
+        if (!a.isOnline && b.isOnline) return 1;
+        return new Date(b.lastSeen || 0) - new Date(a.lastSeen || 0);
+      });
+
+      let html = '';
+      filtered.forEach(p => {
+        const isOnline = Boolean(p.isOnline);
+        const statusBadge = isOnline
+          ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-mono">В ИГРЕ</span>`
+          : `<span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-gray-800/80 text-gray-400 border border-white/10 font-mono">ОФФЛАЙН</span>`;
+
+        let liveSessionMins = 0;
+        if (isOnline && p.sessionStart) {
+          liveSessionMins = Math.max(0, Math.floor((Date.now() - new Date(p.sessionStart).getTime()) / 60000));
+        }
+        const totalMinutes = (p.totalTimeMinutes || 0) + liveSessionMins;
+        const timePlayedStr = formatTime(totalMinutes);
+
+        html += `
+          <div class="p-3.5 rounded-xl bg-[#0e151d] border ${isOnline ? 'border-[#00f5a0]/40 shadow-[0_0_15px_rgba(0,245,160,0.06)]' : 'border-white/5'} flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 overflow-hidden">
+              <div class="relative w-11 h-11 rounded-lg overflow-hidden bg-[#131c26] border border-white/10 flex-shrink-0">
+                <img src="${getSkinUrl(p.name)}" alt="${p.name}" class="w-full h-full object-cover skin-head"
+                     onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(p.name)}/64'; this.onerror=null;">
+                ${isOnline ? '<span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] ring-2 ring-[#0e151d]"></span>' : ''}
+              </div>
+              <div class="truncate">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-sm font-sans tracking-wide">${p.name}</span>
+                  ${statusBadge}
+                </div>
+                <div class="text-[11px] text-gray-400 font-mono mt-0.5">
+                  ${isOnline ? '<span class="text-[#00f5a0]">▶ В игре сейчас</span>' : `Был: ${formatRelativeDate(p.lastSeen)}`}
+                </div>
+              </div>
+            </div>
+
+            <div class="text-right flex-shrink-0 font-mono">
+              <div class="text-[10px] text-gray-500 uppercase tracking-wider">Наигpaнo:</div>
+              <div class="text-xs font-bold text-gray-200 mt-0.5">${timePlayedStr}</div>
+            </div>
+          </div>`;
+      });
+
+      DOM.playersContainer.innerHTML = html;
+    }
+
+    function renderEvents() {
+      if (!state.events || state.events.length === 0) {
+        DOM.eventsContainer.innerHTML = `
+          <div class="h-64 flex flex-col items-center justify-center text-gray-500 text-xs font-mono gap-2">
+            <i data-lucide="clock" class="w-8 h-8 opacity-40"></i>
+            <span>Событий пока нет</span>
+          </div>`;
+        return;
+      }
+
+      let html = '';
+      state.events.slice(0, 30).forEach(ev => {
+        const isJoin = ev.type === 'join';
+        const icon = isJoin ? '<span class="text-[#00f5a0] font-bold">[+]</span>' : '<span class="text-red-400 font-bold">[-]</span>';
+        const actionText = isJoin ? 'зашёл на сервер' : 'покинул сервер';
+        const timeStr = formatRelativeDate(ev.time);
+
+        html += `
+          <div class="p-2.5 rounded-xl bg-[#0e151d] border border-white/5 flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center gap-2.5 truncate mr-2">
+              <img src="${getSkinUrl(ev.player)}" class="w-6 h-6 rounded bg-[#131c26] flex-shrink-0 skin-head"
+                   onerror="this.src='https://mc-heads.net/avatar/${encodeURIComponent(ev.player)}/32'; this.onerror=null;">
+              <span class="truncate">
+                ${icon} <span class="text-white font-medium">${ev.player}</span>
+                <span class="text-gray-400 text-[11px]">${actionText}</span>
+              </span>
+            </div>
+            <span class="text-[10px] text-gray-500 flex-shrink-0">${timeStr}</span>
+          </div>`;
+      });
+
+      DOM.eventsContainer.innerHTML = html;
+    }
+
+    // Слушатели фильтров
+    function setFilter(filter) {
+      state.filter = filter;
+      [DOM.filterAll, DOM.filterOnline, DOM.filterOffline].forEach(b => {
+        b.className = "px-3 py-1 text-[11px] text-gray-400 hover:text-white transition";
+      });
+      if (filter === 'all') DOM.filterAll.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] transition";
+      if (filter === 'online') DOM.filterOnline.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] transition";
+      if (filter === 'offline') DOM.filterOffline.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] transition";
+      renderPlayers();
+      lucide.createIcons();
+    }
+
+    DOM.filterAll.addEventListener('click', () => setFilter('all'));
+    DOM.filterOnline.addEventListener('click', () => setFilter('online'));
+    DOM.filterOffline.addEventListener('click', () => setFilter('offline'));
+    DOM.btnRefresh.addEventListener('click', fetchStats);
+
+    // Таймер автообновления
+    DOM.btnToggleTimer.addEventListener('click', () => {
+      state.isTimerActive = !state.isTimerActive;
+      DOM.timerIcon.setAttribute('data-lucide', state.isTimerActive ? 'pause' : 'play');
+      lucide.createIcons();
+    });
+
+    setInterval(() => {
+      if (!state.isTimerActive) return;
+      state.countdown--;
+      if (state.countdown <= 0) {
+        state.countdown = 10;
+        fetchStats();
+      }
+      DOM.timerCountdown.innerText = `${state.countdown}s`;
+    }, 1000);
+
+    // WebGL Shader Background
+    (function initShader() {
+      const canvas = document.getElementById('shader-canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) return;
 
-      const vertexShaderSource = `
-        attribute vec2 position;
-        void main() {
-          gl_Position = vec4(position, 0.0, 1.0);
+      function resize() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          gl.viewport(0, 0, w, h);
         }
-      `;
+      }
+      window.addEventListener('resize', resize);
+      resize();
 
-      const fragmentShaderSource = `
+      const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+      const fs = `
         precision mediump float;
-        uniform vec2 u_resolution;
-        uniform float u_time;
-
+        uniform float t;
+        uniform vec2 r;
         void main() {
-          vec2 st = gl_FragCoord.xy / u_resolution.xy;
-          st.x *= u_resolution.x / u_resolution.y;
+          vec2 uv = gl_FragCoord.xy / r.xy;
+          vec2 p = (gl_FragCoord.xy * 2.0 - r.xy) / min(r.x, r.y);
+          
+          float wave = sin(p.y * 3.0 + sin(p.x * 2.0 + t * 0.4) * 1.5 + t * 0.3) * 0.5 + 0.5;
+          wave += sin(p.x * 1.5 - t * 0.2) * 0.25;
 
-          // Grid coordinates
-          vec2 grid = fract(st * 16.0);
-          float line = step(0.965, grid.x) + step(0.965, grid.y);
+          // Темно-зеленая изумрудная палитра
+          vec3 darkVoid = vec3(0.015, 0.03, 0.025);
+          vec3 emerald = vec3(0.0, 0.96, 0.62);
+          vec3 deepCyan = vec3(0.02, 0.22, 0.18);
 
-          // Dynamic wave interference
-          float wave1 = sin(st.x * 2.5 + u_time * 0.45) * cos(st.y * 2.0 + u_time * 0.35);
-          float wave2 = sin((st.x + st.y) * 3.0 - u_time * 0.3);
-          float wave = (wave1 + wave2) * 0.5;
+          vec3 color = mix(darkVoid, deepCyan, wave * 0.55);
+          color += emerald * pow(wave, 4.0) * 0.35;
 
-          // Colors
-          vec3 darkBase = vec3(0.027, 0.043, 0.062); // #070b10
-          vec3 emeraldGlow = vec3(0.0, 0.96, 0.627);  // #00f5a0
-          vec3 cyberCyan = vec3(0.0, 0.65, 0.85);
+          // Легкая сетка
+          vec2 grid = abs(fract(gl_FragCoord.xy / 48.0) - 0.5);
+          float line = 1.0 - smoothstep(0.0, 0.04, min(grid.x, grid.y));
+          color += emerald * line * 0.035;
 
-          // Vignette
-          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-          float vignette = uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y);
-          vignette = clamp(pow(16.0 * vignette, 0.5), 0.0, 1.0);
-
-          vec3 col = darkBase;
-          col += line * 0.025 * emeraldGlow;
-          col += emeraldGlow * (wave * 0.065 + 0.035);
-          col += cyberCyan * (sin(u_time * 0.2 + st.y * 3.0) * 0.02);
-
-          col *= vignette;
-          gl_FragColor = vec4(col, 1.0);
+          gl_FragColor = vec4(color, 1.0);
         }
       `;
 
-      function compileShader(src, type) {
+      function compile(type, src) {
         const s = gl.createShader(type);
         gl.shaderSource(s, src);
         gl.compileShader(s);
         return s;
       }
+      const prog = gl.createProgram();
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog);
+      gl.useProgram(prog);
 
-      const vs = compileShader(vertexShaderSource, gl.VERTEX_SHADER);
-      const fs = compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
-      const program = gl.createProgram();
-      gl.attachShader(program, vs);
-      gl.attachShader(program, fs);
-      gl.linkProgram(program);
-      gl.useProgram(program);
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+      const pos = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(pos);
+      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-      const buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-        -1,  1,
-         1, -1,
-         1,  1,
-      ]), gl.STATIC_DRAW);
+      const uT = gl.getUniformLocation(prog, 't');
+      const uR = gl.getUniformLocation(prog, 'r');
 
-      const posLoc = gl.getAttribLocation(program, 'position');
-      gl.enableVertexAttribArray(posLoc);
-      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-      const resLoc = gl.getUniformLocation(program, 'u_resolution');
-      const timeLoc = gl.getUniformLocation(program, 'u_time');
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      let startTime = performance.now();
+      let start = performance.now();
       function render() {
-        const time = (performance.now() - startTime) * 0.001;
-        gl.uniform2f(resLoc, canvas.width, canvas.height);
-        gl.uniform1f(timeLoc, time);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        const now = (performance.now() - start) * 0.001;
+        gl.uniform1f(uT, now);
+        gl.uniform2f(uR, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         requestAnimationFrame(render);
       }
       render();
     })();
+
+    // Первоначальный запрос данных
+    fetchStats();
   </script>
-<!-- END: WebGL Waves & Cyber-Grid Shader Script -->
-<!-- BEGIN: Minecraft Tracker & Monitoring Logic Script -->
-<script data-purpose="server-tracker-logic">
-    // Безотказная функция получения скина/головы игрока по нику
-    const DEFAULT_MINECRAFT_HEAD = 'https://minotar.net/helm/Steve/64.png';
-
-    function getAvatarUrl(nick) {
-      if (!nick) return DEFAULT_MINECRAFT_HEAD;
-      const cleanNick = String(nick).trim();
-      if (cleanNick.toLowerCase() === 'arnimaz21') {
-        return 'https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png';
-      }
-      return `https://minotar.net/helm/${encodeURIComponent(cleanNick)}/64.png`;
-    }
-
-    // Обработчик ошибки загрузки аватара с двухуровневым fallback'ом
-    window.handleAvatarError = function(img, nick) {
-      if (!img) return;
-      const stage = parseInt(img.getAttribute('data-error-stage') || '0', 10);
-      if (stage === 0) {
-        img.setAttribute('data-error-stage', '1');
-        img.src = `https://mc-heads.net/avatar/${encodeURIComponent(nick)}/64`;
-      } else if (stage === 1) {
-        img.setAttribute('data-error-stage', '2');
-        img.src = DEFAULT_MINECRAFT_HEAD;
-      }
-    };
-
-    (function initServerTracker() {
-      // Worker Endpoints
-      const WORKER_BASE = 'https://cloud-stats.arnimaz27.workers.dev';
-      const WORKER_UPDATE = 'https://cloud-stats.arnimaz27.workers.dev/update';
-      const REFRESH_INTERVAL_SEC = 10;
-      const STORAGE_KEY = 'cloudmine_players_cache_v2';
-
-      // State
-      let autoRefreshEnabled = true;
-      let countdown = REFRESH_INTERVAL_SEC;
-      let tickInterval = null;
-      let minutePlaytimeTicker = null;
-      let currentFeedFilter = 'all'; // 'all', 'joins', 'leaves'
-      let currentPlayersFilter = 'all'; // 'all', 'online', 'offline'
-      let isFetching = false;
-      let pollCycleCounter = 0;
-
-      // Safe load persistent players from localStorage
-      function loadCachedPlayers() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('cloudmine_players_cache_v1');
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-              return parsed;
-            }
-          }
-        } catch (e) {
-          console.warn('Could not read cached players from localStorage', e);
-        }
-        return {};
-      }
-
-      function saveCachedPlayers(playersObj) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(playersObj));
-        } catch (e) {
-          console.warn('Could not save players to localStorage', e);
-        }
-      }
-
-      // Initial statsData with merged persistent cache
-      let statsData = {
-        online: 0,
-        max: 20,
-        totalPlayersCount: 0,
-        currentPlayers: [],
-        players: loadCachedPlayers(),
-        events: [],
-        lastUpdated: null
-      };
-
-      // Расчет общего наигранного времени в минутах (динамически прямо в браузере)
-      function calculatePlayerTotalMinutes(player) {
-        if (!player) return 0;
-        // Базовые минуты
-        let baseMin = Number(player.totalTimeMinutes) || 0;
-        if (!baseMin && player.totalTime) {
-          // Если время было сохранено в секундах
-          baseMin = Math.floor(player.totalTime / 60);
-        }
-
-        if (player.isOnline) {
-          const sessionStartTimestamp = player.sessionStart 
-            ? new Date(player.sessionStart).getTime()
-            : (player.firstSeen ? new Date(player.firstSeen).getTime() : Date.now());
-          
-          const validSessionStart = isNaN(sessionStartTimestamp) ? Date.now() : sessionStartTimestamp;
-          const currentSessionMinutes = Math.max(0, Math.floor((Date.now() - validSessionStart) / 60000));
-          return baseMin + currentSessionMinutes;
-        }
-
-        return baseMin;
-      }
-
-      // Форматирование наигранного времени по правилам ТЗ:
-      // Меньше 1 минуты: "< 1 мин"
-      // До 60 минут: "X мин"
-      // Больше часа: "X ч Y мин"
-      // Дни: "X д Y ч"
-      function formatPlaytimeMinutes(totalMinutes) {
-        const m = Math.floor(totalMinutes || 0);
-        if (m < 1) {
-          return '< 1 мин';
-        }
-        if (m < 60) {
-          return `${m} мин`;
-        }
-        const hours = Math.floor(m / 60);
-        const remMinutes = m % 60;
-        if (hours < 24) {
-          return remMinutes > 0 ? `${hours} ч ${remMinutes} мин` : `${hours} ч`;
-        }
-        const days = Math.floor(hours / 24);
-        const remHours = hours % 24;
-        return remHours > 0 ? `${days} д ${remHours} ч` : `${days} д`;
-      }
-
-      function formatTimestamp(ts) {
-        if (!ts) return 'Никогда';
-        const date = new Date(ts);
-        if (isNaN(date.getTime())) return 'Никогда';
-        const now = new Date();
-        const isToday = date.toDateString() === now.toDateString();
-        const timePart = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        return isToday ? `Сегодня, ${timePart}` : `${date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })}, ${timePart}`;
-      }
-
-      function timeAgo(ts) {
-        if (!ts) return 'недавно';
-        const timestamp = typeof ts === 'number' ? ts : new Date(ts).getTime();
-        if (isNaN(timestamp)) return 'недавно';
-        const diff = Math.floor((Date.now() - timestamp) / 1000);
-        if (diff < 60) return 'только что';
-        if (diff < 3600) return `${Math.floor(diff / 60)} мин назад`;
-        if (diff < 86400) return `${Math.floor(diff / 3600)} ч назад`;
-        return `${Math.floor(diff / 86400)} д назад`;
-      }
-
-      function escapeHtml(str) {
-        if (!str) return '';
-        return String(str).replace(/[&<>"']/g, function(m) {
-          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-        });
-      }
-
-      // Главная функция опроса эндпоинта статистики Worker
-      async function pollServer(forceUpdateEndpoint = false) {
-        if (isFetching) return;
-        isFetching = true;
-
-        const syncLabelEl = document.getElementById('sync-status-label');
-        if (syncLabelEl) syncLabelEl.textContent = 'Синхронизация с Cloudflare Worker...';
-
-        pollCycleCounter++;
-        const targetUrl = (forceUpdateEndpoint || pollCycleCounter % 3 === 0) ? WORKER_UPDATE : WORKER_BASE;
-
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-          const response = await fetch(targetUrl, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' },
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-          }
-
-          const data = await response.json();
-          processWorkerData(data);
-
-          if (syncLabelEl) syncLabelEl.textContent = 'Синхронизация с Cloudflare Worker';
-          const lastSyncEl = document.getElementById('last-sync-time');
-          if (lastSyncEl) {
-            const timeStr = data.lastUpdated 
-              ? new Date(data.lastUpdated).toLocaleTimeString('ru-RU')
-              : new Date().toLocaleTimeString('ru-RU');
-            lastSyncEl.textContent = `Синхр: ${timeStr}`;
-          }
-        } catch (err) {
-          console.error('Ошибка опроса Worker:', err);
-          if (syncLabelEl) syncLabelEl.textContent = 'Ошибка Cloudflare Worker';
-          const lastSyncEl = document.getElementById('last-sync-time');
-          if (lastSyncEl) lastSyncEl.textContent = 'Ошибка сети';
-        } finally {
-          isFetching = false;
-        }
-      }
-
-      // Обработка данных от Cloudflare Worker с сохранением и мерджем базы
-      function processWorkerData(data) {
-        if (!data || typeof data !== 'object') return;
-
-        statsData.online = typeof data.online === 'number' ? data.online : 0;
-        statsData.max = typeof data.max === 'number' ? data.max : (data.players?.max || 20);
-
-        // Список онлайн игроков
-        let onlineList = [];
-        if (Array.isArray(data.currentPlayers)) {
-          onlineList = data.currentPlayers;
-        } else if (data.players && typeof data.players === 'object' && !Array.isArray(data.players)) {
-          onlineList = Object.keys(data.players).filter(k => data.players[k]?.isOnline);
-        }
-        statsData.currentPlayers = onlineList;
-
-        const incomingPlayers = (data.players && typeof data.players === 'object' && !Array.isArray(data.players)) 
-          ? data.players 
-          : {};
-
-        // Обновляем статус существующих игроков
-        const existingKeys = Object.keys(statsData.players);
-        for (const name of existingKeys) {
-          const wasOnline = statsData.players[name].isOnline;
-          const isCurrentlyOnline = onlineList.includes(name);
-
-          // Если игрок только что зашёл и sessionStart не установлен
-          let sessionStart = statsData.players[name].sessionStart;
-          if (isCurrentlyOnline && (!wasOnline || !sessionStart)) {
-            sessionStart = Date.now();
-          }
-
-          statsData.players[name] = {
-            ...statsData.players[name],
-            isOnline: isCurrentlyOnline,
-            sessionStart: sessionStart,
-            lastSeen: isCurrentlyOnline ? Date.now() : (statsData.players[name].lastSeen || Date.now())
-          };
-        }
-
-        // Мерджим входящие данные от сервера с защитой от затирания времени нулём
-        for (const [name, incomingData] of Object.entries(incomingPlayers)) {
-          const prev = statsData.players[name] || {};
-          const isCurrentlyOnline = incomingData.isOnline === true || onlineList.includes(name);
-          
-          // Вычисляем входящие минуты
-          let incomingMin = incomingData.totalTimeMinutes;
-          if (incomingMin === undefined || incomingMin === null) {
-            incomingMin = incomingData.totalPlaytimeSec ? Math.floor(incomingData.totalPlaytimeSec / 60) : 0;
-          }
-          const prevMin = prev.totalTimeMinutes || (prev.totalTime ? Math.floor(prev.totalTime / 60) : 0);
-          
-          // При синхронизации сохранять максимальное значение (Math.max), не затирая нулем
-          const mergedMinutes = Math.max(Number(incomingMin) || 0, Number(prevMin) || 0);
-
-          let sessionStart = incomingData.sessionStart || prev.sessionStart;
-          if (isCurrentlyOnline && !sessionStart) {
-            sessionStart = Date.now();
-          }
-
-          statsData.players[name] = {
-            ...prev,
-            ...incomingData,
-            name: name,
-            isOnline: isCurrentlyOnline,
-            totalTimeMinutes: mergedMinutes,
-            totalTime: mergedMinutes * 60,
-            sessionStart: sessionStart,
-            lastSeen: incomingData.lastSeen || (isCurrentlyOnline ? Date.now() : prev.lastSeen) || Date.now(),
-            sessionCount: Math.max(incomingData.sessionCount || 1, prev.sessionCount || 1)
-          };
-        }
-
-        // Если в currentPlayers есть новые игроки, которых еще нет в базе
-        for (const onlineName of onlineList) {
-          if (!statsData.players[onlineName]) {
-            statsData.players[onlineName] = {
-              name: onlineName,
-              isOnline: true,
-              totalTimeMinutes: 0,
-              totalTime: 0,
-              sessionStart: Date.now(),
-              lastSeen: Date.now(),
-              sessionCount: 1
-            };
-          }
-        }
-
-        // Сохраняем объединенную базу в localStorage
-        saveCachedPlayers(statsData.players);
-
-        // Реальное количество игроков в б.д.
-        const totalUniqueInDb = Object.keys(statsData.players).length;
-        statsData.totalPlayersCount = Math.max(
-          typeof data.totalPlayersCount === 'number' ? data.totalPlayersCount : 0,
-          totalUniqueInDb
-        );
-
-        // events
-        if (Array.isArray(data.events) && data.events.length > 0) {
-          statsData.events = data.events;
-        }
-
-        statsData.lastUpdated = data.lastUpdated || Date.now();
-
-        updateMetrics();
-        renderPlayers();
-        renderActivityFeed();
-      }
-
-      function updateMetrics() {
-        const onlineCountEl = document.getElementById('metric-online-count');
-        if (onlineCountEl) onlineCountEl.textContent = statsData.online;
-
-        const maxSlotsEl = document.getElementById('metric-max-slots');
-        if (maxSlotsEl) maxSlotsEl.textContent = `/ ${statsData.max}`;
-
-        const totalPlayersCountEl = document.getElementById('metric-total-players-count');
-        if (totalPlayersCountEl) {
-          const totalInDatabase = Math.max(
-            statsData.totalPlayersCount || 0,
-            Object.keys(statsData.players || {}).length
-          );
-          totalPlayersCountEl.textContent = totalInDatabase;
-        }
-
-        if (window.lucide && typeof lucide.createIcons === 'function') {
-          lucide.createIcons();
-        }
-      }
-
-      function renderPlayers() {
-        const container = document.getElementById('players-card-container');
-        if (!container) return;
-
-        const playerNames = Object.keys(statsData.players || {});
-        let playerList = playerNames.map(name => {
-          const item = statsData.players[name] || {};
-          const isOnline = item.isOnline === true || statsData.currentPlayers.includes(name);
-          const computedTotalMinutes = calculatePlayerTotalMinutes({
-            ...item,
-            isOnline: isOnline
-          });
-
-          return {
-            ...item,
-            name: name,
-            isOnline: isOnline,
-            computedTotalMinutes: computedTotalMinutes,
-            lastSeen: item.lastSeen || (isOnline ? Date.now() : null),
-            sessionCount: item.sessionCount || 1
-          };
-        });
-
-        // Фильтрация согласно выбранному табу: 'all', 'online', 'offline'
-        if (currentPlayersFilter === 'online') {
-          playerList = playerList.filter(p => p.isOnline);
-        } else if (currentPlayersFilter === 'offline') {
-          playerList = playerList.filter(p => !p.isOnline);
-        }
-
-        // Сортировка: онлайн вверху, затем по времени последнего захода или наигранному времени
-        playerList.sort((a, b) => {
-          if (a.isOnline && !b.isOnline) return -1;
-          if (!a.isOnline && b.isOnline) return 1;
-          const aTime = typeof a.lastSeen === 'number' ? a.lastSeen : (a.lastSeen ? new Date(a.lastSeen).getTime() : 0);
-          const bTime = typeof b.lastSeen === 'number' ? b.lastSeen : (b.lastSeen ? new Date(b.lastSeen).getTime() : 0);
-          if (bTime !== aTime) return bTime - aTime;
-          return (b.computedTotalMinutes || 0) - (a.computedTotalMinutes || 0);
-        });
-
-        const countEl = document.getElementById('filtered-players-count');
-        if (countEl) countEl.textContent = playerList.length;
-
-        if (playerList.length === 0) {
-          container.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-12 text-center text-slate-500">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search-x" aria-hidden="true" class="lucide lucide-search-x w-6 h-6 mb-2 text-slate-600"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-              <p class="text-xs font-mono">Никого не найдено</p>
-            </div>
-          `;
-          if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
-          return;
-        }
-
-        let html = '';
-        playerList.forEach(p => {
-          const playerName = p.name;
-          const isOnline = p.isOnline;
-          const safeName = escapeHtml(playerName);
-          const avatarUrl = getAvatarUrl(playerName);
-          const playtimeFormatted = formatPlaytimeMinutes(p.computedTotalMinutes);
-
-          html += `
-            <div class="glass-panel rounded-xl p-3.5 hover:border-emerald-glow/40 transition-all ${isOnline ? 'border-emerald-glow/30 bg-emerald-glow/[0.02]' : 'border-cyber-border'}">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="relative shrink-0">
-                    <img 
-                      src="${avatarUrl}" 
-                      alt="${safeName}" 
-                      class="w-12 h-12 rounded-xl pixelated border border-[#00f5a0]/40 bg-obsidian-850 object-cover"
-                      onerror="window.handleAvatarError(this, '${safeName}')"
-                    />
-                    <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-obsidian-900 ${isOnline ? 'bg-emerald-glow live-pulse' : 'bg-slate-600'}"></span>
-                  </div>
-
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="font-bold text-sm text-white font-mono tracking-tight">${safeName}</span>
-                      <span class="text-[10px] font-mono px-2 py-0.5 rounded-full ${isOnline ? 'bg-emerald-glow/15 text-emerald-glow border border-emerald-glow/30 font-medium' : 'bg-slate-800 text-slate-400 border border-slate-700'}">
-                        ${isOnline ? 'В сети' : 'Оффлайн'}
-                      </span>
-                    </div>
-
-                    <div class="text-xs font-mono text-slate-400 mt-1 flex items-center gap-1.5">
-                      ${isOnline ? `
-                        <i data-lucide="play" class="w-3 h-3 text-emerald-glow fill-emerald-glow"></i>
-                        <span class="text-emerald-glow font-medium">В игре сейчас</span>
-                      ` : `
-                        <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i>
-                        <span>Был(а): ${timeAgo(p.lastSeen)}</span>
-                      `}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap sm:flex-nowrap items-center gap-4 sm:gap-6 justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-cyber-border text-right">
-                  <div class="text-left sm:text-right font-mono text-[11px] text-slate-400">
-                    <div>Статус: <span class="${isOnline ? 'text-emerald-glow font-semibold' : 'text-slate-300'}">${isOnline ? 'В сети' : 'Оффлайн'}</span></div>
-                    <div>Был(а): <span class="${isOnline ? 'text-emerald-glow' : 'text-slate-400'}">${isOnline ? 'На сервере' : formatTimestamp(p.lastSeen)}</span></div>
-                  </div>
-
-                  <div class="font-mono text-left sm:text-right min-w-[100px]">
-                    <div class="text-[11px] text-slate-400">Наиграно:</div>
-                    <div class="text-xs font-bold text-white tracking-tight">${playtimeFormatted}</div>
-                    <div class="text-[10px] text-slate-500">${p.sessionCount || 1} сессий</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-
-        container.innerHTML = html;
-        if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
-      }
-
-      function renderActivityFeed() {
-        const container = document.getElementById('activity-feed-list');
-        if (!container) return;
-
-        let events = Array.isArray(statsData.events) ? [...statsData.events] : [];
-
-        if (currentFeedFilter === 'joins') {
-          events = events.filter(e => (e.type || '').toLowerCase() === 'join');
-        } else if (currentFeedFilter === 'leaves') {
-          events = events.filter(e => (e.type || '').toLowerCase() === 'leave');
-        }
-
-        if (events.length === 0) {
-          container.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-16 text-center text-slate-500">
-              <i data-lucide="check-circle" class="w-6 h-6 mb-2 text-slate-600"></i>
-              <p class="text-xs font-mono">Событий пока нет</p>
-            </div>
-          `;
-          if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
-          return;
-        }
-
-        let html = '';
-        events.slice(0, 50).forEach(ev => {
-          const type = (ev.type || '').toLowerCase();
-          const isJoin = type === 'join';
-          const playerName = ev.player || ev.username || 'Игрок';
-          const safeName = escapeHtml(playerName);
-          const evTime = ev.time || ev.timestamp;
-          const timeString = evTime 
-            ? new Date(evTime).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-            : '--:--:--';
-
-          html += `
-            <div class="p-2.5 rounded-xl bg-obsidian-850/80 border ${isJoin ? 'border-emerald-glow/20 bg-emerald-glow/[0.01]' : 'border-cyber-border'} flex items-center justify-between gap-2.5 text-xs font-mono">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <img 
-                  src="${getAvatarUrl(playerName)}" 
-                  alt="${safeName}" 
-                  class="w-7 h-7 rounded-lg pixelated border border-slate-700 bg-obsidian-900 object-cover flex-shrink-0"
-                  onerror="window.handleAvatarError(this, '${safeName}')"
-                />
-                <div class="truncate">
-                  <div class="flex items-center gap-1.5 truncate">
-                    <span class="${isJoin ? 'text-emerald-glow' : 'text-rose-400'} font-bold">${isJoin ? '[+]' : '[-]'}</span>
-                    <span class="text-white font-medium truncate">${safeName}</span>
-                    <span class="text-slate-400">${isJoin ? 'зашёл на сервер' : 'покинул сервер'}</span>
-                  </div>
-                  ${!isJoin && ev.durationText ? `
-                    <div class="text-[10px] text-slate-500">Длительность сессии: <span class="text-slate-300 font-semibold">${escapeHtml(ev.durationText)}</span></div>
-                  ` : ''}
-                </div>
-              </div>
-              <div class="text-[10px] text-slate-500 whitespace-nowrap flex-shrink-0">
-                ${timeString}
-              </div>
-            </div>
-          `;
-        });
-
-        container.innerHTML = html;
-        if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
-      }
-
-      function startLiveTicker() {
-        if (tickInterval) clearInterval(tickInterval);
-        tickInterval = setInterval(() => {
-          if (autoRefreshEnabled) {
-            countdown--;
-            if (countdown <= 0) {
-              countdown = REFRESH_INTERVAL_SEC;
-              pollServer();
-            }
-            const timerEl = document.getElementById('timer-countdown');
-            if (timerEl) timerEl.textContent = `${countdown}s`;
-          }
-        }, 1000);
-
-        // Ежеминутный таймер для динамического прироста времени игроков онлайн
-        if (minutePlaytimeTicker) clearInterval(minutePlaytimeTicker);
-        minutePlaytimeTicker = setInterval(() => {
-          if (statsData.currentPlayers && statsData.currentPlayers.length > 0) {
-            renderPlayers();
-          }
-        }, 60000);
-      }
-
-      function setupEventHandlers() {
-        try {
-          // Tabs for players filter
-          const pAll = document.getElementById('players-filter-all');
-          const pOnline = document.getElementById('players-filter-online');
-          const pOffline = document.getElementById('players-filter-offline');
-
-          function updatePlayerFilterTabs(activeTab) {
-            [pAll, pOnline, pOffline].forEach(el => {
-              if (el) el.className = 'text-slate-400 hover:text-white cursor-pointer px-2 py-0.5 rounded hover:bg-obsidian-800 transition-colors';
-            });
-            if (activeTab) {
-              activeTab.className = 'text-emerald-glow font-medium cursor-pointer px-2 py-0.5 rounded bg-emerald-glow/10 border border-emerald-glow/30';
-            }
-          }
-
-          pAll?.addEventListener('click', () => {
-            currentPlayersFilter = 'all';
-            updatePlayerFilterTabs(pAll);
-            renderPlayers();
-          });
-
-          pOnline?.addEventListener('click', () => {
-            currentPlayersFilter = 'online';
-            updatePlayerFilterTabs(pOnline);
-            renderPlayers();
-          });
-
-          pOffline?.addEventListener('click', () => {
-            currentPlayersFilter = 'offline';
-            updatePlayerFilterTabs(pOffline);
-            renderPlayers();
-          });
-
-          // Tabs for activity feed
-          const feedAll = document.getElementById('feed-filter-all');
-          const feedJoins = document.getElementById('feed-filter-joins');
-          const feedLeaves = document.getElementById('feed-filter-leaves');
-
-          function updateFeedTabs(activeTab) {
-            [feedAll, feedJoins, feedLeaves].forEach(el => {
-              if (el) el.className = 'text-slate-400 hover:text-white cursor-pointer';
-            });
-            if (activeTab) activeTab.className = 'text-emerald-glow font-medium cursor-pointer';
-          }
-
-          feedAll?.addEventListener('click', () => {
-            currentFeedFilter = 'all';
-            updateFeedTabs(feedAll);
-            renderActivityFeed();
-          });
-
-          feedJoins?.addEventListener('click', () => {
-            currentFeedFilter = 'joins';
-            updateFeedTabs(feedJoins);
-            renderActivityFeed();
-          });
-
-          feedLeaves?.addEventListener('click', () => {
-            currentFeedFilter = 'leaves';
-            updateFeedTabs(feedLeaves);
-            renderActivityFeed();
-          });
-
-          const toggleBtn = document.getElementById('toggle-autorefresh');
-          toggleBtn?.addEventListener('click', () => {
-            autoRefreshEnabled = !autoRefreshEnabled;
-            const icon = document.getElementById('toggle-icon');
-            const dot = document.getElementById('autorefresh-dot');
-            if (autoRefreshEnabled) {
-              if (icon) icon.setAttribute('data-lucide', 'pause');
-              if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-glow';
-            } else {
-              if (icon) icon.setAttribute('data-lucide', 'play');
-              if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400';
-            }
-            if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
-          });
-
-          const triggerManualRefresh = () => {
-            countdown = REFRESH_INTERVAL_SEC;
-            const timerEl = document.getElementById('timer-countdown');
-            if (timerEl) timerEl.textContent = `${countdown}s`;
-            pollServer(true);
-          };
-
-          const refreshBtnMobile = document.getElementById('refresh-btn-mobile');
-          refreshBtnMobile?.addEventListener('click', triggerManualRefresh);
-
-          const refreshBtnDesktop = document.getElementById('refresh-btn-desktop');
-          refreshBtnDesktop?.addEventListener('click', triggerManualRefresh);
-        } catch (err) {
-          console.error('Safe event handler attachment caught an exception:', err);
-        }
-      }
-
-      setupEventHandlers();
-      updateMetrics();
-      renderPlayers();
-      renderActivityFeed();
-      startLiveTicker();
-      pollServer(false);
-    })();
-  </script>
-<!-- END: Minecraft Tracker & Monitoring Logic Script -->
-
-
-</body></html>
+</body>
+</html>
