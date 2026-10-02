@@ -71,12 +71,12 @@
 </div>
 <div class="flex items-center gap-3">
 <button class="px-4 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-[#00f5a0]/30 hover:border-[#00f5a0]/60 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm" id="btnRefresh">
-<svg aria-hidden="true" class="lucide lucide-rotate-cw w-3.5 h-3.5 text-[#00f5a0]" data-lucide="rotate-cw" fill="none" height="24" id="refreshIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-rotate-cw w-3.5 h-3.5 text-[#00f5a0] animate-spin" data-lucide="rotate-cw" fill="none" height="24" id="refreshIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
 <span class="font-sans">Обновить</span>
 </button>
 <div class="px-3.5 py-2 bg-[#121a22] border border-white/10 rounded-xl flex items-center gap-2 text-xs font-mono text-gray-300">
 <span class="w-2 h-2 rounded-full bg-[#00f5a0]" id="timerDot"></span>
-<span class="">Авто: <span class="text-[#00f5a0]" id="timerCountdown">10s</span></span>
+<span class="">Авто: <span class="text-[#00f5a0]" id="timerCountdown">9s</span></span>
 <button class="hover:text-white transition ml-1" id="btnToggleTimer">
 <svg aria-hidden="true" class="lucide lucide-pause w-3 h-3" data-lucide="pause" fill="none" height="24" id="timerIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="18" rx="1" width="5" x="14" y="3"></rect><rect height="18" rx="1" width="5" x="5" y="3"></rect></svg>
 </button>
@@ -133,7 +133,7 @@
 <div class="p-3.5 rounded-xl bg-[#0e151d] border border-[#00f5a0]/40 shadow-[0_0_15px_rgba(0,245,160,0.06)] flex items-center justify-between gap-4">
 <div class="flex items-center gap-3.5 overflow-hidden">
 <div class="relative w-11 h-11 rounded-xl overflow-hidden bg-[#131c26] border border-white/15 avatar-wrapper flex-shrink-0 flex items-center justify-center ring-1 ring-white/5">
-<img alt="polina_enis" class="w-full h-full object-contain" onerror="handleAvatarError(this, 'polina_enis')" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCExN-JYyJkP8lZhikeDJkdTAo2VjXn8m2nXwufobaMsR1bv0x5X-f5cg9voQiwnDDyTudg0JWpCkwMlhpZA7ZnXmFSeoq890Qc6cujhkougXmh9oCEtbvkVw4tXZmQrBComc89XDaQNP1IXFhUUwLJ5sUbQWEfrIadNv1lqZfVVO8uu960NtiwIrOweoqYEwHRKGR_1BMHU906dFELaVmVzTDGq_omvlf7DkXN_zG97qYMY5-Oj06Z"/>
+<img alt="polina_enis" class="w-full h-full object-contain" onerror="handleAvatarError(this, 'polina_enis')" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0KS9I73B6JMh1epyJldb7dDtZYf92PiJjX9wivOXdvhTUQMzR7wcYTrVZ8158iRQnmUGtidVBTvTJZVrICr0s7E3jVGkmxMOS5IqM1WdB4MizTef5GqcTD2bFX-C8BS5dM5uMHTnoAmLt0SaGaCVELAwRHxN8LRE56nQkcflWRyC-AvXMIDMWUloF417Ij0qyEc4mMDTkkETSTHoXCgCfRx-CwD-cj95-D4So0-oO6YBuNYirBwjW"/>
 <span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] ring-2 ring-[#0e151d]"></span>
 </div>
 <div class="truncate">
@@ -148,7 +148,7 @@
 </div>
 <div class="text-right flex-shrink-0 font-mono">
 <div class="text-[10px] text-gray-500 uppercase tracking-wider">Наигpaнo:</div>
-<div class="text-xs font-bold text-gray-200 mt-0.5">17 мин</div>
+<div class="text-xs font-bold text-gray-200 mt-0.5">23 мин</div>
 </div>
 </div></div>
 </div>
@@ -166,7 +166,7 @@
 <div class="p-2.5 rounded-xl bg-[#0e151d] border border-white/5 flex items-center justify-between text-xs font-mono">
 <div class="flex items-center gap-2.5 truncate mr-2">
 <div class="w-6 h-6 rounded-md overflow-hidden bg-[#131c26] border border-white/10 avatar-wrapper flex-shrink-0 flex items-center justify-center">
-<img alt="polina_enis" class="w-full h-full object-contain" onerror="handleAvatarError(this, 'polina_enis')" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcUmH9QrLIybyDI8d0_osCKWKv8oXTclIOPZA3Ii_gKFDYxbGtcwkNYMp8iROHaIxgr8mDl_fpEUMCpvjsWarKRaBZ2hW1Peo-3uYPBO05elQJLvzOKedMneQO3T6CI875r-lO1xd_4hub7OKKe7nP3Ztsu4dhrEgJhOSQVVlAtCVxhKPxKsLKOz6FKgshR5L9dtiVChLV-dmszMT2rxemibsu0TxBiaYgcVCW_iE8XjN1OnrRi7Sf"/>
+<img alt="polina_enis" class="w-full h-full object-contain" onerror="handleAvatarError(this, 'polina_enis')" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7yrwELiuPpsTmMz03pNBFpOI25zWqLuMHDjUwb2MPRS9rlT3WnIa6tPTcE_b2g1uwevTRowEP3mxsp8JPI97YuKtPyNbw1NNX9Kl4U-kdB7MvF_fm6G-za3jOS8H9ul3EV-fz_1sYq8Z4ygFbArEfxSSFOpd9vy8Ablei8PsFhNJd7v_LcLxsL5IwC5mMXFMmwYCiqfCTi7wM4MLR5Rh-qmQchTyACapaeqr3cFSj4NcnE7HdI0ES"/>
 </div>
 <span class="truncate">
 <span class="text-[#00f5a0] font-bold">[+]</span> <span class="text-white font-medium">polina_enis</span>
@@ -178,7 +178,7 @@
 </div>
 <!-- Подвал журнала: время синхронизации строго справа -->
 <div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] font-mono flex items-center justify-end text-gray-400">
-<span class="" id="syncTime">Синхр: 18:41:29</span>
+<span class="" id="syncTime">Синхр: 18:47:37</span>
 </div>
 </div>
 </div>
@@ -193,6 +193,7 @@
     lucide.createIcons();
 
     const WORKER_ENDPOINT = "https://cloud-stats.arnimaz27.workers.dev/update";
+    const STEVE_AVATAR_FALLBACK = "https://mc-heads.net/avatar/steve/64";
 
     let state = {
       online: 0,
@@ -202,7 +203,7 @@
       events: [],
       filter: 'all',
       isTimerActive: true,
-      countdown: 10
+      countdown: 9
     };
 
     const DOM = {
@@ -232,21 +233,12 @@
     }
 
     /**
-     * Обработка fallback при ошибке загрузки скина
+     * Обработка fallback при ошибке загрузки скина: чистый переход на голову Стива Minecraft
      */
     window.handleAvatarError = function(imgElement, name) {
-      const step = parseInt(imgElement.getAttribute('data-fallback-step') || '0', 10);
-      const clean = encodeURIComponent((name || 'Steve').trim());
-      const fallbacks = [
-        `https://skin.ely.by/avatars/${clean}`,
-        `https://skin.ely.by/skins/${clean}.png`,
-        `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png`
-      ];
-
-      if (step < fallbacks.length) {
-        imgElement.setAttribute('data-fallback-step', (step + 1).toString());
-        imgElement.src = fallbacks[step];
-      }
+      if (!imgElement) return;
+      imgElement.onerror = null;
+      imgElement.src = STEVE_AVATAR_FALLBACK;
     };
 
     function formatTime(minutes) {
@@ -445,7 +437,7 @@
       if (!state.isTimerActive) return;
       state.countdown--;
       if (state.countdown <= 0) {
-        state.countdown = 10;
+        state.countdown = 9;
         fetchStats();
       }
       DOM.timerCountdown.innerText = `${state.countdown}s`;
