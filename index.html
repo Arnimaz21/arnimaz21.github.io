@@ -1,23 +1,38 @@
-<!DOCTYPE html><html lang="ru" style=""><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Cloud.Mine — Главный портал экосистемы</title>
-<link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png">
+<link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Шрифты Space Grotesk и JetBrains Mono -->
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
+    :root {
+      --primary: #00f5a0;
+      --primary-hover: #50ffaf;
+      --surface-void: #070b10;
+      --surface-1: #0b1017;
+      --surface-2: #0e151d;
+      --surface-3: #131c26;
+      --border-quiescent: #1a2b27;
+      --border-accent: rgba(0, 245, 160, 0.35);
+    }
     body {
       background-color: #070b10;
-      color: #e2e8f0;
+      color: #dfe2ea;
       font-family: 'JetBrains Mono', monospace;
-      overflow-x: hidden;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Space Grotesk', sans-serif;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 5px;
@@ -48,84 +63,168 @@
       object-fit: cover;
     }
     .channel-item {
-      transition: all 0.15s ease-in-out;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .channel-item:hover {
       background-color: rgba(255, 255, 255, 0.05);
-      color: #e2e8f0;
+      color: #dfe2ea;
     }
     .channel-item.active {
       background-color: rgba(0, 245, 160, 0.12);
       color: #00f5a0;
       border-left: 3px solid #00f5a0;
       font-weight: 600;
+      box-shadow: inset 0 0 16px rgba(0, 245, 160, 0.08);
     }
-    .channel-item.active svg.lucide-hash {
+    .channel-item.active svg {
       color: #00f5a0;
+      filter: drop-shadow(0 0 6px rgba(0, 245, 160, 0.5));
     }
     .message-hover:hover {
       background-color: rgba(255, 255, 255, 0.02);
     }
+    .cyber-card {
+      background: rgba(14, 21, 29, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(26, 43, 39, 0.85);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .cyber-btn-primary {
+      background-color: #00f5a0;
+      color: #070b10;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 16px rgba(0, 245, 160, 0.35);
+    }
+    .cyber-btn-primary:hover {
+      background-color: #50ffaf;
+      box-shadow: 0 0 24px rgba(0, 245, 160, 0.6);
+      transform: translateY(-1px);
+    }
+    .neon-border {
+      border: 1px solid rgba(0, 245, 160, 0.35);
+    }
+    .neon-border:focus-within, .neon-border-active {
+      border-color: #00f5a0;
+      box-shadow: 0 0 16px rgba(0, 245, 160, 0.25);
+    }
+    .cyber-grid-bg {
+      background-image: 
+        radial-gradient(circle at 50% 45%, rgba(0, 245, 160, 0.12) 0%, rgba(2, 45, 30, 0.25) 35%, rgba(7, 11, 16, 0.95) 75%),
+        linear-gradient(rgba(0, 245, 160, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 160, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
+    }
+
+    /* Кибернетическая плавная анимация переключения каналов */
+    @keyframes channelFadeSlide {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.995);
+        filter: brightness(1.25) contrast(1.1);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1) contrast(1);
+      }
+    }
+    .channel-transition-enter {
+      animation: channelFadeSlide 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: transform, opacity;
+    }
+    .message-item-enter {
+      animation: channelFadeSlide 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* Легкий кибер-сканлайн эффект при переходе */
+    .scanline-overlay {
+      position: relative;
+    }
+    .scanline-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,245,160,0.06), transparent 80%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .scanline-active::after {
+      opacity: 1;
+    }
+
+    /* Ховер экшн-бар для сообщений */
+    .message-action-bar {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .group:hover .message-action-bar {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10]" id="mainBody">
-<!-- Живой WebGL Canvas фон -->
-<div class="fixed inset-0 w-full h-full pointer-events-none -z-10">
-<canvas class="w-full h-full block" id="shader-canvas" width="1280" height="776"></canvas>
+<!-- Живой оптимизированный WebGL Canvas фон -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<canvas class="w-full h-full block" height="775" id="shader-canvas" width="1280"></canvas>
 </div>
 <!-- ==================== ОСНОВНОЙ ПОРТАЛ (ПОДЛОЖКА / КОНТЕНТ) ==================== -->
 <div class="max-w-7xl w-full mx-auto flex flex-col gap-3 md:gap-4 flex-1 relative z-10 pb-4 transition-all duration-300 filter blur-sm pointer-events-none select-none" id="portalContent">
 <!-- ВЕРХНЯЯ ШАПКА / НАВИГАЦИЯ ЭКОСИСТЕМЫ -->
 <header class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl px-4 py-3 md:px-5 md:py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-lg backdrop-blur-md">
 <div class="flex items-center gap-3">
-<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-5 h-5 text-[#00f5a0]"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.2)]">
+<svg aria-hidden="true" class="lucide lucide-server w-5 h-5 text-[#00f5a0]" data-lucide="server" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="8" rx="2" ry="2" width="20" x="2" y="2"></rect><rect height="8" rx="2" ry="2" width="20" x="2" y="14"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
 </div>
 <div>
-<div class="font-bold text-white tracking-wide text-base md:text-lg font-sans flex items-center gap-2">
-          Cloud.Mine
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 hidden sm:inline-block">HUB</span>
+<div class="font-bold text-white tracking-wide text-base md:text-lg font-heading flex items-center gap-2">
+            Cloud.Mine
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 hidden sm:inline-block">HUB</span>
 </div>
 <div class="text-xs text-gray-400 font-mono flex items-center gap-2">
 <span class="w-2 h-2 rounded-full bg-[#00f5a0] animate-pulse"></span>
-          Minecraft Paper 26.3
-        </div>
+            Minecraft Paper 26.3
+          </div>
 </div>
 </div>
 <!-- Навигационные кнопки и профиль -->
 <div class="flex items-center flex-wrap gap-2 md:gap-3">
 <!-- Кнопка Статистика -->
-<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200" href="stats.html">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="activity" aria-hidden="true" class="lucide lucide-activity w-3.5 h-3.5 text-[#00f5a0]"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
-<span class="font-sans hidden sm:inline">Статистика</span>
+<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200 font-heading" href="#stats">
+<svg aria-hidden="true" class="lucide lucide-activity w-3.5 h-3.5 text-[#00f5a0]" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+<span class="hidden sm:inline">Статистика</span>
 </a>
-<!-- Кнопка .mrpack Конвертер -->
-<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200" href="/">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="box" aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-[#00f5a0]"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
-<span class="font-sans hidden sm:inline">Конвертер</span>
+<!-- Кнопка Конвертер -->
+<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200 font-heading" href="#converter">
+<svg aria-hidden="true" class="lucide lucide-box w-3.5 h-3.5 text-[#00f5a0]" data-lucide="box" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+<span class="hidden sm:inline">Конвертер</span>
 </a>
 <!-- Discord -->
-<a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
-<span class="font-sans font-medium hidden sm:inline">Discord</span>
+<a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200 font-heading font-medium" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+<span class="hidden sm:inline">Discord</span>
 </a>
 <!-- Профиль пользователя в шапке (динамический) -->
 <div class="flex items-center gap-2 pl-2 border-l border-white/10" id="headerProfileChip">
 <div class="flex items-center gap-2 px-2.5 py-1.5 bg-[#121a22] border border-[#00f5a0]/30 rounded-xl">
 <div class="w-6 h-6 rounded-lg bg-[#18232e] avatar-wrapper overflow-hidden border border-[#00f5a0]/50 shrink-0">
-<img alt="Skin" class="w-full h-full object-cover mc-skin-avatar" id="headerUserAvatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYHoJVfIzEGZHAD93viF_lLHDVDz1QY8DA0ND-qMOkKysCWmp5aGoMFPU422DFPbCRd1L5PeAoK0_8lj8RnqXlHka6hzRQ-mAAGBfrvqiwGFoVz-kueTMaNAc2Q88k6WYIXnRnq3QuXBsIkyA6kmX3UhqfvssEXtGRkZHuWuzJrZlw-2ZSa0vxnGXTPvyclEi5WKrVhAtM1ziiPg82_lSSOnSk-ybw0RMhxIiz51S8qXMeelbIvhdG">
+<img alt="Skin" class="w-full h-full object-cover mc-skin-avatar" id="headerUserAvatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkSa7QBVVvJm7oiSHOGTAYevlgbL3lamaDVOfUC8hUPzvsfgVkF1r4lxYUlyvkgj0hu6Ticc8Zuo_C7nwFAnYx8IIXtAPw3ZrtXt3O_qZ8m1dL9UitYbxJeDpTcvTJziHIHhYcB-3-hZ15a2GJEFpJdRDZBMAy8uAJaTGXF89AYPWuBD0Dg3x51WYf7IZBXLyDBo_fjf7Cr2q5QUk0uKa1hETd71ST9QA3Bj60Q4oAwVfRy5x2_5-QaA"/>
 </div>
-<span class="text-xs font-bold text-white font-sans truncate max-w-[90px] sm:max-w-[120px]" id="headerUserNick">Игрок</span>
+<span class="text-xs font-bold text-white font-heading truncate max-w-[90px] sm:max-w-[120px]" id="headerUserNick">Игрок</span>
 </div>
-<!-- Выход -->
 <button class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200" onclick="logoutUser()" title="Завершить сессию">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out w-3.5 h-3.5"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
-<span class="font-sans hidden sm:inline">Выйти</span>
+<svg aria-hidden="true" class="lucide lucide-log-out w-3.5 h-3.5" data-lucide="log-out" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
+<span class="font-heading hidden sm:inline">Выйти</span>
 </button>
 </div>
 </div>
 </header>
-<!-- ОСНОВНОЙ DISCORD-ПОДОБНЫЙ ИНТЕРФЕЙС -->
+<!-- ОСНОВНОЙ ТЕРМИНАЛЬНЫЙ DISCORD-ИНТЕРФЕЙС -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 flex-1 items-stretch min-h-[580px]">
 <!-- ЛЕВАЯ КОЛОНКА КАНАЛОВ И ПРОФИЛЬ -->
 <aside class="lg:col-span-3 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
@@ -134,30 +233,26 @@
 <div class="p-3.5 md:p-4 border-b border-white/10 flex items-center justify-between bg-[#070b10]/60">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>
-<h2 class="font-sans font-bold text-sm tracking-wide text-white">vunya100's server</h2>
+<h2 class="font-heading font-bold text-sm tracking-wide text-white">vunya100's server</h2>
 </div>
 <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#131c26] text-gray-400 border border-white/5">ТЕКСТОВЫЕ</span>
 </div>
 <!-- Список текстовых каналов -->
 <nav aria-label="Текстовые каналы" class="p-2 space-y-1" id="channelsList">
-<!-- # набор -->
-<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-300 active" id="chan-btn-recruitment" onclick="switchChannel('recruitment')">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 shrink-0 text-[#00f5a0]"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-300 active" id="chan-btn-recruitment" onclick="switchChannel('recruitment')">
+<svg aria-hidden="true" class="lucide lucide-hash w-4 h-4 shrink-0 text-[#00f5a0]" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
 <span class="">набор</span>
 </button>
-<!-- # информация-о-сервере -->
-<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-info" onclick="switchChannel('info')">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-400" id="chan-btn-info" onclick="switchChannel('info')">
+<svg aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
 <span class="">информация-о-сервере</span>
 </button>
-<!-- # правила -->
-<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-rules" onclick="switchChannel('rules')">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-400" id="chan-btn-rules" onclick="switchChannel('rules')">
+<svg aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
 <span class="">правила</span>
 </button>
-<!-- # ip -->
-<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-ip" onclick="switchChannel('ip')">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-400" id="chan-btn-ip" onclick="switchChannel('ip')">
+<svg aria-hidden="true" class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
 <span class="">ip</span>
 </button>
 </nav>
@@ -166,33 +261,33 @@
 <div class="p-3 bg-[#070b10]/95 border-t border-white/10 flex items-center justify-between gap-3">
 <div class="flex items-center gap-2.5 min-w-0">
 <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/40 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(0,245,160,0.25)]">
-<img alt="Скин" class="w-full h-full object-cover mc-skin-avatar" id="userSidebarAvatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTU3ci4yHSZKU-T14nPy31R7Uq1pAyN-hr1pYAKM6w8kwN3C--pOKsSA_65zdze2YqG-XuSdJespVxcxPNToP16yokBQSyzrMf7p6TkjJKcK8PK9DkpDeYok6_sOkQ4reB2VF7a8HRJN-3sOYxjkIq6WM3a2K9-7Ugkx4xbhITVRgEMVTh42YYn_tE5FUILuMO_ictLutY4tNeMgje8D0XKlcBxeOSOQsWOa9Zjb8MPBshebztf9R1">
+<img alt="Скин" class="w-full h-full object-cover mc-skin-avatar" id="userSidebarAvatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNVahsR-F4Ge5_Cowh-ePS3uOhl_mci2o0hqrlEmcCrmK7wML2E1pHj_f3Qloht_Rdjlg94mc7yY8r_SXXz7e0YiOd-BBqyXvAzQ3uAKGr5Dq5vxcD1JnDqUujE2CfWXhWyNn3i4lYT-OFJ82ibWccpHnQQsJkl_zywCqstsa18SiaEstfNissgHBnwrFtGFfVEWNUqxT256jBBpjbzNQCJEtbcM2rmPndzl4SgqZkKG63FDXi8VhB8A"/>
 <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="В сети"></span>
 </div>
 <div class="min-w-0">
-<div class="font-sans font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
-              Игрок
-            </div>
+<div class="font-heading font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
+                Игрок
+              </div>
 <div class="flex items-center gap-1.5">
 <span class="text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30" id="userSidebarRole">
-                ИГРОК
-              </span>
+                  ИГРОК
+                </span>
 <span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">В сети</span>
 </div>
 </div>
 </div>
 <button class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-950/30 border border-white/5 rounded-lg transition" onclick="logoutUser()" title="Выйти из аккаунта">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out w-4 h-4"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-log-out w-4 h-4" data-lucide="log-out" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
 </button>
 </div>
 </aside>
-<!-- ПРАВАЯ ОБЛАСТЬ: АКТИВНЫЙ КАНАЛ, ЛЕНТА СООБЩЕНИЙ, ИНПУТ ДЛЯ АДМИНА -->
-<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md overflow-hidden min-h-[520px]">
+<!-- ПРАВАЯ ОБЛАСТЬ: АКТИВНЫЙ КАНАЛ, ЛЕНТА СООБЩЕНИЙ, ИНПУТ -->
+<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl overflow-hidden min-h-[520px] backdrop-blur-md relative scanline-overlay" id="mainChannelPanel">
 <!-- Заголовок активного канала -->
 <div class="px-4 py-3 md:px-5 md:py-3.5 border-b border-white/10 bg-[#070b10]/60 flex items-center justify-between flex-wrap gap-2">
 <div class="flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-5 h-5 text-[#00f5a0]"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
-<h1 class="font-sans font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1>
+<svg aria-hidden="true" class="lucide lucide-hash w-5 h-5 text-[#00f5a0]" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
+<h1 class="font-heading font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1>
 <span class="text-gray-500 text-xs hidden md:inline">|</span>
 <span class="text-xs text-gray-400 font-mono hidden md:inline truncate max-w-md" id="currentChannelTopic">Приём заявок, критерии отбора и анкета кандидата на сервер vunya100</span>
 </div>
@@ -200,72 +295,34 @@
 <div class="flex items-center gap-2 font-mono text-[11px]">
 <span class="px-2.5 py-1 rounded-lg bg-[#131c26] text-gray-300 border border-white/10 flex items-center gap-1.5">
 <span class="w-2 h-2 rounded-full bg-[#00f5a0] animate-pulse"></span>
-            Онлайн: <strong class="text-[#00f5a0]" id="quickOnlineVal">4</strong>/20
-          </span>
+              Онлайн: <strong class="text-[#00f5a0]" id="quickOnlineVal">4</strong>/20
+            </span>
 <button class="p-1.5 text-gray-400 hover:text-[#00f5a0] bg-[#121a22] border border-white/5 rounded-lg transition" onclick="refreshMessages()" title="Обновить сообщения">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="rotate-cw" aria-hidden="true" class="lucide lucide-rotate-cw w-3.5 h-3.5"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-rotate-cw w-3.5 h-3.5" data-lucide="rotate-cw" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
 </button>
 </div>
 </div>
-<!-- Лента сообщений канала -->
-<div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px]" id="messagesContainer">
-          <div class="flex items-start gap-3.5 p-3 rounded-xl message-hover transition border border-transparent hover:border-white/5">
-            <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
-              <img src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png" alt="vunya100" class="w-full h-full object-cover mc-skin-avatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'">
-            </div>
-
-            <div class="flex-1 min-w-0">
-              <div class="flex items-baseline gap-2 flex-wrap mb-1">
-                <span class="font-sans font-bold text-sm text-white hover:underline cursor-pointer">vunya100</span>
-                <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">[АДМИН]</span>
-                <span class="text-[11px] font-mono text-gray-500">Вчера в 18:30</span>
-              </div>
-
-              <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
-                ⚡ <strong class="text-white font-bold">Открыт набор игроков на сезон Cloud.Mine!</strong><br><br>Мы формируем ламповое, дружное комьюнити без гриферов и токсичности. Сервер полностью приватный и работает по белому списку.<br><br><strong class="text-white font-bold">Критерии для подачи:</strong><br>• Возраст 14+ (адекватность и понимание ванильного геймплея)<br>• Наличие микрофона и Discord для координации<br>• Желание строить красивые базы и участвовать в общих проектах<br><br>Для подачи заявки напишите в наш официальный Discord-сервер в тикеты или администратору напрямую.
-              </div>
-
-              
-            </div>
-          </div>
-        
-          <div class="flex items-start gap-3.5 p-3 rounded-xl message-hover transition border border-transparent hover:border-white/5">
-            <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
-              <img src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/Arnimaz21.png" alt="Arnimaz21" class="w-full h-full object-cover mc-skin-avatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'">
-            </div>
-
-            <div class="flex-1 min-w-0">
-              <div class="flex items-baseline gap-2 flex-wrap mb-1">
-                <span class="font-sans font-bold text-sm text-white hover:underline cursor-pointer">Arnimaz21</span>
-                <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">[АДМИН]</span>
-                <span class="text-[11px] font-mono text-gray-500">Сегодня в 12:15</span>
-              </div>
-
-              <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
-                Новые игроки синхронизируются через Cloud.Users KV автоматически. После одобрения заявки вы мгновенно получите доступ к порталу и серверу!
-              </div>
-
-              
-            </div>
-          </div>
-        </div>
+<!-- Лента сообщений канала с плавной анимацией -->
+<div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px] transition-all duration-200" id="messagesContainer">
+<!-- Генерируется скриптом с поддержкой редактирования и удаления -->
+</div>
 <!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ ИЛИ ПЛАШКА ДЛЯ ИГРОКА -->
 <div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95" id="chatActionContainer">
 <!-- Форма отправки сообщения для Администратора -->
 <form class="space-y-2 hidden" id="adminPostForm" onsubmit="handlePostMessage(event)">
 <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 px-1">
 <span class="text-[#00f5a0] flex items-center gap-1.5">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" aria-hidden="true" class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
-              Публикация в активный канал
-            </span>
-<span id="inputCharCount" class="">Shift+Enter для новой строки</span>
+<svg aria-hidden="true" class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+                Публикация в активный канал
+              </span>
+<span class="" id="inputCharCount">Shift+Enter для новой строки</span>
 </div>
 <div class="flex items-center gap-2">
 <div class="relative flex-1">
 <textarea class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-none" id="messageTextInput" placeholder="Отправить сообщение в #набор..." rows="2"></textarea>
 </div>
-<button class="px-4 py-3 bg-[#00f5a0] hover:bg-[#20e295] text-[#002111] font-bold text-xs rounded-xl flex items-center gap-2 transition duration-200 shadow-[0_0_15px_rgba(0,245,160,0.2)] shrink-0 font-sans cursor-pointer" type="submit">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" aria-hidden="true" class="lucide lucide-send w-4 h-4"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+<button class="cyber-btn-primary px-4 py-3 font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 font-heading cursor-pointer" type="submit">
+<svg aria-hidden="true" class="lucide lucide-send w-4 h-4" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
 <span class="">Отправить</span>
 </button>
 </div>
@@ -283,32 +340,57 @@
 <span class="text-gray-300">by Arnimaz21 for </span>
 <a class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
 <span class="">vunya100's server</span>
-<svg class="w-3.5 h-3.5 fill-current text-[#5865F2] inline-block" viewBox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg">
+<svg class="w-3.5 h-3.5 fill-current text-[#5865F2] inline-block" viewbox="0 0 127.14 96.36">
 <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
 </svg>
 </a>
 </footer>
+<!-- МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ СООБЩЕНИЯ -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden transition-opacity duration-200" id="deleteConfirmModal">
+<div class="cyber-card w-full max-w-sm p-5 rounded-2xl border border-red-500/30 shadow-2xl relative">
+<div class="flex items-center gap-3 mb-3 text-red-400">
+<div class="p-2 rounded-xl bg-red-950/50 border border-red-500/30">
+<svg class="w-5 h-5" data-lucide="trash-2" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>
+</div>
+<div>
+<h3 class="font-heading font-bold text-sm text-white">Удалить сообщение?</h3>
+<p class="text-[11px] font-mono text-gray-400">Это действие нельзя отменить</p>
+</div>
+</div>
+<div class="p-3 bg-[#070b10] border border-white/5 rounded-xl mb-4 text-xs font-mono text-gray-300 line-clamp-2 italic" id="deletePreviewText">
+      "..."
+    </div>
+<div class="flex items-center justify-end gap-2">
+<button class="px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-gray-400 hover:text-white hover:bg-white/5 transition" onclick="closeDeleteConfirmModal()">Отмена</button>
+<button class="px-4 py-2 bg-red-600/90 hover:bg-red-500 text-white rounded-xl text-xs font-mono font-semibold transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(239,68,68,0.4)]" id="confirmDeleteBtn" onclick="executeDeleteMessage()">
+<svg class="w-3.5 h-3.5" data-lucide="trash-2" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+        Удалить
+      </button>
+</div>
+</div>
+</div>
 <!-- ==================== МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ (OVERLAY) ==================== -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-[#0a0f14] transition-opacity duration-300" id="authModal" style="background-color: rgb(7, 11, 16); background-image: radial-gradient(circle at 50% 45%, rgba(0, 245, 160, 0.12) 0%, rgba(2, 45, 30, 0.25) 35%, rgba(7, 11, 16, 0.95) 75%), linear-gradient(rgba(0, 245, 160, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 245, 160, 0.03) 1px, transparent 1px); background-size: 100% 100%, 36px 36px, 36px 36px;"><div class="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center"><div class="w-[550px] h-[550px] rounded-full bg-[#00f5a0]/10 blur-3xl"></div></div>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-[#070b10] cyber-grid-bg transition-opacity duration-300" id="authModal">
+<!-- Карточка авторизации в стиле screen.png -->
 <div class="w-full max-w-md rounded-2xl p-6 sm:p-8 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/30 shadow-2xl shadow-[0_0_50px_rgba(0,245,160,0.15)]">
-<!-- Header карточки входа -->
+<!-- Верхний бейдж и заголовок -->
 <div class="flex items-center justify-between mb-5 pb-4 border-b border-white/10">
 <div class="flex items-center gap-3">
 <div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-inner">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-5 h-5 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+<svg aria-hidden="true" class="lucide lucide-shield-check w-5 h-5 text-[#00f5a0]" data-lucide="shield-check" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
 </div>
 <div>
-<h1 class="text-lg font-bold text-white font-sans flex items-center gap-2">
-            Cloud.Mine <span class="text-[#00f5a0] text-xs font-mono font-normal px-2 py-0.5 rounded bg-[#00f5a0]/10 border border-[#00f5a0]/30">AUTH</span>
+<h1 class="text-lg font-bold text-white font-heading flex items-center gap-2">
+              Cloud.Mine <span class="text-[#00f5a0] text-xs font-mono font-normal px-2 py-0.5 rounded bg-[#00f5a0]/10 border border-[#00f5a0]/30">AUTH</span>
 </h1>
 <p class="text-xs text-gray-400 font-mono">Авторизация игрока для доступа</p>
 </div>
 </div>
 </div>
-<!-- Живой предпросмотр скина игрока (настоящий скин Minecraft без AI-картинок) -->
+<!-- Живой предпросмотр скина игрока (настоящий скин Minecraft) -->
 <div class="flex items-center gap-4 p-4 rounded-xl bg-[#070b10] border border-white/10 mb-5">
 <div class="relative w-14 h-14 rounded-xl overflow-hidden bg-[#131c26] border border-[#00f5a0]/40 flex-shrink-0 flex items-center justify-center p-1 shadow-inner avatar-wrapper">
-<img alt="Стив" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png" style="image-rendering: pixelated;">
+<img alt="Стив" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzb3O4cMVaDOsPB8qaS09awod2ktrkSuByTvhD2JZ0iY-YUwLNF4L3pJkaMvdph4v2HREdpqdTqc7XkRfRuQDr4KBIn351wJw1mUPaNJFHV582yfD_TDtp4DwsYuj9C1DYF-Ju8nbZZY_TaZPzwqEPGQqzrQN2GceU6Ew-PjAnzyJOKt3Wd5ibCXF4hyV4aUJiBUMhWQvI_PWFq97B8IBcPvsMCmO1rXJT_u7-Uew9mc9-ZtmTeo_QDA"/>
 <span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10] shadow-[0_0_6px_#00f5a0]"></span>
 </div>
 <div class="flex-1 min-w-0">
@@ -324,52 +406,52 @@
 <form class="space-y-4" id="modalLoginForm" onsubmit="handleModalLogin(event)">
 <div>
 <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">
-          Логин <span class="text-[#00f5a0]">*</span>
+            Логин <span class="text-[#00f5a0]">*</span>
 </label>
 <div class="relative">
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-user w-4 h-4" data-lucide="user" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
 </div>
-<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" oninput="handleNicknameInput(this.value)" placeholder="Ваш ник" required="" type="text">
+<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" oninput="handleNicknameInput(this.value)" placeholder="Ваш ник" required="" type="text"/>
 </div>
 </div>
 <div>
 <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputPassword">
-          Пароль доступа <span class="text-[#00f5a0]">*</span>
+            Пароль <span class="text-[#00f5a0]">*</span>
 </label>
 <div class="relative">
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="key-round" aria-hidden="true" class="lucide lucide-key-round w-4 h-4"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-key-round w-4 h-4" data-lucide="key-round" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" fill="currentColor" r=".5"></circle></svg>
 </div>
-<input autocomplete="current-password" class="w-full bg-[#0e1622] text-white pl-9 pr-10 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputPassword" placeholder="Введите пароль учётной записи" required="" type="password">
+<input autocomplete="current-password" class="w-full bg-[#0e1622] text-white pl-9 pr-10 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputPassword" placeholder="Введите пароль учётной записи" required="" type="password"/>
 <button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 focus:outline-none" id="togglePasswordBtn" onclick="togglePasswordVisibility()" type="button">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" aria-hidden="true" class="lucide lucide-eye w-4 h-4" id="eyeIcon"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-eye w-4 h-4" data-lucide="eye" fill="none" height="24" id="eyeIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
 </button>
 </div>
 </div>
-<!-- Оповещение об ошибке/успехе -->
-<div class="hidden p-3 rounded-xl text-xs font-mono transition" id="loginAlert"></div>
-<!-- Кнопка входа с комфортным отступом -->
-<div class="pt-5">
-<button class="w-full py-3.5 px-4 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wider rounded-xl font-sans flex items-center justify-center gap-2.5 transition duration-200 shadow-[0_0_20px_rgba(0,245,160,0.35)] hover:shadow-[0_0_30px_rgba(0,245,160,0.6)] disabled:opacity-50 disabled:pointer-events-none cursor-pointer" id="btnSubmit" type="submit">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-in" aria-hidden="true" class="lucide lucide-log-in w-4 h-4"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
-<span id="btnSubmitText" class="">→ Войти в систему</span>
+<!-- Контейнер ошибки / статуса авторизации -->
+<div class="hidden p-3 rounded-xl text-xs font-mono transition shadow-lg" id="authErrorMsg"></div>
+<!-- Кнопка входа -->
+<div class="pt-2">
+<button class="cyber-btn-primary w-full py-3.5 px-4 font-bold text-xs tracking-wider rounded-xl font-heading flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 disabled:pointer-events-none" id="btnSubmit" type="submit">
+<svg aria-hidden="true" class="lucide lucide-log-in w-4 h-4" data-lucide="log-in" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
+<span class="" id="btnSubmitText">Войти</span>
 </button>
 </div>
 </form>
-<!-- Футер модального окна -->
+<!-- Футер карточки -->
 <div class="mt-6 pt-4 border-t border-white/5 text-center text-[11px] font-mono text-gray-500 flex items-center justify-center gap-1.5">
 <span class="">by Arnimaz21 for</span>
 <a class="text-indigo-400 hover:text-indigo-300 font-semibold inline-flex items-center gap-1" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
 <span class="">vunya100's server</span>
-<svg class="w-3 h-3 fill-current text-[#5865F2]" viewBox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg">
+<svg class="w-3 h-3 fill-current text-[#5865F2]" viewbox="0 0 127.14 96.36">
 <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
 </svg>
 </a>
 </div>
 </div>
 </div>
-<!-- СКРИПТ: ЛОГИКА АВТОРИЗАЦИИ, КАНАЛОВ DISCORD И ХРАНИЛИЩА СООБЩЕНИЙ -->
+<!-- СКРИПТ: СТРОГАЯ АВТОРИЗАЦИЯ БЕЗ ЗАХАРДКОЖЕННЫХ ПАРОЛЕЙ, КАНАЛЫ DISCORD, РЕДАКТИРОВАНИЕ/УДАЛЕНИЕ И ШЕЙДЕР -->
 <script>
     const CONFIG = {
       STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
@@ -380,7 +462,6 @@
       AUTH_STORAGE_KEY: "cloud_auth_user"
     };
 
-    // Каналы и темы
     const CHANNELS_META = {
       recruitment: {
         name: "набор",
@@ -400,7 +481,6 @@
       }
     };
 
-    // Дефолтные системные посты для каналов
     const DEFAULT_CHANNEL_POSTS = {
       recruitment: [
         {
@@ -459,8 +539,9 @@
     let currentActiveChannel = 'recruitment';
     let appMessages = {};
     let skinCheckTimeout = null;
+    let editingMessageId = null;
+    let pendingDeleteId = null;
 
-    // Сохранение и загрузка сообщений
     function loadSavedMessages() {
       try {
         const stored = localStorage.getItem(CONFIG.CHANNELS_STORAGE_KEY);
@@ -478,35 +559,10 @@
     function saveMessages() {
       try {
         localStorage.setItem(CONFIG.CHANNELS_STORAGE_KEY, JSON.stringify(appMessages));
-      } catch (e) {
-        console.warn("Ошибка сохранения сообщений:", e);
-      }
+      } catch (e) {}
     }
 
-    window.handleSkinError = function(img) {
-      if (!img) return;
-      if (img.src !== CONFIG.FALLBACK_STEVE) {
-        img.src = CONFIG.FALLBACK_STEVE;
-      } else {
-        img.onerror = null;
-      }
-    };
-
-    // Live Skin Preview Handler для модалки входа
-    function handlePreviewSkinError() {
-      const avatarPreview = document.getElementById('avatarPreview');
-      const dot = document.getElementById('skinStatusDot');
-      const notice = document.getElementById('skinSourceNotice');
-      if (avatarPreview && avatarPreview.src !== CONFIG.FALLBACK_STEVE) {
-        avatarPreview.src = CONFIG.FALLBACK_STEVE;
-      }
-      if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-red-400';
-      if (notice) {
-        notice.innerText = 'Скин не найден (дефолт Steve)';
-        notice.className = 'text-[11px] text-red-400 font-mono';
-      }
-    }
-
+    // Предпросмотр скина игрока
     function handleNicknameInput(val) {
       const trimmed = (val || '').trim();
       const previewText = document.getElementById('usernamePreviewText');
@@ -547,7 +603,6 @@
         };
 
         testImg.onerror = function() {
-          // Запасная попытка через Ely.by для онлайн-ников
           const elyImg = new Image();
           const elyUrl = `https://skin.ely.by/avatars/${encodeURIComponent(trimmed)}`;
           elyImg.onload = function() {
@@ -570,7 +625,7 @@
         };
 
         testImg.src = targetUrl;
-      }, 350);
+      }, 300);
     }
 
     function togglePasswordVisibility() {
@@ -586,12 +641,49 @@
       }
     }
 
-    // Авторизация пользователя
+    function showAuthError(msg) {
+      const errBox = document.getElementById('authErrorMsg');
+      if (!errBox) return;
+      errBox.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <i data-lucide="alert-circle" class="shrink-0 text-red-400 mt-0.5 w-4 h-4"></i>
+          <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
+        </div>
+      `;
+      errBox.className = 'p-3 rounded-xl text-xs font-mono transition shadow-lg bg-red-950/70 border border-red-600/70 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.25)]';
+      errBox.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function showAuthSuccess(msg) {
+      const errBox = document.getElementById('authErrorMsg');
+      if (!errBox) return;
+      errBox.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <i data-lucide="check-circle-2" class="shrink-0 text-[#00f5a0] mt-0.5 w-4 h-4"></i>
+          <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
+        </div>
+      `;
+      errBox.className = 'p-3 rounded-xl text-xs font-mono transition shadow-lg bg-[#00f5a0]/15 border border-[#00f5a0]/40 text-[#00f5a0] shadow-[0_0_20px_rgba(0,245,160,0.25)]';
+      errBox.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function clearAuthFeedback() {
+      const errBox = document.getElementById('authErrorMsg');
+      if (errBox) {
+        errBox.classList.add('hidden');
+        errBox.textContent = '';
+      }
+    }
+
+    // Авторизация строго через эндпоинт Cloudflare Worker без хардкода паролей в JS
     async function handleModalLogin(e) {
       if (e) e.preventDefault();
+      clearAuthFeedback();
+
       const usernameInput = document.getElementById('inputUsername');
       const passwordInput = document.getElementById('inputPassword');
-      const alertBox = document.getElementById('loginAlert');
       const btnSubmit = document.getElementById('btnSubmit');
       const btnText = document.getElementById('btnSubmitText');
 
@@ -599,79 +691,87 @@
       const password = (passwordInput ? passwordInput.value : '').trim();
 
       if (!username || !password) {
-        showLoginAlert('Пожалуйста, введите никнейм и пароль.', 'error');
+        showAuthError("Пожалуйста, заполните логин и пароль.");
         return;
       }
 
       btnSubmit.disabled = true;
-      btnText.textContent = 'Проверка доступа...';
+      btnText.textContent = 'Проверка базы игроков...';
 
-      let userObj = null;
+      let matchedUser = null;
 
-      // 1. Попытка валидации через Cloudflare KV Workers
       try {
-        const response = await fetch(CONFIG.USERS_ENDPOINT, {
+        const postResp = await fetch(CONFIG.USERS_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
         });
-        if (response.ok) {
-          const resData = await response.json();
-          if (resData.success && resData.user) {
-            userObj = resData.user;
+        if (postResp.ok) {
+          const postData = await postResp.json();
+          if (postData && (postData.success || postData.user)) {
+            matchedUser = postData.user || {
+              username: username,
+              role: postData.role || 'player'
+            };
           }
         }
-      } catch (err) {
-        console.warn("Workers KV авторизация недоступна, переключаемся на локальную проверку:", err);
-      }
-
-      // 2. Локальная проверка учетных записей при отсутствии Worker
-      if (!userObj) {
-        const lowerUser = username.toLowerCase();
-        // Встроенные администраторы
-        if (lowerUser === 'arnimaz21' || lowerUser === 'vunya100') {
-          userObj = {
-            username: username,
-            role: 'admin',
-            skin: CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png'
-          };
-        } else {
-          // Любой обычный игрок
-          userObj = {
-            username: username,
-            role: 'player',
-            skin: CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png'
-          };
-        }
-      }
-
-      // Сохраняем сессию
-      try {
-        localStorage.setItem(CONFIG.AUTH_STORAGE_KEY, JSON.stringify(userObj));
       } catch (err) {}
 
-      window.currentUser = userObj;
+      // Fallback на защищённый GET /users эндпоинт worker'а
+      if (!matchedUser) {
+        try {
+          const resp = await fetch(CONFIG.USERS_ENDPOINT, { cache: 'no-store' });
+          if (resp.ok) {
+            const data = await resp.json();
+            let usersList = Array.isArray(data) ? data : (data.users || data.db?.users || []);
+            if (typeof usersList === 'object' && !Array.isArray(usersList)) {
+              usersList = Object.values(usersList);
+            }
 
-      showLoginAlert(`Успешный вход! Добро пожаловать, ${userObj.username}.`, 'success');
+            const found = usersList.find(u => {
+              const uName = (u.username || u.login || u.name || '').trim().toLowerCase();
+              return uName === username.toLowerCase() && String(u.password || u.pass || '') === password;
+            });
+
+            if (found) {
+              matchedUser = {
+                username: found.username || found.login || username,
+                role: found.role || found.permission || 'player',
+                skin: found.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png')
+              };
+            }
+          }
+        } catch (fetchErr) {}
+      }
+
+      if (!matchedUser) {
+        btnSubmit.disabled = false;
+        btnText.textContent = 'Войти';
+        showAuthError("Ошибка: неверный логин или пароль. Доступ разрешён зарегистрированным игрокам.");
+        return;
+      }
+
+      showAuthSuccess(`Доступ разрешён! Добро пожаловать, ${matchedUser.username}.`);
+
+      const sessionData = {
+        username: matchedUser.username,
+        role: (matchedUser.role || 'player').toLowerCase(),
+        skin: matchedUser.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(matchedUser.username) + '.png'),
+        loginTime: Date.now()
+      };
+
+      try {
+        localStorage.setItem(CONFIG.AUTH_STORAGE_KEY, JSON.stringify(sessionData));
+      } catch (err) {}
+
+      window.currentUser = sessionData;
 
       setTimeout(() => {
         hideAuthModal();
-        applyUserRolePortal(userObj);
+        applyUserRolePortal(sessionData);
         btnSubmit.disabled = false;
-        btnText.textContent = '→ Войти в систему';
-      }, 500);
-    }
-
-    function showLoginAlert(msg, type) {
-      const alertBox = document.getElementById('loginAlert');
-      if (!alertBox) return;
-      alertBox.textContent = msg;
-      alertBox.classList.remove('hidden', 'bg-red-950/60', 'text-red-400', 'border-red-800', 'bg-[#00f5a0]/15', 'text-[#00f5a0]', 'border-[#00f5a0]/40');
-      if (type === 'error') {
-        alertBox.classList.add('bg-red-950/60', 'text-red-400', 'border', 'border-red-800');
-      } else {
-        alertBox.classList.add('bg-[#00f5a0]/15', 'text-[#00f5a0]', 'border', 'border-[#00f5a0]/40');
-      }
+        btnText.textContent = 'Войти';
+      }, 400);
     }
 
     function showAuthModal() {
@@ -699,30 +799,25 @@
 
     window.logoutUser = function() {
       localStorage.removeItem(CONFIG.AUTH_STORAGE_KEY);
-      sessionStorage.removeItem(CONFIG.AUTH_STORAGE_KEY);
       window.currentUser = null;
-
-      // Очистить инпуты
+      editingMessageId = null;
       const userInp = document.getElementById('inputUsername');
       const passInp = document.getElementById('inputPassword');
-      const alertBox = document.getElementById('loginAlert');
       if (userInp) userInp.value = '';
       if (passInp) passInp.value = '';
-      if (alertBox) alertBox.classList.add('hidden');
+      clearAuthFeedback();
       handleNicknameInput('');
-
       showAuthModal();
+      renderChannelMessages();
     };
 
     function applyUserRolePortal(user) {
       if (!user) return;
-
       const username = user.username;
       const role = (user.role || 'player').toLowerCase();
       const isAdmin = (role === 'admin' || role === 'administrator');
-      const skinUrl = CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png';
+      const skinUrl = user.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png');
 
-      // Обновление шапки
       const headerUserNick = document.getElementById('headerUserNick');
       const headerUserAvatar = document.getElementById('headerUserAvatar');
       if (headerUserNick) headerUserNick.textContent = username;
@@ -734,7 +829,6 @@
         };
       }
 
-      // Обновление сайдбара
       const sidebarNick = document.getElementById('userSidebarNick');
       const sidebarAvatar = document.getElementById('userSidebarAvatar');
       const sidebarRole = document.getElementById('userSidebarRole');
@@ -757,7 +851,6 @@
         }
       }
 
-      // Настройка прав для чата (сообщения)
       const adminPostForm = document.getElementById('adminPostForm');
       const playerNoticeBlock = document.getElementById('playerNoticeBlock');
 
@@ -769,41 +862,67 @@
         if (playerNoticeBlock) playerNoticeBlock.classList.remove('hidden');
       }
 
+      renderChannelMessages();
       lucide.createIcons();
     }
 
     window.copyServerIpAddress = function(ipText) {
       const val = ipText || '185.9.145.7:27019';
       navigator.clipboard.writeText(val).then(() => {
-        alert('IP адрес сервера (' + val + ') успешно скопирован в буфер обмена!');
+        alert('IP адрес сервера (' + val + ') скопирован в буфер обмена!');
       });
     };
 
+    // Переключение каналов с плавной анимацией fade + slide-up + scanline
     window.switchChannel = function(channelKey) {
       if (!CHANNELS_META[channelKey]) return;
+      if (currentActiveChannel === channelKey && document.getElementById('messagesContainer').children.length > 0) return;
       currentActiveChannel = channelKey;
+      editingMessageId = null;
 
       document.querySelectorAll('.channel-item').forEach(btn => {
         btn.classList.remove('active');
-        const hashIcon = btn.querySelector('svg.lucide-hash');
+        const hashIcon = btn.querySelector('svg');
         if (hashIcon) hashIcon.classList.remove('text-[#00f5a0]');
       });
 
       const activeBtn = document.getElementById(`chan-btn-${channelKey}`);
       if (activeBtn) {
         activeBtn.classList.add('active');
-        const hashIcon = activeBtn.querySelector('svg.lucide-hash');
+        const hashIcon = activeBtn.querySelector('svg');
         if (hashIcon) hashIcon.classList.add('text-[#00f5a0]');
       }
 
       const titleEl = document.getElementById('currentChannelTitle');
       const topicEl = document.getElementById('currentChannelTopic');
       const inputEl = document.getElementById('messageTextInput');
+      const container = document.getElementById('messagesContainer');
+      const panel = document.getElementById('mainChannelPanel');
+
       if (titleEl) titleEl.textContent = CHANNELS_META[channelKey].name;
       if (topicEl) topicEl.textContent = CHANNELS_META[channelKey].topic;
       if (inputEl) inputEl.placeholder = `Отправить сообщение в #${CHANNELS_META[channelKey].name}...`;
 
-      renderChannelMessages();
+      if (container) {
+        container.style.opacity = '0';
+        container.style.transform = 'translateY(6px)';
+        if (panel) panel.classList.add('scanline-active');
+
+        setTimeout(() => {
+          renderChannelMessages();
+          container.classList.remove('channel-transition-enter');
+          void container.offsetWidth;
+          container.classList.add('channel-transition-enter');
+          container.style.opacity = '1';
+          container.style.transform = 'none';
+
+          if (panel) {
+            setTimeout(() => panel.classList.remove('scanline-active'), 250);
+          }
+        }, 80);
+      } else {
+        renderChannelMessages();
+      }
     };
 
     function formatMessageContent(rawText) {
@@ -822,6 +941,129 @@
       return text;
     }
 
+    // Проверка прав пользователя на редактирование/удаление сообщения
+    function canUserManageMessage(post) {
+      const user = window.currentUser;
+      if (!user) return false;
+      const role = (user.role || '').toLowerCase();
+      const isAdmin = (role === 'admin' || role === 'administrator');
+      if (isAdmin) return true;
+      if (post && post.author && user.username && post.author.toLowerCase() === user.username.toLowerCase()) {
+        return true;
+      }
+      return false;
+    }
+
+    // Запуск инлайн-редактирования
+    window.startEditMessage = function(id) {
+      editingMessageId = id;
+      renderChannelMessages();
+      setTimeout(() => {
+        const textarea = document.getElementById(`edit-textarea-${id}`);
+        if (textarea) {
+          textarea.focus();
+          textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+      }, 50);
+    };
+
+    // Отмена инлайн-редактирования
+    window.cancelEditMessage = function() {
+      editingMessageId = null;
+      renderChannelMessages();
+    };
+
+    // Сохранение изменений в сообщении
+    window.saveEditedMessage = function(id) {
+      const textarea = document.getElementById(`edit-textarea-${id}`);
+      if (!textarea) return;
+      const newText = textarea.value.trim();
+      if (!newText) {
+        alert("Сообщение не может быть пустым.");
+        return;
+      }
+
+      const posts = appMessages[currentActiveChannel] || [];
+      const targetPost = posts.find(p => p.id === id);
+      if (!targetPost) return;
+
+      if (!canUserManageMessage(targetPost)) {
+        alert("У вас нет прав для изменения этого сообщения.");
+        return;
+      }
+
+      targetPost.content = newText;
+      targetPost.isEdited = true;
+      saveMessages();
+
+      editingMessageId = null;
+      renderChannelMessages();
+    };
+
+    // Открытие модалки подтверждения удаления
+    window.promptDeleteMessage = function(id) {
+      const posts = appMessages[currentActiveChannel] || [];
+      const targetPost = posts.find(p => p.id === id);
+      if (!targetPost) return;
+
+      if (!canUserManageMessage(targetPost)) {
+        alert("У вас нет прав для удаления этого сообщения.");
+        return;
+      }
+
+      pendingDeleteId = id;
+      const previewEl = document.getElementById('deletePreviewText');
+      if (previewEl) {
+        const snippet = targetPost.content.replace(/[*`#]/g, '').trim();
+        previewEl.textContent = `"${snippet.substring(0, 100)}${snippet.length > 100 ? '...' : ''}"`;
+      }
+
+      const modal = document.getElementById('deleteConfirmModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        lucide.createIcons();
+      }
+    };
+
+    window.closeDeleteConfirmModal = function() {
+      pendingDeleteId = null;
+      const modal = document.getElementById('deleteConfirmModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    // Исполнение удаления с плавной анимацией
+    window.executeDeleteMessage = function() {
+      if (!pendingDeleteId) return;
+      const idToDelete = pendingDeleteId;
+      closeDeleteConfirmModal();
+
+      const el = document.getElementById(`message-item-${idToDelete}`);
+      if (el) {
+        el.style.transition = 'all 0.25s ease-out';
+        el.style.opacity = '0';
+        el.style.transform = 'scale(0.95) translateY(-6px)';
+        el.style.maxHeight = el.offsetHeight + 'px';
+        setTimeout(() => {
+          el.style.maxHeight = '0px';
+          el.style.paddingTop = '0px';
+          el.style.paddingBottom = '0px';
+          el.style.marginBottom = '0px';
+          setTimeout(() => {
+            performMessageRemoval(idToDelete);
+          }, 200);
+        }, 120);
+      } else {
+        performMessageRemoval(idToDelete);
+      }
+    };
+
+    function performMessageRemoval(id) {
+      const posts = appMessages[currentActiveChannel] || [];
+      appMessages[currentActiveChannel] = posts.filter(p => p.id !== id);
+      saveMessages();
+      renderChannelMessages();
+    }
+
     function renderChannelMessages() {
       const container = document.getElementById('messagesContainer');
       if (!container) return;
@@ -831,9 +1073,9 @@
         container.innerHTML = `
           <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div class="p-3 rounded-full bg-[#121a22] text-gray-500 border border-white/10">
-              <svg class="lucide lucide-message-square w-6 h-6" data-lucide="message-square" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <i data-lucide="message-square" class="w-6 h-6"></i>
             </div>
-            <p class="text-sm font-sans text-gray-300 font-semibold">В канале #${CHANNELS_META[currentActiveChannel].name} пока нет записей</p>
+            <p class="text-sm font-heading text-gray-300 font-semibold">В канале #${CHANNELS_META[currentActiveChannel].name} пока нет записей</p>
             <p class="text-xs text-gray-500 font-mono max-w-sm">Сообщения появятся здесь после публикации администрацией сервера.</p>
           </div>
         `;
@@ -842,35 +1084,64 @@
       }
 
       let html = '';
-      posts.forEach(post => {
+      posts.forEach((post, idx) => {
         const isAuthorAdmin = (post.role || '').toUpperCase() === 'ADMIN';
         const roleBadge = isAuthorAdmin
           ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">[АДМИН]</span>'
           : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">[ИГРОК]</span>';
 
         const avatarUrl = CONFIG.SKIN_BASE_URL + encodeURIComponent(post.author) + '.png';
+        const delay = (idx * 0.05).toFixed(2);
+        const hasActions = canUserManageMessage(post);
+        const isEditing = (editingMessageId === post.id);
 
         html += `
-          <div class="flex items-start gap-3.5 p-3 rounded-xl message-hover transition border border-transparent hover:border-white/5">
+          <div id="message-item-${post.id}" class="group relative flex items-start gap-3.5 p-3 rounded-xl message-hover message-item-enter transition border border-transparent hover:border-white/5" style="animation-delay: ${delay}s">
+            
+            ${hasActions && !isEditing ? `
+              <div class="message-action-bar absolute top-2 right-2 flex items-center gap-1 bg-[#101823]/95 border border-[#00f5a0]/25 rounded-lg p-1 shadow-lg backdrop-blur-md z-20">
+                <button onclick="startEditMessage('${post.id}')" title="Редактировать" class="p-1.5 hover:bg-[#1a2736] text-gray-400 hover:text-[#00f5a0] rounded-md transition duration-150">
+                  <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="promptDeleteMessage('${post.id}')" title="Удалить" class="p-1.5 hover:bg-red-950/40 text-gray-400 hover:text-red-400 rounded-md transition duration-150">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            ` : ''}
+
             <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
               <img src="${avatarUrl}" alt="${post.author}" class="w-full h-full object-cover mc-skin-avatar" onerror="this.onerror=null;this.src='${CONFIG.FALLBACK_STEVE}'" />
             </div>
 
-            <div class="flex-1 min-w-0">
+            <div class="flex-1 min-w-0 pr-8">
               <div class="flex items-baseline gap-2 flex-wrap mb-1">
-                <span class="font-sans font-bold text-sm text-white hover:underline cursor-pointer">${post.author}</span>
+                <span class="font-heading font-bold text-sm text-white hover:underline cursor-pointer">${post.author}</span>
                 ${roleBadge}
                 <span class="text-[11px] font-mono text-gray-500">${post.time}</span>
+                ${post.isEdited ? '<span class="text-[10px] font-mono text-gray-400 italic bg-white/5 px-1 rounded">(изменено)</span>' : ''}
               </div>
 
-              <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
-                ${formatMessageContent(post.content)}
-              </div>
+              ${isEditing ? `
+                <div class="mt-2 space-y-2 bg-[#090e15] p-3 rounded-xl border border-[#00f5a0]/40">
+                  <textarea id="edit-textarea-${post.id}" rows="3" class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-lg p-2.5 text-xs text-white font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-y custom-scroll">${post.content.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}</textarea>
+                  <div class="flex items-center justify-end gap-2 pt-1">
+                    <button onclick="cancelEditMessage()" class="px-3 py-1.5 rounded-lg text-xs font-mono text-gray-400 hover:text-white hover:bg-white/5 transition">Отмена</button>
+                    <button onclick="saveEditedMessage('${post.id}')" class="cyber-btn-primary px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5">
+                      <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                      Сохранить
+                    </button>
+                  </div>
+                </div>
+              ` : `
+                <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
+                  ${formatMessageContent(post.content)}
+                </div>
+              `}
 
-              ${post.hasCopyAction ? `
+              ${post.hasCopyAction && !isEditing ? `
                 <div class="mt-3">
-                  <button onclick="copyServerIpAddress('${post.copyValue || '185.9.145.7:27019'}')" class="px-3.5 py-1.5 bg-[#121a22] hover:bg-[#192430] text-[#00f5a0] border border-[#00f5a0]/30 hover:border-[#00f5a0] rounded-xl text-xs font-mono flex items-center gap-2 transition duration-200 shadow-sm cursor-pointer">
-                    <svg class="lucide lucide-copy w-3.5 h-3.5" data-lucide="copy" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="14" rx="2" ry="2" width="14" x="8" y="8"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                  <button onclick="copyServerIpAddress('${post.copyValue || '185.9.145.7:27019'}')" class="px-3.5 py-1.5 bg-[#121a22] hover:bg-[#192430] text-[#00f5a0] border border-[#00f5a0]/30 hover:border-[#00f5a0] rounded-xl text-xs font-mono flex items-center gap-2 transition duration-200 shadow-sm cursor-pointer active:scale-95">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                     <span>Скопировать IP сервера (185.9.145.7:27019)</span>
                   </button>
                 </div>
@@ -882,7 +1153,9 @@
 
       container.innerHTML = html;
       lucide.createIcons();
-      container.scrollTop = container.scrollHeight;
+      if (!editingMessageId) {
+        container.scrollTop = container.scrollHeight;
+      }
     }
 
     window.handlePostMessage = function(e) {
@@ -924,14 +1197,12 @@
       renderChannelMessages();
     };
 
-    // При загрузке страницы
     document.addEventListener('DOMContentLoaded', async () => {
       loadSavedMessages();
-      switchChannel('recruitment');
+      renderChannelMessages();
       lucide.createIcons();
 
-      // Проверка сохраненной сессии
-      let rawAuth = localStorage.getItem(CONFIG.AUTH_STORAGE_KEY) || sessionStorage.getItem(CONFIG.AUTH_STORAGE_KEY);
+      let rawAuth = localStorage.getItem(CONFIG.AUTH_STORAGE_KEY);
       let sessionUser = null;
       try {
         if (rawAuth) sessionUser = JSON.parse(rawAuth);
@@ -945,7 +1216,6 @@
         showAuthModal();
       }
 
-      // Enter отправка для администратора
       const msgInput = document.getElementById('messageTextInput');
       if (msgInput) {
         msgInput.addEventListener('keydown', (e) => {
@@ -956,7 +1226,6 @@
         });
       }
 
-      // Таймер онлайн-сессии
       const startTime = Date.now();
       const sessionSmallEl = document.getElementById('sessionTimeSmall');
       setInterval(() => {
@@ -966,7 +1235,6 @@
         }
       }, 30000);
 
-      // Запрос онлайна сервера
       try {
         const res = await fetch(CONFIG.STATS_ENDPOINT, { cache: 'no-store' });
         if (res.ok) {
@@ -976,54 +1244,77 @@
             quickOnline.textContent = data.online;
           }
         }
-      } catch (e) {
-        console.warn("Метрики онлайна недоступны:", e);
-      }
+      } catch (e) {}
     });
 
-    // Живой WebGL Canvas шейдер фона
-    (function initShader() {
+    // ==========================================
+    // ВЫСОКОПРОИЗВОДИТЕЛЬНЫЙ И ОПТИМИЗИРОВАННЫЙ WEBGL ШЕЙДЕР
+    // Ограничение DPR (max 1.0), пропуск кадров (30-40 FPS) и пауза при неактивной вкладке
+    // ==========================================
+    (function initOptimizedShader() {
       const canvas = document.getElementById('shader-canvas');
       if (!canvas) return;
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      const gl = canvas.getContext('webgl', { 
+        powerPreference: 'low-power', 
+        antialias: false,
+        depth: false,
+        stencil: false,
+        alpha: false 
+      }) || canvas.getContext('experimental-webgl');
+      
       if (!gl) return;
 
+      let isPaused = false;
+      document.addEventListener('visibilitychange', () => {
+        isPaused = document.hidden;
+      });
+
       function resize() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
+        const w = Math.floor(window.innerWidth * dpr);
+        const h = Math.floor(window.innerHeight * dpr);
         if (canvas.width !== w || canvas.height !== h) {
           canvas.width = w;
           canvas.height = h;
           gl.viewport(0, 0, w, h);
         }
       }
-      window.addEventListener('resize', resize);
+      window.addEventListener('resize', resize, { passive: true });
       resize();
 
-      const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+      const vs = `
+        attribute vec2 p;
+        varying vec2 vUv;
+        void main() {
+          vUv = p * 0.5 + 0.5;
+          gl_Position = vec4(p, 0.0, 1.0);
+        }
+      `;
+
       const fs = `
         precision mediump float;
         uniform float t;
         uniform vec2 r;
+        varying vec2 vUv;
+
         void main() {
-          vec2 uv = gl_FragCoord.xy / r.xy;
-          vec2 p = (gl_FragCoord.xy * 2.0 - r.xy) / min(r.x, r.y);
-          
-          float wave = sin(p.y * 3.0 + sin(p.x * 2.0 + t * 0.4) * 1.5 + t * 0.3) * 0.5 + 0.5;
-          wave += sin(p.x * 1.5 - t * 0.2) * 0.25;
+          vec2 p = vUv * 2.0 - 1.0;
+          p.x *= (r.x / r.y);
 
-          vec3 darkVoid = vec3(0.015, 0.03, 0.025);
-          vec3 emerald = vec3(0.0, 0.96, 0.62);
-          vec3 deepCyan = vec3(0.02, 0.22, 0.18);
+          float wave = sin(p.y * 2.2 + p.x * 1.1 + t * 0.5) * 0.5 + 0.5;
 
-          vec3 color = mix(darkVoid, deepCyan, wave * 0.55);
-          color += emerald * pow(wave, 4.0) * 0.35;
+          vec3 darkVoid = vec3(0.027, 0.043, 0.063);
+          vec3 deepCyan = vec3(0.02, 0.14, 0.12);
+          vec3 emerald  = vec3(0.0, 0.96, 0.62);
 
-          vec2 grid = abs(fract(gl_FragCoord.xy / 48.0) - 0.5);
-          float line = 1.0 - smoothstep(0.0, 0.04, min(grid.x, grid.y));
-          color += emerald * line * 0.035;
+          vec3 col = mix(darkVoid, deepCyan, wave * 0.45);
+          col += emerald * (wave * wave * 0.18);
 
-          gl_FragColor = vec4(color, 1.0);
+          vec2 gridUv = fract(gl_FragCoord.xy / 44.0);
+          float line = step(0.96, gridUv.x) + step(0.96, gridUv.y);
+          col += emerald * (clamp(line, 0.0, 1.0) * 0.035);
+
+          gl_FragColor = vec4(col, 1.0);
         }
       `;
 
@@ -1033,6 +1324,7 @@
         gl.compileShader(s);
         return s;
       }
+
       const prog = gl.createProgram();
       gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
       gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
@@ -1049,17 +1341,23 @@
       const uT = gl.getUniformLocation(prog, 't');
       const uR = gl.getUniformLocation(prog, 'r');
 
-      let start = performance.now();
-      function render() {
-        const now = (performance.now() - start) * 0.001;
-        gl.uniform1f(uT, now);
-        gl.uniform2f(uR, canvas.width, canvas.height);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      let lastTime = 0;
+      const targetFPS = 30;
+      const frameInterval = 1000 / targetFPS;
+
+      function render(now) {
         requestAnimationFrame(render);
+        if (isPaused) return;
+
+        const delta = now - lastTime;
+        if (delta > frameInterval) {
+          lastTime = now - (delta % frameInterval);
+          gl.uniform1f(uT, now * 0.001);
+          gl.uniform2f(uR, canvas.width, canvas.height);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
       }
-      render();
+      requestAnimationFrame(render);
     })();
-</script>
-
-
+  </script>
 </body></html>
