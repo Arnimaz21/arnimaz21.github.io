@@ -93,29 +93,26 @@
 <!-- Живой интерактивный предпросмотр скина игрока -->
 <div class="flex items-center gap-4 p-4 rounded-xl bg-[#070b10]/80 border border-white/10 mb-6">
 <div class="relative w-14 h-14 rounded-xl overflow-hidden bg-[#131c26] border border-[#00f5a0]/40 flex-shrink-0 flex items-center justify-center p-1 shadow-inner">
-<img alt="Скин игрока" class="w-full h-full object-contain rounded-lg" id="avatarPreview" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png" style="image-rendering: crisp-edges;" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png';">
+<img alt="Стив" class="w-full h-full rounded-lg" id="avatarPreview" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'; const dot = document.getElementById('skinStatusDot'); if (dot) { dot.className = 'w-1.5 h-1.5 rounded-full bg-red-400'; } const n = document.getElementById('skinSourceNotice'); if (n) { n.innerText = 'Скин не найден'; n.className = 'text-[11px] text-red-400 font-mono'; }" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png" style="image-rendering: pixelated; object-fit: cover;">
 <span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10] shadow-[0_0_6px_#00f5a0]"></span>
 </div>
 <div class="flex-1 min-w-0">
 <div class="text-[10px] uppercase tracking-wider text-gray-400 font-mono font-semibold">профиль</div>
 <div class="text-white font-bold text-sm truncate font-mono" id="usernamePreviewText">Стив</div>
-<div class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-<span class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5" id="skinSourceNotice">Ожидание ввода ника...</span>
-</div>
+<div class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-gray-500" id="skinStatusDot"></span>
+<span class="text-[11px] text-gray-500 font-mono" id="skinSourceNotice">Ожидание ввода ника...</span></div>
 </div>
 </div>
 <!-- Форма ввода учетных данных -->
 <form class="space-y-4" id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
 <div>
-<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">
-            Никнейм (Minecraft) <span class="text-[#00f5a0]">*</span>
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">Логин&nbsp;<span class="text-[#00f5a0]">*</span>
 </label>
 <div class="relative">
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
 </div>
-<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" placeholder="Arnimaz21" required="" type="text">
+<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" placeholder="Ваш ник" required="" type="text">
 </div>
 </div>
 <div>
@@ -136,15 +133,8 @@
 </div>
 <!-- Сообщение об ошибке/успехе -->
 <div class="hidden p-3 rounded-xl text-xs font-mono transition" id="loginAlert"></div>
-<!-- Запомнить сессию -->
-<div class="flex items-center justify-between text-xs font-mono pt-1">
-<label class="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-200 transition">
-<input checked="" class="accent-[#00f5a0] rounded w-4 h-4 cursor-pointer" id="rememberMe" type="checkbox">
-<span class="">Запомнить сессию (30 дней)</span>
-</label>
-</div>
 <!-- Кнопка входа -->
-<button class="w-full py-3 px-4 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wider rounded-xl font-sans flex items-center justify-center gap-2.5 transition duration-200 neon-btn-glow disabled:opacity-50 disabled:pointer-events-none cursor-pointer mt-4" id="btnSubmit" type="submit">
+<button class="w-full py-3 px-4 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wider rounded-xl font-sans flex items-center justify-center gap-2.5 transition duration-200 neon-btn-glow disabled:opacity-50 disabled:pointer-events-none cursor-pointer" id="btnSubmit" type="submit" style="margin-top: 84px;">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-in" aria-hidden="true" class="lucide lucide-log-in w-4 h-4"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
 <span class="" id="btnSubmitText">ВОЙТИ В СИСТЕМУ</span>
 </button>
@@ -166,10 +156,10 @@
     const avatarPreview = document.getElementById('avatarPreview');
     const usernamePreviewText = document.getElementById('usernamePreviewText');
     const skinSourceNotice = document.getElementById('skinSourceNotice');
+    const skinStatusDot = document.getElementById('skinStatusDot');
     const loginAlert = document.getElementById('loginAlert');
     const btnSubmit = document.getElementById('btnSubmit');
     const btnSubmitText = document.getElementById('btnSubmitText');
-    const rememberMe = document.getElementById('rememberMe');
     const togglePasswordBtn = document.getElementById('togglePasswordBtn');
     const eyeIcon = document.getElementById('eyeIcon');
 
@@ -189,13 +179,21 @@
 
       if (!nick) {
         avatarPreview.src = STEVE_FALLBACK_URL;
-        usernamePreviewText.innerText = "Стив (Гость)";
+        usernamePreviewText.innerText = "Стив";
         skinSourceNotice.innerText = "Ожидание ввода ника...";
+        skinSourceNotice.className = "text-[11px] text-gray-500 font-mono";
+        if (skinStatusDot) {
+          skinStatusDot.className = "w-1.5 h-1.5 rounded-full bg-gray-500";
+        }
         return;
       }
 
       usernamePreviewText.innerText = nick;
       skinSourceNotice.innerText = "Поиск скина в репозитории...";
+      skinSourceNotice.className = "text-[11px] text-gray-400 font-mono";
+      if (skinStatusDot) {
+        skinStatusDot.className = "w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse";
+      }
 
       debounceTimer = setTimeout(() => {
         const repoSkinUrl = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${nick}.png`;
@@ -204,13 +202,19 @@
         const testImg = new Image();
         testImg.onload = () => {
           avatarPreview.src = repoSkinUrl;
-          skinSourceNotice.innerText = "Скин найден в assets/skins/";
-          skinSourceNotice.className = "text-[11px] text-[#00f5a0] font-mono mt-0.5 flex items-center gap-1.5";
+          skinSourceNotice.innerText = "Скин найден";
+          skinSourceNotice.className = "text-[11px] text-[#00f5a0] font-mono";
+          if (skinStatusDot) {
+            skinStatusDot.className = "w-1.5 h-1.5 rounded-full bg-[#00f5a0]";
+          }
         };
         testImg.onerror = () => {
           avatarPreview.src = STEVE_FALLBACK_URL;
-          skinSourceNotice.innerText = "Скин не найден (steave.png)";
-          skinSourceNotice.className = "text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5";
+          skinSourceNotice.innerText = "Скин не найден";
+          skinSourceNotice.className = "text-[11px] text-gray-500 font-mono";
+          if (skinStatusDot) {
+            skinStatusDot.className = "w-1.5 h-1.5 rounded-full bg-gray-500";
+          }
         };
         testImg.src = repoSkinUrl;
       }, 350);
@@ -268,7 +272,7 @@
           return;
         }
 
-        // Авторизация успешна! Сохраняем сессию
+        // Авторизация успешна! Всегда сохраняем сессию по умолчанию
         const sessionPayload = {
           id: user.id || `usr_${Date.now()}`,
           username: user.username || user.name,
@@ -277,15 +281,13 @@
           skinUrl: avatarPreview.src
         };
 
-        if (rememberMe.checked) {
-          localStorage.setItem('cloud_mine_auth_session', JSON.stringify(sessionPayload));
-          localStorage.setItem('cloud_mine_user', sessionPayload.username);
-          localStorage.setItem('cloud_mine_role', sessionPayload.role);
-        } else {
-          sessionStorage.setItem('cloud_mine_auth_session', JSON.stringify(sessionPayload));
-          sessionStorage.setItem('cloud_mine_user', sessionPayload.username);
-          sessionStorage.setItem('cloud_mine_role', sessionPayload.role);
-        }
+        localStorage.setItem('cloud_mine_auth_session', JSON.stringify(sessionPayload));
+        localStorage.setItem('cloud_mine_user', sessionPayload.username);
+        localStorage.setItem('cloud_mine_role', sessionPayload.role);
+
+        // Также дублируем в cookie на 30 дней для совместимости
+        document.cookie = `cloud_mine_user=${encodeURIComponent(sessionPayload.username)}; path=/; max-age=2592000; SameSite=Lax`;
+        document.cookie = `cloud_mine_role=${encodeURIComponent(sessionPayload.role)}; path=/; max-age=2592000; SameSite=Lax`;
 
         showAlert(`Успешный вход! Добро пожаловать, ${sessionPayload.username}. Перенаправление...`, 'success');
         btnSubmitText.innerText = 'ПЕРЕНАПРАВЛЕНИЕ...';
@@ -331,10 +333,6 @@
       }
     });
   </script>
-
-
-
-
 
 
 </body></html>
