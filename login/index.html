@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="ru" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Cloud.Mine — Вход в систему</title>
+<link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#00f5a0',
+              glow: 'rgba(0, 245, 160, 0.35)',
+              dark: '#00bd7a',
+              light: '#50ffaf',
+              bg: '#070b10',
+              surface: '#0b1017',
+              border: '#1a2b27'
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Space Grotesk', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #070b10;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+    }
+    .neon-glow {
+      box-shadow: 0 0 25px rgba(0, 245, 160, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .neon-btn-glow {
+      box-shadow: 0 0 20px rgba(0, 245, 160, 0.35);
+    }
+    .neon-btn-glow:hover {
+      box-shadow: 0 0 30px rgba(0, 245, 160, 0.6);
+    }
+    .cyber-card {
+      background: rgba(11, 16, 23, 0.92);
+      border: 1px solid rgba(0, 245, 160, 0.25);
+      backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 antialiased select-none relative bg-[#070b10]">
+<!-- Living WebGL background shader (тот же самый шейдер проекта Cloud.Mine) -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden bg-[#070b10]">
+<!-- Soft ambient radial glows -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] h-[550px] sm:h-[650px] bg-gradient-to-tr from-[#00f5a0]/15 via-[#035f39]/20 to-transparent rounded-full blur-[120px] opacity-70 pointer-events-none"></div>
+<div class="absolute -top-32 -left-32 w-96 h-96 bg-[#00f5a0]/10 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-32 -right-32 w-96 h-96 bg-[#035f39]/20 rounded-full blur-[110px] pointer-events-none"></div>
+<!-- Cyberpunk coordinate grid pattern (50px pitch) -->
+<div class="absolute inset-0 bg-[linear-gradient(to_right,#00f5a00d_1px,transparent_1px),linear-gradient(to_bottom,#00f5a00d_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)] opacity-80"></div>
+<!-- Deep obsidian vignette mask -->
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#070b10_85%)]"></div>
+</div>
+<!-- Верхняя панель статуса кластера -->
+<!-- Центральная карточка входа -->
+<main class="w-full max-w-xl my-auto">
+<div class="cyber-card rounded-2xl p-6 sm:p-8 relative overflow-hidden neon-glow shadow-2xl">
+<!-- Верхний статус карточки -->
+<div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-inner">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-5 h-5 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+</div>
+<div>
+<h1 class="text-lg font-bold text-white font-sans flex items-center gap-2">
+              Cloud.Mine <span class="text-[#00f5a0] text-xs font-mono font-normal px-2 py-0.5 rounded bg-[#00f5a0]/10 border border-[#00f5a0]/30">AUTH</span>
+</h1>
+<p class="text-xs text-gray-400 font-mono">Авторизация игрока для доступа</p>
+</div>
+</div>
+<div class="text-right hidden sm:block">
+</div>
+</div>
+<!-- Живой интерактивный предпросмотр скина игрока -->
+<div class="flex items-center gap-4 p-4 rounded-xl bg-[#070b10]/80 border border-white/10 mb-6">
+<div class="relative w-14 h-14 rounded-xl overflow-hidden bg-[#131c26] border border-[#00f5a0]/40 flex-shrink-0 flex items-center justify-center p-1 shadow-inner">
+<img alt="Скин игрока" class="w-full h-full object-contain rounded-lg" id="avatarPreview" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png" style="image-rendering: crisp-edges;" onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png';">
+<span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10] shadow-[0_0_6px_#00f5a0]"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="text-[10px] uppercase tracking-wider text-gray-400 font-mono font-semibold">профиль</div>
+<div class="text-white font-bold text-sm truncate font-mono" id="usernamePreviewText">Стив</div>
+<div class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+<span class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5" id="skinSourceNotice">Ожидание ввода ника...</span>
+</div>
+</div>
+</div>
+<!-- Форма ввода учетных данных -->
+<form class="space-y-4" id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">
+            Никнейм (Minecraft) <span class="text-[#00f5a0]">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+</div>
+<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" placeholder="Arnimaz21" required="" type="text">
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1.5">
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono" for="inputPassword">
+              Пароль доступа <span class="text-[#00f5a0]">*</span>
+</label>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="key-round" aria-hidden="true" class="lucide lucide-key-round w-4 h-4"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+</div>
+<input autocomplete="current-password" class="w-full bg-[#0e1622] text-white pl-9 pr-10 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputPassword" placeholder="Введите пароль учётной записи" required="" type="password">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 focus:outline-none" id="togglePasswordBtn" type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" aria-hidden="true" class="lucide lucide-eye w-4 h-4" id="eyeIcon"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+</button>
+</div>
+</div>
+<!-- Сообщение об ошибке/успехе -->
+<div class="hidden p-3 rounded-xl text-xs font-mono transition" id="loginAlert"></div>
+<!-- Запомнить сессию -->
+<div class="flex items-center justify-between text-xs font-mono pt-1">
+<label class="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-200 transition">
+<input checked="" class="accent-[#00f5a0] rounded w-4 h-4 cursor-pointer" id="rememberMe" type="checkbox">
+<span class="">Запомнить сессию (30 дней)</span>
+</label>
+</div>
+<!-- Кнопка входа -->
+<button class="w-full py-3 px-4 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wider rounded-xl font-sans flex items-center justify-center gap-2.5 transition duration-200 neon-btn-glow disabled:opacity-50 disabled:pointer-events-none cursor-pointer mt-4" id="btnSubmit" type="submit">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-in" aria-hidden="true" class="lucide lucide-log-in w-4 h-4"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
+<span class="" id="btnSubmitText">ВОЙТИ В СИСТЕМУ</span>
+</button>
+</form>
+<!-- Информационный футер карточки -->
+</div>
+</main>
+<!-- Фирменная подпись проекта с чёрным контуром -->
+<div class="text-center py-4 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black"><span class="text-gray-300">by Arnimaz21 for </span><a class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank"><span class="">vunya100's server</span><svg class="w-3.5 h-3.5 fill-current text-[#5865F2] inline-block" viewBox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path></svg></a></div>
+<script>
+    lucide.createIcons();
+
+    const CF_WORKER_USERS_URL = "https://cloud-stats.arnimaz27.workers.dev/users";
+    const TARGET_REDIRECT_URL = "https://arnimaz21.github.io/";
+    const STEVE_FALLBACK_URL = "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png";
+
+    const inputUsername = document.getElementById('inputUsername');
+    const inputPassword = document.getElementById('inputPassword');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const usernamePreviewText = document.getElementById('usernamePreviewText');
+    const skinSourceNotice = document.getElementById('skinSourceNotice');
+    const loginAlert = document.getElementById('loginAlert');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnSubmitText = document.getElementById('btnSubmitText');
+    const rememberMe = document.getElementById('rememberMe');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    // Переключение видимости пароля
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPass = inputPassword.type === 'password';
+      inputPassword.type = isPass ? 'text' : 'password';
+      eyeIcon.setAttribute('data-lucide', isPass ? 'eye-off' : 'eye');
+      lucide.createIcons();
+    });
+
+    // Динамический предпросмотр скина из репозитория
+    let debounceTimer;
+    inputUsername.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      const nick = inputUsername.value.trim();
+
+      if (!nick) {
+        avatarPreview.src = STEVE_FALLBACK_URL;
+        usernamePreviewText.innerText = "Стив (Гость)";
+        skinSourceNotice.innerText = "Ожидание ввода ника...";
+        return;
+      }
+
+      usernamePreviewText.innerText = nick;
+      skinSourceNotice.innerText = "Поиск скина в репозитории...";
+
+      debounceTimer = setTimeout(() => {
+        const repoSkinUrl = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${nick}.png`;
+        
+        // Проверяем наличие скина
+        const testImg = new Image();
+        testImg.onload = () => {
+          avatarPreview.src = repoSkinUrl;
+          skinSourceNotice.innerText = "Скин найден в assets/skins/";
+          skinSourceNotice.className = "text-[11px] text-[#00f5a0] font-mono mt-0.5 flex items-center gap-1.5";
+        };
+        testImg.onerror = () => {
+          avatarPreview.src = STEVE_FALLBACK_URL;
+          skinSourceNotice.innerText = "Скин не найден (steave.png)";
+          skinSourceNotice.className = "text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1.5";
+        };
+        testImg.src = repoSkinUrl;
+      }, 350);
+    });
+
+    // Обработка авторизации
+    async function handleLogin() {
+      const username = inputUsername.value.trim();
+      const password = inputPassword.value;
+
+      if (!username || !password) {
+        showAlert('Пожалуйста, заполните никнейм и пароль!', 'error');
+        return;
+      }
+
+      // Блокируем кнопку на время проверки
+      btnSubmit.disabled = true;
+      btnSubmitText.innerText = 'ПРОВЕРКА ДОСТУПА...';
+      showAlert('Подключение к базе данных Cloudflare KV...', 'info');
+
+      try {
+        const res = await fetch(CF_WORKER_USERS_URL, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error(`Ошибка соединения с сервером базы данных (HTTP ${res.status})`);
+        }
+
+        const data = await res.json();
+        const users = Array.isArray(data.users) ? data.users : (Array.isArray(data) ? data : []);
+
+        // Ищем пользователя с учётом регистра никнейма
+        const user = users.find(u => 
+          (u.username && u.username.toLowerCase() === username.toLowerCase()) || 
+          (u.name && u.name.toLowerCase() === username.toLowerCase())
+        );
+
+        if (!user) {
+          showAlert('Ошибка: игрок с таким ником не зарегистрирован в системе!', 'error');
+          btnSubmit.disabled = false;
+          btnSubmitText.innerText = 'ВОЙТИ В СИСТЕМУ';
+          return;
+        }
+
+        // Проверяем пароль
+        if (user.password !== password) {
+          showAlert('Неверный пароль доступа! Проверьте правильность ввода.', 'error');
+          btnSubmit.disabled = false;
+          btnSubmitText.innerText = 'ВОЙТИ В СИСТЕМУ';
+          return;
+        }
+
+        // Авторизация успешна! Сохраняем сессию
+        const sessionPayload = {
+          id: user.id || `usr_${Date.now()}`,
+          username: user.username || user.name,
+          role: user.role || 'player',
+          authTime: new Date().toISOString(),
+          skinUrl: avatarPreview.src
+        };
+
+        if (rememberMe.checked) {
+          localStorage.setItem('cloud_mine_auth_session', JSON.stringify(sessionPayload));
+          localStorage.setItem('cloud_mine_user', sessionPayload.username);
+          localStorage.setItem('cloud_mine_role', sessionPayload.role);
+        } else {
+          sessionStorage.setItem('cloud_mine_auth_session', JSON.stringify(sessionPayload));
+          sessionStorage.setItem('cloud_mine_user', sessionPayload.username);
+          sessionStorage.setItem('cloud_mine_role', sessionPayload.role);
+        }
+
+        showAlert(`Успешный вход! Добро пожаловать, ${sessionPayload.username}. Перенаправление...`, 'success');
+        btnSubmitText.innerText = 'ПЕРЕНАПРАВЛЕНИЕ...';
+
+        // Мгновенный редирект на главный сайт
+        setTimeout(() => {
+          window.location.href = TARGET_REDIRECT_URL;
+        }, 600);
+
+      } catch (err) {
+        console.error('Ошибка входа:', err);
+        showAlert(`Не удалось выполнить вход: ${err.message}`, 'error');
+        btnSubmit.disabled = false;
+        btnSubmitText.innerText = 'ВОЙТИ В СИСТЕМУ';
+      }
+    }
+
+    function showAlert(msg, type) {
+      loginAlert.classList.remove('hidden', 'bg-red-950/40', 'border-red-600/40', 'text-red-300', 'bg-[#00f5a0]/10', 'border-[#00f5a0]/40', 'text-[#00f5a0]', 'bg-blue-950/40', 'border-blue-600/40', 'text-blue-300');
+      loginAlert.innerText = msg;
+
+      if (type === 'error') {
+        loginAlert.classList.add('bg-red-950/40', 'border', 'border-red-600/40', 'text-red-300');
+      } else if (type === 'success') {
+        loginAlert.classList.add('bg-[#00f5a0]/10', 'border', 'border-[#00f5a0]/40', 'text-[#00f5a0]');
+      } else {
+        loginAlert.classList.add('bg-blue-950/40', 'border', 'border-blue-600/40', 'text-blue-300');
+      }
+    }
+
+    // Если игрок уже авторизован, можно сразу предложить перейти на сайт
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('cloud_mine_auth_session') || sessionStorage.getItem('cloud_mine_auth_session');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.username) {
+            inputUsername.value = parsed.username;
+            inputUsername.dispatchEvent(new Event('input'));
+            showAlert(`Обнаружена сохранённая сессия: ${parsed.username}. Введите пароль или перейдите на главную.`, 'info');
+          }
+        } catch(e) {}
+      }
+    });
+  </script>
+
+
+
+
+
+
+</body></html>
