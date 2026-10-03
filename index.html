@@ -1,1621 +1,797 @@
-<!DOCTYPE html><html lang="ru" style=""><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>.mrpack to .zip</title>
-<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cloud.Mine — Главный портал экосистемы</title>
+<link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Fonts -->
-<link href="https://fonts.preconnect.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
-<!-- JSZip & FileSaver -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<!-- Шрифты Space Grotesk и JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          brand: {
-            DEFAULT: '#00f5a0',
-            glow: 'rgba(0, 245, 160, 0.4)',
-            dark: '#00bd7a',
-            light: '#50ffaf',
-            bg: '#070b10',
-            surface: '#0b1017',
-            border: '#1a2b27'
-          }
-        },
-        fontFamily: {
-          mono: ['JetBrains Mono', 'monospace'],
-          sans: ['Space Grotesk', 'sans-serif']
-        }
-      }
-    }
-  }
-</script>
 <style>
-  body {
-    background-color: #070b10;
-    color: #e2e8f0;
-    font-family: 'JetBrains Mono', monospace;
-    overflow-x: hidden;
-  }
-  .custom-scroll::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  .custom-scroll::-webkit-scrollbar-track {
-    background: rgba(11, 16, 23, 0.6);
-  }
-  .custom-scroll::-webkit-scrollbar-thumb {
-    background: #1b282e;
-    border-radius: 4px;
-  }
-  .custom-scroll::-webkit-scrollbar-thumb:hover {
-    background: #00f5a0;
-  }
-  .folder-children.collapsed {
-    display: none !important;
-  }
-  input[type="checkbox"], input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    background-color: #0b1017;
-    border: 1.5px solid rgba(0, 245, 160, 0.4);
-    outline: none;
-    transition: all 0.15s ease-in-out;
-    vertical-align: middle;
-    position: relative;
-    cursor: pointer;
-  }
-  input[type="checkbox"] { border-radius: 4px; }
-  input[type="radio"] { border-radius: 9999px; }
-  input[type="checkbox"]:hover, input[type="radio"]:hover {
-    border-color: #00f5a0;
-    box-shadow: 0 0 8px rgba(0, 245, 160, 0.3);
-  }
-  input[type="radio"]:checked {
-    background-color: #0b1017;
-    border-color: #00f5a0;
-    box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
-    background-image: radial-gradient(#00f5a0 42%, transparent 48%);
-  }
-  input[type="checkbox"]:checked {
-    background-color: #00f5a0;
-    border-color: #00f5a0;
-    box-shadow: 0 0 10px rgba(0, 245, 160, 0.5);
-    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23070b10' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-</style>
-</head>
-<body class="min-h-screen flex flex-col justify-between p-6 antialiased select-none relative bg-[#070b10]">
-<!-- WebGL Background -->
-<div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
-<canvas height="288" id="shader-canvas" style="display:block;width:100%;height:100%;filter:blur(0.5px);" width="422"></canvas>
+    body {
+      background-color: #070b10;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(11, 16, 23, 0.6);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #1b282e;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #00f5a0;
+    }
+    .text-outline-black {
+      text-shadow:
+        -1px -1px 0 #000,
+         1px -1px 0 #000,
+        -1px  1px 0 #000,
+         1px  1px 0 #000,
+         0px  2px 4px rgba(0, 0, 0, 0.9);
+    }
+    .avatar-wrapper img {
+      image-rendering: pixelated;
+    }
+    .channel-item {
+      transition: all 0.15s ease-in-out;
+    }
+    .channel-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+    }
+    .channel-item.active {
+      background-color: rgba(0, 245, 160, 0.12);
+      color: #00f5a0;
+      border-left: 3px solid #00f5a0;
+      font-weight: 600;
+    }
+    .channel-item.active svg.lucide-hash {
+      color: #00f5a0;
+    }
+    .message-hover:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+  </style>
+<!-- Защита авторизации до рендеринга страницы -->
 <script>
     (function() {
-      const canvas = document.getElementById('shader-canvas');
-      function syncSize() {
-        const displayW = window.innerWidth || 1280;
-        const displayH = window.innerHeight || 720;
-        const targetW = Math.max(240, Math.min(512, Math.floor(displayW * 0.33)));
-        const targetH = Math.max(135, Math.min(288, Math.floor(displayH * 0.33)));
-        if (canvas.width !== targetW || canvas.height !== targetH) {
-          canvas.width = targetW;
-          canvas.height = targetH;
+      const userJson = localStorage.getItem('cloud_auth_user') || sessionStorage.getItem('cloud_auth_user');
+      if (!userJson) {
+        window.location.replace('https://arnimaz21.github.io/login');
+        return;
+      }
+      try {
+        window.currentUser = JSON.parse(userJson);
+      } catch (e) {
+        window.location.replace('https://arnimaz21.github.io/login');
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10] opacity-0 transition-opacity duration-300" id="mainBody">
+<!-- Живой WebGL Canvas фон -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10">
+<canvas class="w-full h-full block" id="shader-canvas"></canvas>
+</div>
+<!-- Главный контейнер приложения -->
+<div class="max-w-7xl w-full mx-auto flex flex-col gap-3 md:gap-4 flex-1 relative z-10 pb-4">
+<!-- ВЕРХНЯЯ ШАПКА / НАВИГАЦИЯ ЭКОСИСТЕМЫ -->
+<header class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl px-4 py-3 md:px-5 md:py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-lg backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.15)]">
+<svg class="lucide lucide-server w-5 h-5 text-[#00f5a0]" data-lucide="server" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<rect height="8" rx="2" ry="2" width="20" x="2" y="2"></rect>
+<rect height="8" rx="2" ry="2" width="20" x="2" y="14"></rect>
+<line x1="6" x2="6.01" y1="6" y2="6"></line>
+<line x1="6" x2="6.01" y1="18" y2="18"></line>
+</svg>
+</div>
+<div>
+<div class="font-bold text-white tracking-wide text-base md:text-lg font-sans flex items-center gap-2">
+            Cloud.Mine
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 hidden sm:inline-block">HUB</span>
+</div>
+<div class="text-xs text-gray-400 font-mono flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#00f5a0] animate-pulse"></span>
+            Minecraft Paper 26.3
+          </div>
+</div>
+</div>
+<!-- Навигационные кнопки -->
+<div class="flex items-center flex-wrap gap-2">
+<!-- Кнопка Статистика -->
+<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200" href="stats.html">
+<svg class="lucide lucide-activity w-3.5 h-3.5 text-[#00f5a0]" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+</svg>
+<span class="font-sans hidden sm:inline">Статистика</span>
+</a>
+<!-- Кнопка .mrpack Конвертер -->
+<a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200" href="/">
+<svg class="lucide lucide-box w-3.5 h-3.5 text-[#00f5a0]" data-lucide="box" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+<path d="m3.3 7 8.7 5 8.7-5"></path>
+<path d="M12 22V12"></path>
+</svg>
+<span class="font-sans hidden sm:inline">Конвертер</span>
+</a>
+<!-- Кнопка Админ-панель (показывается только админам) -->
+<a class="hidden px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl items-center gap-2 transition duration-200" href="users/index.html" id="headerAdminLink">
+<svg class="lucide lucide-shield-alert w-3.5 h-3.5 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+<path d="M12 8v4"></path>
+<path d="M12 16h.01"></path>
+</svg>
+<span class="font-sans hidden sm:inline">Панель админа</span>
+</a>
+<!-- Discord -->
+<a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+<span class="font-sans font-medium hidden sm:inline">Discord</span>
+</a>
+<!-- Выход -->
+<button class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200" id="btnHeaderLogout" title="Завершить сессию">
+<svg class="lucide lucide-log-out w-3.5 h-3.5" data-lucide="log-out" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+<polyline points="16 17 21 12 16 7"></polyline>
+<line x1="21" x2="9" y1="12" y2="12"></line>
+</svg>
+<span class="font-sans hidden sm:inline">Выйти</span>
+</button>
+</div>
+</header>
+<!-- ОСНОВНОЙ DISCORD-ПОДОБНЫЙ ИНТЕРФЕЙС -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 flex-1 items-stretch min-h-[560px]">
+<!-- ЛЕВАЯ КОЛОНКА КАНАЛОВ (ПО ОБРАЗЦУ IMAGE_2) И ПРОФИЛЬ -->
+<aside class="lg:col-span-3 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
+<!-- Заголовок сервера / секции каналов -->
+<div>
+<div class="p-3.5 md:p-4 border-b border-white/10 flex items-center justify-between bg-[#070b10]/60">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>
+<h2 class="font-sans font-bold text-sm tracking-wide text-white">vunya100's server</h2>
+</div>
+<span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#131c26] text-gray-400 border border-white/5">ТЕКСТОВЫЕ</span>
+</div>
+<!-- Список текстовых каналов (в точности из образца) -->
+<nav aria-label="Текстовые каналы" class="p-2 space-y-1" id="channelsList">
+<!-- # набор -->
+<button class="channel-item active w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-300" id="chan-btn-recruitment" onclick="switchChannel('recruitment')">
+<svg class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="9" y2="9"></line>
+<line x1="4" x2="20" y1="15" y2="15"></line>
+<line x1="10" x2="8" y1="3" y2="21"></line>
+<line x1="16" x2="14" y1="3" y2="21"></line>
+</svg>
+<span>набор</span>
+</button>
+<!-- # информация-о-сервере -->
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-info" onclick="switchChannel('info')">
+<svg class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="9" y2="9"></line>
+<line x1="4" x2="20" y1="15" y2="15"></line>
+<line x1="10" x2="8" y1="3" y2="21"></line>
+<line x1="16" x2="14" y1="3" y2="21"></line>
+</svg>
+<span>информация-о-сервере</span>
+</button>
+<!-- # правила -->
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-rules" onclick="switchChannel('rules')">
+<svg class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="9" y2="9"></line>
+<line x1="4" x2="20" y1="15" y2="15"></line>
+<line x1="10" x2="8" y1="3" y2="21"></line>
+<line x1="16" x2="14" y1="3" y2="21"></line>
+</svg>
+<span>правила</span>
+</button>
+<!-- # ip -->
+<button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-400" id="chan-btn-ip" onclick="switchChannel('ip')">
+<svg class="lucide lucide-hash w-4 h-4 text-gray-500 shrink-0" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="9" y2="9"></line>
+<line x1="4" x2="20" y1="15" y2="15"></line>
+<line x1="10" x2="8" y1="3" y2="21"></line>
+<line x1="16" x2="14" y1="3" y2="21"></line>
+</svg>
+<span>ip</span>
+</button>
+</nav>
+</div>
+<!-- КАРТОЧКА АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ (НИЗ САЙДБАРА) -->
+<div class="p-3 bg-[#070b10]/95 border-t border-white/10 flex items-center justify-between gap-3">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/40 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(0,245,160,0.25)]">
+<img alt="Скин" class="w-full h-full object-contain" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDogi02AxVCBzJwBlEuNzUb8dMQwarzemlIo7Zi8-bQtzYn7tNrpfM4S8wGfNfM5Y8owlnmWTlvATFyN6c-TKecDzlyiz6ckKz4iH7O2YbwYWX3u5pnUyh18339tIVOptVfRkH2EH9vOgqg1mzshG6kmj23NqiTuwWjq5vK9lLsGzZekENRDIdT7ZoBIMVkSAvQ9JMKqse5bWyDu5zRDhFkkg2swxn2Y4wYL9hH3WiOVzsA7lUPaz5V"/>
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="В сети"></span>
+</div>
+<div class="min-w-0">
+<div class="font-sans font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
+                Игрок
+              </div>
+<div class="flex items-center gap-1.5">
+<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 uppercase" id="userSidebarRole">
+                  ИГРОК
+                </span>
+<span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">0м</span>
+</div>
+</div>
+</div>
+<button class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-950/30 border border-white/5 rounded-lg transition" onclick="logoutUser()" title="Выйти из аккаунта">
+<svg class="lucide lucide-log-out w-4 h-4" data-lucide="log-out" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+<polyline points="16 17 21 12 16 7"></polyline>
+<line x1="21" x2="9" y1="12" y2="12"></line>
+</svg>
+</button>
+</div>
+</aside>
+<!-- ПРАВАЯ ОБЛАСТЬ: АКТИВНЫЙ КАНАЛ, ЛЕНТА СООБЩЕНИЙ, ИНПУТ ДЛЯ АДМИНА -->
+<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md overflow-hidden min-h-[500px]">
+<!-- Заголовок активного канала -->
+<div class="px-4 py-3 md:px-5 md:py-3.5 border-b border-white/10 bg-[#070b10]/60 flex items-center justify-between flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<svg class="lucide lucide-hash w-5 h-5 text-[#00f5a0]" data-lucide="hash" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<line x1="4" x2="20" y1="9" y2="9"></line>
+<line x1="4" x2="20" y1="15" y2="15"></line>
+<line x1="10" x2="8" y1="3" y2="21"></line>
+<line x1="16" x2="14" y1="3" y2="21"></line>
+</svg>
+<h1 class="font-sans font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1>
+<span class="text-gray-500 text-xs hidden md:inline">|</span>
+<span class="text-xs text-gray-400 font-mono hidden md:inline truncate max-w-md" id="currentChannelTopic">
+              Официальные объявления, приём заявок и формирование сообщества
+            </span>
+</div>
+<!-- Живые бейджи состояния -->
+<div class="flex items-center gap-2 font-mono text-[11px]">
+<span class="px-2 py-0.5 rounded bg-[#131c26] text-gray-300 border border-white/10 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0]"></span>
+              Онлайн: <strong class="text-[#00f5a0]" id="quickOnlineVal">0</strong>/20
+            </span>
+<button class="p-1.5 text-gray-400 hover:text-[#00f5a0] bg-[#121a22] border border-white/5 rounded-lg transition" onclick="refreshMessages()" title="Обновить сообщения">
+<svg class="lucide lucide-rotate-cw w-3.5 h-3.5" data-lucide="rotate-cw" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+<path d="M21 3v5h-5"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Лента сообщений канала -->
+<div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px]" id="messagesContainer">
+<!-- Сообщения рендерятся через JS -->
+</div>
+<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ (ТОЛЬКО ДЛЯ АДМИНА) ИЛИ READ-ONLY УВЕДОМЛЕНИЕ ДЛЯ ИГРОКА -->
+<div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95">
+<!-- Режим Администратора: Форма отправки сообщения -->
+<form class="hidden space-y-2" id="adminPostForm" onsubmit="handlePostMessage(event)">
+<div class="flex items-center justify-between text-[11px] font-mono text-gray-400 px-1">
+<span class="text-[#00f5a0] flex items-center gap-1.5">
+<svg class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+                Публикация от имени Администрации
+              </span>
+<span id="inputCharCount">Shift+Enter для новой строки</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative flex-1">
+<textarea class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-none" id="messageTextInput" placeholder="Отправить сообщение в канал..." rows="2"></textarea>
+</div>
+<button class="px-4 py-3 bg-[#00f5a0] hover:bg-[#20e295] text-[#002111] font-bold text-xs rounded-xl flex items-center gap-2 transition duration-200 shadow-[0_0_15px_rgba(0,245,160,0.2)] shrink-0 font-sans" type="submit">
+<svg class="lucide lucide-send w-4 h-4" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><line x1="22" x2="11" y1="2" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+<span>Отправить</span>
+</button>
+</div>
+</form>
+<!-- Режим Обычного Игрока: Уведомление о режиме чтения -->
+<div class="flex items-center justify-between gap-3 px-4 py-3 bg-[#111822] border border-white/10 rounded-xl text-xs font-mono text-gray-400" id="playerReadOnlyNotice">
+<div class="flex items-center gap-2.5">
+<div class="p-1.5 rounded-lg bg-[#070b10] text-[#00f5a0] border border-white/5">
+<svg class="lucide lucide-lock w-4 h-4" data-lucide="lock" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<div>
+<span class="text-gray-300 font-semibold">Канал только для чтения</span>
+<p class="text-[11px] text-gray-500">Только администраторы могут отправлять объявления в этот раздел.</p>
+</div>
+</div>
+<a class="px-3 py-1.5 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 text-[#7983f5] border border-[#5865F2]/30 rounded-lg text-[11px] font-sans flex items-center gap-1.5 transition" href="https://discord.gg/kQkRgbFZeK" target="_blank">
+<span>Обсудить в Discord</span>
+<svg class="lucide lucide-external-link w-3 h-3" data-lucide="external-link" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
+</a>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Футер страницы (в точном стиле проекта) -->
+<footer class="text-center py-3 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black mt-2">
+<span class="text-gray-300">by Arnimaz21 for </span>
+<a class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
+<span>vunya100's server</span>
+<svg class="w-3.5 h-3.5 fill-current text-[#5865F2] inline-block" viewbox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg">
+<path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
+</svg>
+</a>
+</footer>
+<!-- СКРИПТ: ЛОГИКА АВТОРИЗАЦИИ, КАНАЛОВ DISCORD И ХРАНИЛИЩА СООБЩЕНИЙ -->
+<script>
+    const CONFIG = {
+      STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
+      LOGIN_URL: "https://arnimaz21.github.io/login",
+      FALLBACK_STEVE: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png",
+      CHANNELS_STORAGE_KEY: "cloudmine_portal_channel_posts_v1"
+    };
+
+    // Данные каналов и темы
+    const CHANNELS_META = {
+      recruitment: {
+        name: "набор",
+        topic: "Приём заявок, критерии отбора и анкета кандидата на сервер vunya100"
+      },
+      info: {
+        name: "информация-о-сервере",
+        topic: "Технический стек Paper 26.3, сид мира, хостинг, правила вайпов и датапаки"
+      },
+      rules: {
+        name: "правила",
+        topic: "Свод законов Cloud.Mine: честная игра, запрет читов и уважение к чужим постройкам"
+      },
+      ip: {
+        name: "ip",
+        topic: "Сетевые шлюзы, прямой адрес подключения и проверка доступности порта"
+      }
+    };
+
+    // Дефолтные системные посты для каналов при первом запуске
+    const DEFAULT_CHANNEL_POSTS = {
+      recruitment: [
+        {
+          id: "rec-1",
+          author: "vunya100",
+          role: "ADMIN",
+          time: "Вчера в 18:30",
+          badgeColor: "red",
+          content: `⚡ **Открыт дополнительный набор игроков на второй сезон Cloud.Mine!**\n\nМы формируем ламповое, дружное комьюнити без гриферов и токсичности. Сервер полностью приватный и работает по белому списку.\n\n**Критерии для подачи:**\n• Возраст 14+ (адекватность и понимание ванильного геймплея)\n• Наличие микрофона и Discord для координации\n• Желание строить красивые базы и участвовать в общих проектах\n\nДля подачи заявки напишите в наш официальный Discord-сервер в тикеты или администратору напрямую.`
+        },
+        {
+          id: "rec-2",
+          author: "Arnimaz21",
+          role: "DEV",
+          time: "Сегодня в 12:15",
+          badgeColor: "emerald",
+          content: `Новые зарегистрированные игроки синхронизируются через Cloud.Users KV автоматически. После одобрения вы мгновенно получите доступ к порталу и серверу!`
+        }
+      ],
+      info: [
+        {
+          id: "inf-1",
+          author: "vunya100",
+          role: "ADMIN",
+          time: "12 мая 2024",
+          badgeColor: "red",
+          content: `📌 **Технический паспорт сервера Cloud.Mine:**\n\n• **Ядро:** Paper 26.3 (высокая оптимизация тиков)\n• **TPS:** Стабильные 20.0 TPS при любой нагрузке\n• **Ограничение мира:** 15 000 x 15 000 блоков\n• **Сложность:** Hardcore / Сложная ванила без приватов на сундуки (доверие и логгер CoreProtect)\n• **Генерация:** Ванильная генерация 1.20+ с красивыми биомами`
+        },
+        {
+          id: "inf-2",
+          author: "Arnimaz21",
+          role: "DEV",
+          time: "Вчера в 14:00",
+          badgeColor: "emerald",
+          content: `Сборка модов оптимизирована: вы можете скачать клиентский .mrpack через наш встроенный Конвертер на верхней панели.`
+        }
+      ],
+      rules: [
+        {
+          id: "rul-1",
+          author: "vunya100",
+          role: "ADMIN",
+          time: "01 мая 2024",
+          badgeColor: "red",
+          content: `⚖️ **Кодекс чести Cloud.Mine:**\n\n1. **Гриферство и воровство категорически запрещено.** Все действия логируются с точностью до миллисекунды.\n2. **Запрещены любые чит-клиенты**, X-Ray текстурпаки, авто-кликеры на фармилках и багоюз дюпа.\n3. **Уважение в чате:** никакой токсичности, оскорблений родственников и разжигания конфликтов.\n4. **Красота мира:** не оставляйте летающие кроны деревьев и глубокие 1x1 ямы посреди спавна.\n\nНарушение правил карается перманентной блокировкой без права апелляции.`
+        }
+      ],
+      ip: [
+        {
+          id: "ip-1",
+          author: "vunya100",
+          role: "ADMIN",
+          time: "Постоянное объявление",
+          badgeColor: "red",
+          content: `🌐 **Адрес для прямого подключения к серверу:**\n\n\`\`\`\nip: 185.9.145.7:27019\nport: 27019\nверсия: Paper 26.3 (Minecraft Java Edition)\n\`\`\`\n\n*Совет: нажмите кнопку ниже, чтобы скопировать IP одним кликом в буфер обмена.*`,
+          hasCopyAction: true,
+          copyValue: "185.9.145.7:27019"
+        }
+      ]
+    };
+
+    let currentActiveChannel = 'recruitment';
+    let appMessages = {};
+
+    // Загрузка сообщений из локального хранилища
+    function loadSavedMessages() {
+      try {
+        const stored = localStorage.getItem(CONFIG.CHANNELS_STORAGE_KEY);
+        if (stored) {
+          appMessages = JSON.parse(stored);
+        } else {
+          appMessages = JSON.parse(JSON.stringify(DEFAULT_CHANNEL_POSTS));
+          saveMessages();
+        }
+      } catch (e) {
+        appMessages = JSON.parse(JSON.stringify(DEFAULT_CHANNEL_POSTS));
+      }
+    }
+
+    function saveMessages() {
+      try {
+        localStorage.setItem(CONFIG.CHANNELS_STORAGE_KEY, JSON.stringify(appMessages));
+      } catch (e) {
+        console.warn("Ошибка сохранения сообщений:", e);
+      }
+    }
+
+    // Обработка скина с фоллбеком
+    window.handleSkinError = function(img) {
+      if (!img) return;
+      if (img.src !== CONFIG.FALLBACK_STEVE) {
+        img.src = CONFIG.FALLBACK_STEVE;
+      } else {
+        img.onerror = null;
+      }
+    };
+
+    // Выход
+    window.logoutUser = function() {
+      localStorage.removeItem('cloud_auth_user');
+      sessionStorage.removeItem('cloud_auth_user');
+      window.location.replace(CONFIG.LOGIN_URL);
+    };
+
+    // Копирование IP
+    window.copyServerIpAddress = function(ipText) {
+      navigator.clipboard.writeText(ipText || '185.9.145.7:27019').then(() => {
+        alert('IP адрес сервера (185.9.145.7:27019) успешно скопирован в буфер!');
+      });
+    };
+
+    // Переключение текстовых каналов Discord
+    window.switchChannel = function(channelKey) {
+      if (!CHANNELS_META[channelKey]) return;
+      currentActiveChannel = channelKey;
+
+      // Обновление активного класса на кнопках
+      document.querySelectorAll('.channel-item').forEach(btn => {
+        btn.classList.remove('active');
+        const hashIcon = btn.querySelector('svg.lucide-hash');
+        if (hashIcon) hashIcon.classList.remove('text-[#00f5a0]');
+      });
+
+      const activeBtn = document.getElementById(`chan-btn-${channelKey}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        const hashIcon = activeBtn.querySelector('svg.lucide-hash');
+        if (hashIcon) hashIcon.classList.add('text-[#00f5a0]');
+      }
+
+      // Заголовки
+      const titleEl = document.getElementById('currentChannelTitle');
+      const topicEl = document.getElementById('currentChannelTopic');
+      if (titleEl) titleEl.textContent = CHANNELS_META[channelKey].name;
+      if (topicEl) topicEl.textContent = CHANNELS_META[channelKey].topic;
+
+      // Рендер постов
+      renderChannelMessages();
+    };
+
+    // Форматирование markdown разметки в простой HTML
+    function formatMessageContent(rawText) {
+      if (!rawText) return '';
+      let text = rawText
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // Блоки кода ```код```
+      text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-[#04080c] border border-white/10 p-3 rounded-xl my-2 font-mono text-xs text-[#00f5a0] overflow-x-auto"><code>$1</code></pre>');
+
+      // Жирный шрифт **текст**
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+
+      // Инлайн код `код`
+      text = text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-[#121a22] text-[#00f5a0] rounded border border-white/10 font-mono text-xs">$1</code>');
+
+      // Списки •
+      text = text.replace(/\n• /g, '<br/>• ');
+
+      // Переводы строк
+      text = text.replace(/\n/g, '<br/>');
+
+      return text;
+    }
+
+    // Рендер списка сообщений в активном канале
+    function renderChannelMessages() {
+      const container = document.getElementById('messagesContainer');
+      if (!container) return;
+
+      const posts = appMessages[currentActiveChannel] || [];
+      if (posts.length === 0) {
+        container.innerHTML = `
+          <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
+            <div class="p-3 rounded-full bg-[#121a22] text-gray-500 border border-white/10">
+              <svg class="lucide lucide-message-square w-6 h-6" data-lucide="message-square" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <p class="text-sm font-sans text-gray-300 font-semibold">В канале #${CHANNELS_META[currentActiveChannel].name} пока нет записей</p>
+            <p class="text-xs text-gray-500 font-mono max-w-sm">Администраторы могут опубликовать первые правила или системные инструкции через панель ниже.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      let html = '';
+      posts.forEach(post => {
+        const isSelfAdmin = (post.role || '').toUpperCase() === 'ADMIN';
+        const roleBadge = isSelfAdmin
+          ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">АДМИН</span>'
+          : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">DEV</span>';
+
+        const avatarUrl = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(post.author)}.png`;
+
+        html += `
+          <div class="flex items-start gap-3.5 p-3 rounded-xl message-hover transition border border-transparent hover:border-white/5">
+            <!-- Аватарка автора -->
+            <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
+              <img src="${avatarUrl}" alt="${post.author}" class="w-full h-full object-contain" onerror="handleSkinError(this)" />
+            </div>
+
+            <!-- Тело сообщения -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-2 flex-wrap mb-1">
+                <span class="font-sans font-bold text-sm text-white hover:underline cursor-pointer">${post.author}</span>
+                ${roleBadge}
+                <span class="text-[11px] font-mono text-gray-500">${post.time}</span>
+              </div>
+
+              <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
+                ${formatMessageContent(post.content)}
+              </div>
+
+              ${post.hasCopyAction ? `
+                <div class="mt-3">
+                  <button onclick="copyServerIpAddress('${post.copyValue || '185.9.145.7:27019'}')" class="px-3.5 py-1.5 bg-[#121a22] hover:bg-[#192430] text-[#00f5a0] border border-[#00f5a0]/30 hover:border-[#00f5a0] rounded-xl text-xs font-mono flex items-center gap-2 transition duration-200 shadow-sm">
+                    <svg class="lucide lucide-copy w-3.5 h-3.5" data-lucide="copy" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="14" rx="2" ry="2" width="14" x="8" y="8"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                    <span>Скопировать IP сервера (185.9.145.7:27019)</span>
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      lucide.createIcons();
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Отправка нового сообщения (для администраторов)
+    window.handlePostMessage = function(e) {
+      e.preventDefault();
+      const input = document.getElementById('messageTextInput');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const user = window.currentUser || { username: 'Admin', role: 'admin' };
+      const now = new Date();
+      const timeStr = `Сегодня в ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      const newPost = {
+        id: 'msg-' + Date.now(),
+        author: user.username,
+        role: (user.role || 'ADMIN').toUpperCase(),
+        time: timeStr,
+        content: text
+      };
+
+      if (!appMessages[currentActiveChannel]) {
+        appMessages[currentActiveChannel] = [];
+      }
+      appMessages[currentActiveChannel].push(newPost);
+      saveMessages();
+
+      input.value = '';
+      renderChannelMessages();
+    };
+
+    window.refreshMessages = function() {
+      loadSavedMessages();
+      renderChannelMessages();
+    };
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+
+      const user = window.currentUser;
+      if (!user) {
+        window.location.replace(CONFIG.LOGIN_URL);
+        return;
+      }
+
+      // Открытие страницы после проверки
+      const mainBody = document.getElementById('mainBody');
+      if (mainBody) mainBody.classList.remove('opacity-0');
+
+      const username = user.username || 'Игрок';
+      const role = (user.role || 'player').toLowerCase();
+      const isAdmin = (role === 'admin' || role === 'administrator');
+
+      // Обновление профиля в сайдбаре
+      const sidebarNick = document.getElementById('userSidebarNick');
+      const sidebarAvatar = document.getElementById('userSidebarAvatar');
+      const sidebarRole = document.getElementById('userSidebarRole');
+      const headerAdminLink = document.getElementById('headerAdminLink');
+
+      if (sidebarNick) sidebarNick.textContent = username;
+      if (sidebarAvatar) {
+        sidebarAvatar.src = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(username)}.png`;
+      }
+      if (sidebarRole) {
+        if (isAdmin) {
+          sidebarRole.textContent = 'АДМИН';
+          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.2 rounded bg-red-950/40 text-red-400 border border-red-900/40 font-semibold';
+        } else {
+          sidebarRole.textContent = 'ИГРОК';
+          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold';
         }
       }
-      syncSize();
-      window.addEventListener('resize', syncSize, { passive: true });
 
-      const gl = canvas.getContext('webgl', { 
-        powerPreference: 'low-power', 
-        antialias: false, 
-        depth: false, 
-        stencil: false,
-        alpha: false,
-        preserveDrawingBuffer: false
-      }) || canvas.getContext('experimental-webgl');
-      if (!gl) return;
-      
-      const vs = `attribute vec2 a_position;
-      void main() {
-        gl_Position = vec4(a_position, 0.0, 1.0);
-      }`;
+      // Если админ — показываем ссылку в хедере на админку и форму ввода сообщений
+      const adminPostForm = document.getElementById('adminPostForm');
+      const playerReadOnlyNotice = document.getElementById('playerReadOnlyNotice');
 
-      const fs = `precision mediump float;
-      uniform float u_time;
-      uniform vec2 u_resolution;
-
-      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-      vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-      vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
-
-      float snoise(vec2 v) {
-          const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
-          vec2 i = floor(v + dot(v, C.yy));
-          vec2 x0 = v - i + dot(i, C.xx);
-          vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-          vec4 x12 = x0.xyxy + C.xxzz;
-          x12.xy -= i1;
-          i = mod289(i);
-          vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
-          vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-          m = m * m;
-          m = m * m;
-          vec3 x = 2.0 * fract(p * C.www) - 1.0;
-          vec3 h = abs(x) - 0.5;
-          vec3 a0 = x - floor(x + 0.5);
-          m *= 1.792842914 - 0.85373472 * (a0 * a0 + h * h);
-          vec3 g;
-          g.x = a0.x * x0.x + h.x * x0.y;
-          g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-          return 130.0 * dot(m, g);
+      if (isAdmin) {
+        if (headerAdminLink) headerAdminLink.classList.remove('hidden');
+        if (headerAdminLink) headerAdminLink.classList.add('flex');
+        if (adminPostForm) adminPostForm.classList.remove('hidden');
+        if (playerReadOnlyNotice) playerReadOnlyNotice.classList.add('hidden');
+      } else {
+        if (headerAdminLink) headerAdminLink.classList.add('hidden');
+        if (adminPostForm) adminPostForm.classList.add('hidden');
+        if (playerReadOnlyNotice) playerReadOnlyNotice.classList.remove('hidden');
       }
 
-      void main() {
-          vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-          vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-          float t = u_time * 0.15;
+      // Поддержка Ctrl+Enter / Enter без Shift для отправки в textarea
+      const msgInput = document.getElementById('messageTextInput');
+      if (msgInput) {
+        msgInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handlePostMessage(e);
+          }
+        });
+      }
+
+      // Таймер сессии
+      const startTime = Date.now();
+      const sessionSmallEl = document.getElementById('sessionTimeSmall');
+      setInterval(() => {
+        if (sessionSmallEl) {
+          const mins = Math.floor((Date.now() - startTime) / 60000);
+          sessionSmallEl.textContent = `${mins}м`;
+        }
+      }, 30000);
+
+      // Загрузка сообщений и рендер первого канала
+      loadSavedMessages();
+      switchChannel('recruitment');
+
+      // Запрос живого онлайна
+      try {
+        const res = await fetch(CONFIG.STATS_ENDPOINT, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const quickOnline = document.getElementById('quickOnlineVal');
+          if (quickOnline && typeof data.online === 'number') {
+            quickOnline.textContent = data.online;
+          }
+        }
+      } catch (e) {
+        console.warn("Метрики онлайна недоступны:", e);
+      }
+    });
+
+    // Живой WebGL Canvas шейдер фона (идентично stats.html)
+    (function initShader() {
+      const canvas = document.getElementById('shader-canvas');
+      if (!canvas) return;
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return;
+
+      function resize() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const vs = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
+      const fs = `
+        precision mediump float;
+        uniform float t;
+        uniform vec2 r;
+        void main() {
+          vec2 uv = gl_FragCoord.xy / r.xy;
+          vec2 p = (gl_FragCoord.xy * 2.0 - r.xy) / min(r.x, r.y);
           
-          float cellSize = 16.0;
-          vec2 gridDist = abs(fract(gl_FragCoord.xy / cellSize) - 0.5) * cellSize;
-          float dist = min(gridDist.x, gridDist.y);
-          float gridLine = 1.0 - smoothstep(0.0, 1.1, dist);
+          float wave = sin(p.y * 3.0 + sin(p.x * 2.0 + t * 0.4) * 1.5 + t * 0.3) * 0.5 + 0.5;
+          wave += sin(p.x * 1.5 - t * 0.2) * 0.25;
 
-          float n1 = snoise(p * 1.1 + vec2(t * 0.28, -t * 0.14));
-          float n2 = snoise(p * 2.1 - vec2(-t * 0.18, t * 0.3 + n1 * 0.35));
-          float wave = sin(p.y * 2.2 + n1 * 1.5 + t) * 0.5 + 0.5;
+          vec3 darkVoid = vec3(0.015, 0.03, 0.025);
+          vec3 emerald = vec3(0.0, 0.96, 0.62);
+          vec3 deepCyan = vec3(0.02, 0.22, 0.18);
 
-          vec3 colBase = vec3(0.03, 0.05, 0.08);
-          vec3 colDarkVoid = vec3(0.015, 0.02, 0.03);
-          vec3 neonEmerald = vec3(0.0, 0.96, 0.62);
-          vec3 deepCyan = vec3(0.04, 0.35, 0.30);
+          vec3 color = mix(darkVoid, deepCyan, wave * 0.55);
+          color += emerald * pow(wave, 4.0) * 0.35;
 
-          float rawEnergy = abs(n2 * 0.7 + wave * 0.3);
-          float energy2 = rawEnergy * rawEnergy;
-          
-          vec3 color = mix(colDarkVoid, colBase, uv.y);
-          color += deepCyan * (energy2 * 0.9);
-          color += neonEmerald * (energy2 * energy2 * 0.7);
-
-          float gridPulse = 0.035 + 0.015 * sin(t * 1.2);
-          color += neonEmerald * (gridLine * gridPulse);
-
-          float vignette = length(uv - 0.5);
-          color *= smoothstep(1.05, 0.25, vignette);
+          vec2 grid = abs(fract(gl_FragCoord.xy / 48.0) - 0.5);
+          float line = 1.0 - smoothstep(0.0, 0.04, min(grid.x, grid.y));
+          color += emerald * line * 0.035;
 
           gl_FragColor = vec4(color, 1.0);
-      }`;
+        }
+      `;
 
-      function cs(type, src) {
+      function compile(type, src) {
         const s = gl.createShader(type);
         gl.shaderSource(s, src);
         gl.compileShader(s);
         return s;
       }
       const prog = gl.createProgram();
-      gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
-      gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
       gl.linkProgram(prog);
       gl.useProgram(prog);
 
       const buf = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, buf);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-      const pos = gl.getAttribLocation(prog, 'a_position');
+      const pos = gl.getAttribLocation(prog, 'p');
       gl.enableVertexAttribArray(pos);
       gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-      const uTime = gl.getUniformLocation(prog, 'u_time');
-      const uRes = gl.getUniformLocation(prog, 'u_resolution');
+      const uT = gl.getUniformLocation(prog, 't');
+      const uR = gl.getUniformLocation(prog, 'r');
 
-      let lastFrameTime = 0;
-      const frameInterval = 35.7;
-
-      function render(currentTime) {
-        requestAnimationFrame(render);
-        if (document.hidden) return;
-        const delta = currentTime - lastFrameTime;
-        if (delta < frameInterval) return;
-        lastFrameTime = currentTime - (delta % frameInterval);
-
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        if (uTime) gl.uniform1f(uTime, currentTime * 0.001);
-        if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+      let start = performance.now();
+      function render() {
+        const now = (performance.now() - start) * 0.001;
+        gl.uniform1f(uT, now);
+        gl.uniform2f(uR, canvas.width, canvas.height);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(render);
       }
-      requestAnimationFrame(render);
+      render();
     })();
   </script>
-</div>
-<!-- Main App Container -->
-<div class="max-w-6xl w-full mx-auto space-y-5 relative z-10" style="padding-bottom: 9.5rem;">
-<!-- 1. Top Upload Bar -->
-<div class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-5 shadow-lg backdrop-blur-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden" id="topUploadBar">
-<input accept=".mrpack,.zip" class="hidden" id="fileInput" type="file">
-<div class="flex items-center gap-3.5">
-<div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-5 h-5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-</div>
-<div>
-<h2 class="text-base font-bold text-white font-sans tracking-wide" id="fileTitle">Загрузите файл .mrpack</h2>
-<p class="text-xs text-gray-400 font-mono mt-0.5" id="fileMeta">Перетащите или выберите файл сборки</p>
-</div>
-</div>
-<div class="flex flex-wrap items-center gap-2.5">
-<button class="px-3.5 py-2 text-xs font-sans font-semibold text-[#00f5a0] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnTogglePresets" title="Скрыть / показать готовые сборки">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-3.5 h-3.5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-<span class="">Готовые сборки</span>
-<span class="px-2 py-0.5 rounded-full bg-[#00f5a0] text-[#070b10] font-mono font-bold text-[10px] tracking-wide shadow-[0_0_8px_rgba(0,245,160,0.5)]" id="presetsCountBadge">1 СБОРКА</span>
-</button>
-<button class="px-3.5 py-2 text-xs font-sans font-semibold text-white bg-[#131c26] hover:bg-[#1a2836] border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-sm" id="btnBrowse">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-left-right" aria-hidden="true" class="lucide lucide-arrow-left-right w-3.5 h-3.5 text-[#00f5a0]"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg>
-<span class="">Выбрать файл</span>
-</button>
-<button class="px-3 py-2 text-xs font-sans font-semibold text-red-400 bg-red-950/20 hover:bg-red-950/40 border border-red-900/30 rounded-xl flex items-center gap-1.5 transition disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnClear" title="Очистить текущий файл">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" aria-hidden="true" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-<span class="">Очистить</span>
-</button>
-<a class="px-4 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-xs font-semibold text-[#8ea1e1] hover:text-white border border-[#5865F2]/40 hover:border-[#5865F2]/80 rounded-xl flex items-center gap-2 transition duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(88,101,242,0.25)]" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-<svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg>
-<span class="font-sans">Discord</span>
-</a>
-</div>
-</div>
-<!-- 1.1 Presets Panel -->
-<div class="border border-[#00f5a0]/40 bg-[#091117]/95 rounded-2xl p-5 shadow-[0_0_35px_rgba(0,245,160,0.12)] backdrop-blur-xl relative overflow-hidden transition-all duration-300" id="presetsPanel">
-<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#00f5a0]/20">
-<div>
-<div class="flex items-center gap-2.5">
-<div class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></div>
-<h3 class="font-bold text-white text-base font-sans tracking-wide">Готовые сборки</h3>
-<span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold" id="repoStatusBadge">1 сборка</span>
-</div>
-</div>
-<div class="flex items-center gap-2">
-<button class="px-3 py-1.5 text-xs font-mono text-[#00f5a0] hover:text-[#50ffaf] bg-[#121c24] hover:bg-[#182632] border border-[#00f5a0]/40 rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm group/sync disabled:opacity-30 disabled:pointer-events-none" id="btnSyncPresets" title="Синхронизировать с GitHub">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="syncIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
-<span class="font-sans font-semibold">Синхронизировать</span>
-</button>
-<button class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition cursor-pointer" id="btnClosePresets" title="Свернуть блок сборок">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-</button>
-</div>
-</div>
-<!-- Cards Container -->
-<div class="pt-4" id="presetsCardsContainer">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="border border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)] bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative">
-<div>
-<h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="Cloud.Tech.mrpack">
-              Cloud.Tech
-            </h4>
-<p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="Cloud.Tech.mrpack">
-              Cloud.Tech.mrpack
-            </p>
-<div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono"><span class="">22.09.2026</span></div>
-</div>
-<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-<a class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/packs" rel="noopener noreferrer" target="_blank" title="Релиз на GitHub">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-3.5 h-3.5 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-<span class="truncate max-w-[90px]">packs</span>
-</a>
-<span class="text-[10px] text-gray-400 font-mono flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5">21.4 MB</span>
-<a class="px-3.5 py-1.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer ml-auto" download="Cloud.Tech.mrpack" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/Cloud.Tech.mrpack" rel="noopener noreferrer" target="_blank" title="Скачать .mrpack с GitHub">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-3.5 h-3.5"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
-<span class="">Скачать</span>
-</a>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Server Status Panel -->
-
-<!-- 2. Metrics Bar -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-<div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-<div class="flex items-center justify-between mb-1.5">
-<span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">МОДЫ ВСЕГО</span>
-<div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
-</div>
-<span class="text-lg font-bold text-white tracking-wide font-mono" id="statTotalMods">—</span>
-</div>
-<div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-<div class="flex items-center justify-between mb-1.5">
-<span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">КЛИЕНТСКИЕ</span>
-<div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
-</div>
-<span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statClientMods">—</span>
-</div>
-<div class="bg-[#0e151d]/90 border border-white/10 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-<div class="flex items-center justify-between mb-1.5">
-<span class="text-gray-400 block text-[10px] font-semibold uppercase tracking-wider font-mono">КОНФИГУРАЦИИ</span>
-<div class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
-</div>
-<span class="text-lg font-bold text-white tracking-wide font-mono" id="statConfigs">—</span>
-</div>
-<div class="bg-[#0e151d]/90 border border-[#00f5a0]/30 p-4 rounded-xl relative overflow-hidden shadow-sm backdrop-blur-md">
-<div class="flex items-center justify-between mb-1.5">
-<span class="text-[#00f5a0] block text-[10px] font-semibold uppercase tracking-wider font-mono">ИТОГОВЫЙ РАЗМЕР</span>
-<div class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]"></div>
-</div>
-<span class="text-lg font-bold text-[#00f5a0] tracking-wide font-mono" id="statTargetSize">—</span>
-</div>
-</div>
-<!-- 3. Pack Modes -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative" id="normalModeCard">
-<div class="flex items-center justify-between">
-<label class="cursor-pointer flex items-center gap-3">
-<input checked="checked" class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="normal">
-<span class="font-bold text-sm text-[#00f5a0] font-sans" id="lblNormalTitle">Обычный (клиентский)</span>
-</label>
-</div>
-<div class="text-xs text-gray-400 pl-7 mt-3 flex items-center justify-between font-mono">
-<span class="text-gray-400">Включает все моды, клиентские твики и ресурспаки</span>
-<span class="text-[11px] text-gray-300 font-mono px-2 py-0.5 rounded-md bg-[#131c26] border border-white/10 shadow-inner" id="lblNormalCount">0 файлов</span>
-</div>
-</div>
-<div class="border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]" id="serverModeCard">
-<div class="flex items-center justify-between mb-3">
-<label class="cursor-pointer flex items-center gap-3">
-<input class="accent-[#00f5a0] w-4 h-4 cursor-pointer" name="packMode" type="radio" value="server">
-<span class="font-medium text-sm text-gray-300 font-sans" id="lblServerTitle">Для сервера</span>
-</label>
-</div>
-<div class="flex flex-wrap gap-4 text-xs text-gray-400 pl-7 font-mono">
-<label class="flex items-center gap-2 cursor-pointer hover:text-white transition text-gray-300">
-<input checked="" class="accent-[#00f5a0] rounded w-3.5 h-3.5 cursor-pointer" id="optAddEula" type="checkbox">
-<span class="text-xs font-mono text-[#00f5a0]">eula=true</span>
-</label>
-</div>
-</div>
-</div>
-<!-- 4. File Explorer Tree -->
-<div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl overflow-hidden shadow-lg backdrop-blur-md">
-<div class="p-3.5 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs">
-<div class="flex items-center gap-3">
-<label class="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white transition font-mono text-[12px]">
-<input checked="" class="accent-[#00f5a0] rounded cursor-pointer" id="checkSelectAll" type="checkbox">
-<span class="">Выбрать все подходящие компоненты</span>
-</label>
-<span class="text-gray-700">|</span>
-<div class="flex items-center gap-1.5">
-<button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnExpandAll" title="Развернуть все папки" type="button">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-down-up" aria-hidden="true" class="lucide lucide-chevrons-down-up w-3 h-3 text-[#00f5a0]"><path d="m7 20 5-5 5 5"></path><path d="m7 4 5 5 5-5"></path></svg>
-<span class="">Развернуть все</span>
-</button>
-<button class="px-2.5 py-1 text-[11px] bg-[#121a24] hover:bg-[#182330] text-gray-300 border border-white/10 rounded-lg flex items-center gap-1.5 transition font-mono shadow-sm cursor-pointer" id="btnCollapseAll" title="Свернуть все папки" type="button">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevrons-up-down" aria-hidden="true" class="lucide lucide-chevrons-up-down w-3 h-3 text-gray-400"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
-<span class="">Свернуть все</span>
-</button>
-</div>
-</div>
-<div class="flex gap-1.5 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
-<button class="px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer" id="btnFilterAll">Все</button>
-<button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterServer">Сервер</button>
-<button class="px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer" id="btnFilterClient">Клиент</button>
-</div>
-</div>
-<div class="p-4 space-y-1 text-xs max-h-[520px] overflow-y-auto custom-scroll" id="treeContainer">
-<div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2">
-<span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span>
-</div>
-</div>
-<div class="p-3.5 border-t border-white/10 bg-[#070b10]/90 text-[11px] text-gray-400 font-mono flex justify-between items-center">
-<div class="" id="treeSummary">Папок: 0 • Файлов в архиве: 0</div>
-<div class="text-[#00f5a0] flex items-center gap-2" id="treeStatusNotice">
-<span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>Готово к сборке
-      </div>
-</div>
-</div>
-<!-- Launcher Guides Section -->
-<div class="border border-white/10 bg-[#0b1017]/90 rounded-2xl p-6 shadow-lg backdrop-blur-md relative overflow-hidden transition-all duration-300" id="launcherGuidesSection">
-<div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
-<div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_15px_rgba(0,245,160,0.15)]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="book-open" aria-hidden="true" class="lucide lucide-book-open w-5 h-5 text-[#00f5a0]"><path d="M12 5v16"></path><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg>
-</div>
-<div>
-<h3 class="text-base font-bold text-white font-sans tracking-wide">Гайды по установке сборки</h3>
-</div>
-</div>
-<div class="flex flex-wrap gap-2 bg-[#070b10] p-1 rounded-xl border border-white/10 font-mono">
-<button class="px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5" id="tabGuideTl" onclick="switchGuideTab('tl')">TLauncher</button>
-<button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuideTlLegacy" onclick="switchGuideTab('tllegacy')">TLauncher Legacy</button>
-<button class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5" id="tabGuidePrism" onclick="switchGuideTab('prism')">PrismLauncher</button>
-</div>
-</div>
-<div class="pt-5">
-<!-- TLauncher Guide -->
-<div class="space-y-4" id="guideContentTl">
-<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-<div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="folder-open" aria-hidden="true" class="lucide lucide-folder-open w-4 h-4 text-[#00f5a0]"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
-<span class="font-bold">Установка в TLauncher (TL)</span>
-</div>
-<span class="text-[11px] text-gray-300 font-mono">Ручной перенос файлов из .zip</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-<span class="text-white font-semibold font-sans">Конвертация в ZIP</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте <code class="text-[#00f5a0]">.mrpack</code> сборки в стандартный <code class="text-[#00f5a0]">.zip</code> с помощью кнопки «Скачать .ZIP» в нижней панели сайта.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-<span class="text-white font-semibold font-sans">Выбор версии в TL</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">В списке версий TLauncher выберите и установите версию Fabric или Forge, указанную в метаданных сборки (например, Fabric 1.20.1).</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-<span class="text-white font-semibold font-sans">Открытие .minecraft</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в правом нижнем углу окна TLauncher, чтобы открыть проводник с системной папкой <code class="text-gray-200">.minecraft</code>.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-<span class="text-white font-semibold font-sans">Перенос и запуск</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Скопируйте папки <code class="text-white font-bold">mods</code>, <code class="text-white font-bold">config</code> из архива в <code class="text-gray-200">.minecraft</code> с заменой, после чего нажмите <strong class="text-[#00f5a0]">«Войти в игру»</strong>.</p>
-</div>
-</div>
-</div>
-<!-- TLauncher Legacy Guide -->
-<div class="space-y-4 hidden" id="guideContentTlLegacy">
-<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-<div class="flex items-center gap-2 text-xs font-mono text-[#00f5a0]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="folder-open" aria-hidden="true" class="lucide lucide-folder-open w-4 h-4 text-[#00f5a0]"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
-<span class="font-bold">Установка через ZIP архив</span>
-</div>
-<span class="text-[11px] text-gray-300 font-mono">Требуется конвертация в .zip</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-<span class="text-white font-semibold font-sans">Конвертация</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Сконвертируйте сборку в <code class="text-[#00f5a0]">.zip</code> через данный инструмент (выберите режим «Обычный (клиентский)» и нажмите «Скачать .ZIP»).</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-<span class="text-white font-semibold font-sans">Создание профиля</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">В TL Legacy создайте профиль или выберите чистую версию Minecraft с соответствующим загрузчиком (например, Fabric или Forge).</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-<span class="text-white font-semibold font-sans">Открытие директории</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Нажмите на иконку папки в меню профиля TL Legacy, чтобы перейти в папку инстанса или корневой каталог <code class="text-gray-200">.minecraft</code>.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-<span class="text-white font-semibold font-sans">Распаковка файлов</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Распакуйте содержимое скачанного <code class="text-[#00f5a0]">.zip</code> архива (папки <code class="text-gray-200">mods</code>, <code class="text-gray-200">config</code>) прямо в эту папку с подтверждением замены файлов.</p>
-</div>
-</div>
-</div>
-<!-- PrismLauncher Guide -->
-<div class="space-y-4 hidden" id="guideContentPrism">
-<div class="flex items-center justify-between bg-[#121c24] border border-[#00f5a0]/30 rounded-xl p-3.5">
-<div class="flex items-center gap-2.5 text-xs font-mono text-[#00f5a0]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" class="lucide lucide-package w-4 h-4 text-[#00f5a0]"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-<span class="font-bold">Рекомендуемый лаунчер</span>
-</div>
-<span class="text-[11px] text-gray-300 font-mono">Нативная поддержка файлов .mrpack и .zip без распаковки</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs font-mono">
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">1</span>
-<span class="text-white font-semibold font-sans">Открыть лаунчер</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Запустите PrismLauncher на вашем компьютере.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">2</span>
-<span class="text-white font-semibold font-sans">Нажать кнопку «Создать экземпляр»</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Нажмите кнопку <strong class="text-white">«Создать экземпляр» (Add Instance)</strong> на верхней панели.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">3</span>
-<span class="text-white font-semibold font-sans">Нажать на кнопку «Импорт»</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Перейдите на вкладку <strong class="text-[#00f5a0]">«Импорт» (Import)</strong> в меню слева.</p>
-</div>
-<div class="p-4 rounded-xl bg-[#0e151d] border border-white/5 space-y-1.5">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-[#00f5a0]/20 text-[#00f5a0] flex items-center justify-center font-bold text-[11px] border border-[#00f5a0]/40">4</span>
-<span class="text-white font-semibold font-sans">Выбрать файл и нажать ОК</span>
-</div>
-<p class="text-gray-400 pl-7 leading-relaxed">Выберите скачанный файл сборки (<code class="text-[#00f5a0]">.mrpack</code> или <code class="text-gray-200">.zip</code>) и нажмите кнопку «ОК».</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Footer Signature -->
-<div class="text-center pt-6 pb-2 text-[11px] font-mono tracking-wider select-none text-gray-300" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 8px; -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.8);">
-    by Arnimaz21 for <a class="text-[#8ea1e1] hover:text-white underline underline-offset-2 transition duration-200 inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><span class="">vunya100's server</span><svg class="w-3 h-3 fill-current inline-block opacity-80" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" fill="currentColor"></path></svg></a>
-</div>
-</div>
-<!-- 5. Floating Bottom Dock -->
-<div class="fixed left-4 right-4 max-w-5xl mx-auto z-50 bottom-8">
-<div class="border border-[#00f5a0]/30 bg-[#070b10]/95 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
-<div class="w-full bg-[#0e1620] h-1 overflow-hidden relative">
-<div class="bg-[#00f5a0] h-full w-0 transition-all duration-150" id="progressBar"></div>
-</div>
-<div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4">
-<div class="flex items-center gap-4 text-xs font-mono">
-<div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0e151d] border border-white/10 shadow-inner">
-<span class="w-2 h-2 rounded-full bg-gray-500 ring-2 ring-gray-700/50" id="statusIndicatorDot"></span>
-<span class="text-gray-200 font-medium" id="statusText">Ожидание файла</span>
-</div>
-<span class="text-gray-400 text-[11px] truncate max-w-md hidden md:inline font-mono" id="statusDetail"></span>
-</div>
-<div class="flex items-center gap-3 font-sans">
-<button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnPause">Пауза</button>
-<button class="px-4 py-2 bg-[#131c26] hover:bg-[#1b2836] text-xs font-mono text-gray-300 border border-white/10 hover:border-white/20 rounded-xl transition duration-150 disabled:opacity-30 disabled:pointer-events-none cursor-pointer" disabled="" id="btnCancel">Отмена</button>
-<button class="px-6 py-2 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs tracking-wide rounded-xl flex items-center gap-2 transition duration-150 disabled:opacity-30 cursor-pointer shadow-[0_0_15px_rgba(0,245,160,0.25)]" disabled="" id="btnDownload">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="download" aria-hidden="true" class="lucide lucide-download w-4 h-4"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
-<span class="font-sans font-bold">Скачать .ZIP</span>
-</button>
-</div>
-</div>
-</div>
-</div><script>
-(function() {
-  const SERVER_HOST = 'vunya100.ru';
-  const DEFAULT_MAX = 20;
-
-  const btnRefresh = document.getElementById('btnRefreshServerStatus');
-  const iconRefresh = document.getElementById('serverRefreshIcon');
-  const dotStatus = document.getElementById('serverStatusDot');
-  const badgeOnline = document.getElementById('serverOnlineBadge');
-  const container = document.getElementById('serverPlayersContainer');
-
-  async function fetchWithTimeout(url, ms = 4500) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), ms);
-    try {
-      const res = await fetch(url, { signal: controller.signal, cache: 'no-store' });
-      clearTimeout(timer);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (err) {
-      clearTimeout(timer);
-      throw err;
-    }
-  }
-
-  async function pollStatus() {
-    if (btnRefresh) btnRefresh.disabled = true;
-    if (iconRefresh) iconRefresh.classList.add('animate-spin');
-
-    const endpoints = [
-      async () => {
-        const data = await fetchWithTimeout(`https://api.mcstatus.io/v2/status/java/${SERVER_HOST}?t=${Date.now()}`);
-        const isOnline = Boolean(data && data.online);
-        const online = data?.players?.online ?? 0;
-        const max = data?.players?.max ?? DEFAULT_MAX;
-        const version = data?.version?.name_clean || data?.version?.name || '26.3';
-        let rawList = data?.players?.list || [];
-        let playerNames = rawList.map(p => typeof p === 'string' ? p : (p?.name_clean || p?.name || '')).filter(Boolean);
-        return { online: isOnline, playersOnline: online, playersMax: max, version, players: playerNames };
-      },
-      async () => {
-        const data = await fetchWithTimeout(`https://api.mcsrvstat.us/3/${SERVER_HOST}?t=${Date.now()}`);
-        const isOnline = Boolean(data && data.online);
-        const online = data?.players?.online ?? 0;
-        const max = data?.players?.max ?? DEFAULT_MAX;
-        const version = data?.version || '26.3';
-        let rawList = data?.players?.list || [];
-        let playerNames = rawList.map(p => typeof p === 'string' ? p : (p?.name || '')).filter(Boolean);
-        return { online: isOnline, playersOnline: online, playersMax: max, version, players: playerNames };
-      },
-      async () => {
-        const data = await fetchWithTimeout(`https://api.minetools.eu/ping/${SERVER_HOST}`);
-        if (data?.error) throw new Error(data.error);
-        const online = data?.players?.online ?? 0;
-        const max = data?.players?.max ?? DEFAULT_MAX;
-        const version = data?.version?.name || '26.3';
-        let rawList = data?.players?.sample || [];
-        let playerNames = rawList.map(p => typeof p === 'string' ? p : (p?.name || '')).filter(Boolean);
-        return { online: true, playersOnline: online, playersMax: max, version, players: playerNames };
-      }
-    ];
-
-    let result = null;
-    for (const fetcher of endpoints) {
-      try {
-        const res = await fetcher();
-        if (res) {
-          result = res;
-          if (res.players.length > 0 || res.playersOnline > 0) break;
-        }
-      } catch (err) {
-        console.warn('API error, trying fallback:', err);
-      }
-    }
-
-    renderResult(result);
-    if (btnRefresh) btnRefresh.disabled = false;
-    if (iconRefresh) iconRefresh.classList.remove('animate-spin');
-  }
-
-  function renderResult(data) {
-    if (!container) return;
-    if (!data || !data.online) {
-      if (dotStatus) {
-        dotStatus.className = 'w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]';
-      }
-      if (badgeOnline) {
-        badgeOnline.innerText = 'Офлайн';
-        badgeOnline.className = 'text-[10px] font-mono px-2 py-0.5 rounded-md bg-red-950/20 text-red-400 border border-red-900/30 font-semibold';
-      }
-      container.innerHTML = `
-        <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-red-950/20 border border-red-900/40 flex items-center justify-center text-red-400 flex-shrink-0">
-              <i data-lucide="users" class="w-5 h-5 text-red-400"></i>
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-white font-sans">Сервер недоступен</h4>
-              <p class="text-xs text-gray-400 font-mono mt-0.5">Проверьте подключение к сети</p>
-            </div>
-          </div>
-          <div class="text-right text-[11px] font-mono text-gray-400">
-            <div>Статус: <span class="text-red-400 font-bold">Офлайн</span></div>
-          </div>
-        </div>
-      `;
-      if (window.lucide) lucide.createIcons();
-      return;
-    }
-
-    if (dotStatus) {
-      dotStatus.className = 'w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]';
-    }
-    if (badgeOnline) {
-      badgeOnline.innerText = `Онлайн: ${data.playersOnline} / ${data.playersMax}`;
-      badgeOnline.className = 'text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold';
-    }
-
-    const cleanVersion = (data.version || '26.3').replace(/^.*?([0-9.]+).*?$/, '$1') || data.version;
-
-    if (data.playersOnline > 0 && data.players.length > 0) {
-      let playerChips = data.players.map(name => `
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#121c24] border border-[#00f5a0]/25 hover:border-[#00f5a0]/50 transition">
-          <img class="w-5 h-5 rounded-sm bg-black/40 flex-shrink-0" src="https://mc-heads.net/avatar/${encodeURIComponent(name)}/20" alt="${name}" loading="lazy" onerror="this.src='https://minotar.net/helm/${encodeURIComponent(name)}/20.png'">
-          <span class="text-xs font-mono font-semibold text-gray-200">${name}</span>
-        </div>
-      `).join('');
-
-      container.innerHTML = `
-        <div class="p-5 rounded-xl bg-[#0e151d] border border-white/5 space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-sans font-bold text-white">В сети (${data.players.length}):</span>
-            </div>
-            <div class="text-right text-[11px] font-mono text-gray-400">
-              Версия: <span class="text-[#00f5a0]">${cleanVersion}</span>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2 pt-1">
-            ${playerChips}
-          </div>
-        </div>
-      `;
-    } else if (data.playersOnline > 0 && data.players.length === 0) {
-      container.innerHTML = `
-        <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0 shadow-[0_0_10px_rgba(0,245,160,0.15)]">
-              <i data-lucide="users" class="w-5 h-5 text-[#00f5a0]"></i>
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-white font-sans">Игроков онлайн: <span class="text-[#00f5a0]">${data.playersOnline}</span></h4>
-              <p class="text-xs text-gray-400 font-mono mt-0.5">Список ников скрыт настройками сервера</p>
-            </div>
-          </div>
-          <div class="text-right text-[11px] font-mono text-gray-400">
-            <div>Версия: <span class="text-[#00f5a0]">${cleanVersion}</span></div>
-          </div>
-        </div>
-      `;
-    } else {
-      container.innerHTML = `
-        <div class="p-6 rounded-xl bg-[#0e151d] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-[#00f5a0]/10 border border-[#00f5a0]/20 flex items-center justify-center text-[#00f5a0] flex-shrink-0">
-              <i data-lucide="users" class="w-5 h-5 text-[#00f5a0]"></i>
-            </div>
-            <div>
-              <h4 class="text-sm font-bold text-white font-sans">Нет игроков онлайн</h4>
-              <p class="text-xs text-gray-400 font-mono mt-0.5">Сервер свободен для входа</p>
-            </div>
-          </div>
-          <div class="text-right text-[11px] font-mono text-gray-400">
-            <div>Версия: <span class="text-[#00f5a0]">${cleanVersion}</span></div>
-          </div>
-        </div>
-      `;
-    }
-    if (window.lucide) lucide.createIcons();
-  }
-
-  if (btnRefresh) {
-    btnRefresh.addEventListener('click', () => pollStatus());
-  }
-  window.pollServerStatus = pollStatus;
-  pollStatus();
-})();
-</script>
-<script>
-  if (window.lucide) {
-    lucide.createIcons();
-  }
-
-  function switchGuideTab(target) {
-    const tabs = {
-      prism: { btn: document.getElementById('tabGuidePrism'), content: document.getElementById('guideContentPrism') },
-      tllegacy: { btn: document.getElementById('tabGuideTlLegacy'), content: document.getElementById('guideContentTlLegacy') },
-      tl: { btn: document.getElementById('tabGuideTl'), content: document.getElementById('guideContentTl') }
-    };
-    Object.keys(tabs).forEach(k => {
-      const item = tabs[k];
-      if (!item.btn || !item.content) return;
-      if (k === target) {
-        item.btn.className = 'px-3 py-1.5 text-xs text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer flex items-center gap-1.5';
-        item.content.classList.remove('hidden');
-      } else {
-        item.btn.className = 'px-3 py-1.5 text-xs text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1.5';
-        item.content.classList.add('hidden');
-      }
-    });
-    if (window.lucide) lucide.createIcons();
-  }
-  window.switchGuideTab = switchGuideTab;
-
-  let state = {
-    file: null,
-    sourceZip: null,
-    manifest: null,
-    allFiles: [],
-    collapsedFolders: new Set(),
-    activeFilter: 'all',
-    isProcessing: false,
-    isPaused: false,
-    abortController: null,
-    repoPacks: [
-      {
-        name: 'Cloud.Tech.mrpack',
-        size: '111.9 MB',
-        rawSizeBytes: 117335040,
-        download_url: 'https://github.com/Arnimaz21/arnimaz21.github.io/releases/download/packs/Cloud.Tech.mrpack',
-        release_tag: 'packs',
-        release_name: 'packs',
-        published_at: '22.09.2026',
-        downloads_count: 0
-      }
-    ]
-  };
-
-  const DOM = {
-    fileInput: document.getElementById('fileInput'),
-    btnBrowse: document.getElementById('btnBrowse'),
-    btnClear: document.getElementById('btnClear'),
-    btnTogglePresets: document.getElementById('btnTogglePresets'),
-    btnClosePresets: document.getElementById('btnClosePresets'),
-    presetsPanel: document.getElementById('presetsPanel'),
-    presetsCountBadge: document.getElementById('presetsCountBadge'),
-    presetsCardsContainer: document.getElementById('presetsCardsContainer'),
-    btnSyncPresets: document.getElementById('btnSyncPresets'),
-    syncIcon: document.getElementById('syncIcon'),
-    repoStatusBadge: document.getElementById('repoStatusBadge'),
-    fileTitle: document.getElementById('fileTitle'),
-    fileMeta: document.getElementById('fileMeta'),
-    statTotalMods: document.getElementById('statTotalMods'),
-    statClientMods: document.getElementById('statClientMods'),
-    statConfigs: document.getElementById('statConfigs'),
-    statTargetSize: document.getElementById('statTargetSize'),
-    treeContainer: document.getElementById('treeContainer'),
-    treeSummary: document.getElementById('treeSummary'),
-    treeStatusNotice: document.getElementById('treeStatusNotice'),
-    lblNormalCount: document.getElementById('lblNormalCount'),
-    normalModeCard: document.getElementById('normalModeCard'),
-    serverModeCard: document.getElementById('serverModeCard'),
-    lblNormalTitle: document.getElementById('lblNormalTitle'),
-    lblServerTitle: document.getElementById('lblServerTitle'),
-    progressBar: document.getElementById('progressBar'),
-    statusText: document.getElementById('statusText'),
-    statusDetail: document.getElementById('statusDetail'),
-    statusIndicatorDot: document.getElementById('statusIndicatorDot'),
-    btnDownload: document.getElementById('btnDownload'),
-    btnPause: document.getElementById('btnPause'),
-    btnCancel: document.getElementById('btnCancel'),
-    btnExpandAll: document.getElementById('btnExpandAll'),
-    btnCollapseAll: document.getElementById('btnCollapseAll'),
-    btnFilterAll: document.getElementById('btnFilterAll'),
-    btnFilterServer: document.getElementById('btnFilterServer'),
-    btnFilterClient: document.getElementById('btnFilterClient'),
-    checkSelectAll: document.getElementById('checkSelectAll'),
-    optAddEula: document.getElementById('optAddEula'),
-    modeRadios: document.querySelectorAll('input[name="packMode"]')
-  };
-
-  async function fetchGithubPacks() {
-    if (DOM.syncIcon) DOM.syncIcon.classList.add('animate-spin');
-    if (DOM.repoStatusBadge) DOM.repoStatusBadge.innerText = 'Синхронизация...';
-
-    const apiEndpoint = `https://api.github.com/repos/Arnimaz21/arnimaz21.github.io/releases?t=${Date.now()}`;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
-    
-    try {
-      let releases = [];
-      const res = await fetch(apiEndpoint, {
-        signal: controller.signal,
-        headers: { 'Accept': 'application/vnd.github.v3+json' },
-        cache: 'no-store'
-      });
-      clearTimeout(timeoutId);
-      if (res.ok) {
-        releases = await res.json();
-      }
-
-      let packFiles = [];
-      if (Array.isArray(releases)) {
-        releases.forEach(release => {
-          if (Array.isArray(release.assets)) {
-            release.assets.forEach(asset => {
-              const name = (asset.name || '').toLowerCase();
-              if (name.endsWith('.mrpack') || name.endsWith('.zip')) {
-                packFiles.push({
-                  name: asset.name,
-                  size: (asset.size / (1024 * 1024)).toFixed(1) + ' MB',
-                  rawSizeBytes: asset.size,
-                  download_url: asset.browser_download_url,
-                  release_tag: release.tag_name || release.name || 'packs',
-                  release_name: release.name || release.tag_name || 'packs',
-                  published_at: release.published_at ? new Date(release.published_at).toLocaleDateString('ru-RU') : '22.09.2026',
-                  downloads_count: asset.download_count || 0
-                });
-              }
-            });
-          }
-        });
-      }
-
-      if (packFiles.length > 0) {
-        state.repoPacks = packFiles;
-      }
-    } catch (e) {
-      console.warn('API fallback or timeout:', e);
-    } finally {
-      clearTimeout(timeoutId);
-      if (DOM.syncIcon) DOM.syncIcon.classList.remove('animate-spin');
-      renderPresetCards();
-    }
-  }
-  window.fetchGithubPacks = fetchGithubPacks;
-
-  function renderPresetCards() {
-    const count = state.repoPacks.length;
-    if (DOM.presetsCountBadge) DOM.presetsCountBadge.innerText = count === 1 ? '1 СБОРКА' : `${count} СБОРОК`;
-    if (DOM.repoStatusBadge) DOM.repoStatusBadge.innerText = count === 1 ? '1 сборка' : `${count} сборок`;
-
-    let cardsHtml = `<div class="grid grid-cols-1 md:grid-cols-3 gap-4">`;
-    state.repoPacks.forEach((fileItem) => {
-      const cleanTitle = fileItem.name.replace(/\.(mrpack|zip)$/i, '');
-      cardsHtml += `
-        <div class="border border-[#00f5a0]/30 hover:border-[#00f5a0]/70 hover:shadow-[0_0_20px_rgba(0,245,160,0.15)] bg-[#0d1620]/90 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 group relative">
-          <div>
-            <h4 class="font-bold text-white text-sm font-sans tracking-wide group-hover:text-[#00f5a0] transition truncate" title="${fileItem.name}">
-              ${cleanTitle}
-            </h4>
-            <p class="text-xs text-gray-400 mt-1 font-mono leading-relaxed truncate" title="${fileItem.name}">
-              ${fileItem.name}
-            </p>
-            <div class="flex items-center gap-3 mt-2 text-[10px] text-gray-500 font-mono">
-              <span>${fileItem.published_at || '22.09.2026'}</span>
-            </div>
-          </div>
-          <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-            <a class="text-[11px] text-gray-400 hover:text-gray-200 font-mono flex items-center gap-1 transition" href="https://github.com/Arnimaz21/arnimaz21.github.io/releases/tag/${fileItem.release_tag}" rel="noopener noreferrer" target="_blank" title="Релиз на GitHub">
-              <i data-lucide="package" class="w-3.5 h-3.5 text-[#00f5a0]"></i>
-              <span class="truncate max-w-[90px]">${fileItem.release_tag}</span>
-            </a>
-            <span class="text-[10px] text-gray-400 font-mono flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5">${fileItem.size}</span>
-            <a class="px-3.5 py-1.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs font-sans rounded-lg flex items-center gap-1.5 transition shadow-[0_0_10px_rgba(0,245,160,0.25)] cursor-pointer ml-auto" download="${fileItem.name}" href="${fileItem.download_url}" rel="noopener noreferrer" target="_blank" title="Скачать .mrpack с GitHub">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i>
-              <span>Скачать</span>
-            </a>
-          </div>
-        </div>
-      `;
-    });
-    cardsHtml += `</div>`;
-    if (DOM.presetsCardsContainer) DOM.presetsCardsContainer.innerHTML = cardsHtml;
-    if (window.lucide) lucide.createIcons();
-  }
-
-  if (DOM.btnSyncPresets) DOM.btnSyncPresets.addEventListener('click', fetchGithubPacks);
-  
-  if (DOM.btnBrowse) {
-    DOM.btnBrowse.addEventListener('click', () => {
-      if (DOM.fileInput) DOM.fileInput.click();
-    });
-  }
-  
-  if (DOM.fileInput) {
-    DOM.fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files.length > 0) {
-        processMrpack(e.target.files[0]);
-      }
-    });
-  }
-
-  if (DOM.btnTogglePresets && DOM.presetsPanel) {
-    DOM.btnTogglePresets.addEventListener('click', () => {
-      DOM.presetsPanel.classList.toggle('hidden');
-    });
-  }
-  if (DOM.btnClosePresets && DOM.presetsPanel) {
-    DOM.btnClosePresets.addEventListener('click', () => {
-      DOM.presetsPanel.classList.add('hidden');
-    });
-  }
-
-  window.addEventListener('dragover', (e) => e.preventDefault());
-  window.addEventListener('drop', (e) => {
-    e.preventDefault();
-    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      processMrpack(e.dataTransfer.files[0]);
-    }
-  });
-
-  if (DOM.normalModeCard) {
-    DOM.normalModeCard.addEventListener('click', (e) => {
-      if (e.target.tagName !== 'INPUT') {
-        const radio = DOM.normalModeCard.querySelector('input[type="radio"]');
-        if (radio && !radio.checked) {
-          radio.checked = true;
-          applyModeFilters();
-        }
-      }
-    });
-  }
-
-  if (DOM.serverModeCard) {
-    DOM.serverModeCard.addEventListener('click', (e) => {
-      if (e.target.tagName !== 'INPUT') {
-        const radio = DOM.serverModeCard.querySelector('input[type="radio"]');
-        if (radio && !radio.checked) {
-          radio.checked = true;
-          applyModeFilters();
-        }
-      }
-    });
-  }
-
-  function setFilter(filter) {
-    state.activeFilter = filter;
-    [DOM.btnFilterAll, DOM.btnFilterServer, DOM.btnFilterClient].forEach(b => {
-      if (b) b.className = "px-3 py-1 text-[11px] text-gray-400 hover:text-white transition cursor-pointer";
-    });
-    if (filter === 'all' && DOM.btnFilterAll) DOM.btnFilterAll.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
-    if (filter === 'server' && DOM.btnFilterServer) DOM.btnFilterServer.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
-    if (filter === 'client' && DOM.btnFilterClient) DOM.btnFilterClient.className = "px-3 py-1 text-[11px] text-[#00f5a0] font-semibold border-b-2 border-[#00f5a0] rounded-t-sm transition cursor-pointer";
-    renderDirectoryTree();
-  }
-  if (DOM.btnFilterAll) DOM.btnFilterAll.addEventListener('click', () => setFilter('all'));
-  if (DOM.btnFilterServer) DOM.btnFilterServer.addEventListener('click', () => setFilter('server'));
-  if (DOM.btnFilterClient) DOM.btnFilterClient.addEventListener('click', () => setFilter('client'));
-
-  if (DOM.btnExpandAll) {
-    DOM.btnExpandAll.addEventListener('click', () => {
-      state.collapsedFolders.clear();
-      renderDirectoryTree();
-    });
-  }
-  if (DOM.btnCollapseAll) {
-    DOM.btnCollapseAll.addEventListener('click', () => {
-      state.collapsedFolders = new Set(getAllFolderPaths());
-      renderDirectoryTree();
-    });
-  }
-
-  if (DOM.checkSelectAll) {
-    DOM.checkSelectAll.addEventListener('change', (e) => {
-      const checked = e.target.checked;
-      state.allFiles.forEach(f => {
-        if (!f.filteredOut) f.selected = checked;
-      });
-      updateStats();
-      renderDirectoryTree();
-    });
-  }
-
-  async function processMrpack(file) {
-    if (!file) return;
-    try {
-      updateStatus('Чтение архива...', 'Разбор структуры пакета');
-      state.file = file;
-      if (DOM.fileTitle) DOM.fileTitle.innerText = file.name;
-      if (DOM.fileMeta) DOM.fileMeta.innerText = `${(file.size / (1024 * 1024)).toFixed(1)} MB • Чтение...`;
-      if (DOM.btnClear) DOM.btnClear.disabled = false;
-
-      state.sourceZip = await JSZip.loadAsync(file);
-      const indexEntry = state.sourceZip.file("modrinth.index.json");
-      
-      state.allFiles = [];
-      let modIdCounter = 0;
-
-      if (indexEntry) {
-        const indexJson = await indexEntry.async("string");
-        state.manifest = JSON.parse(indexJson);
-
-        if (Array.isArray(state.manifest.files)) {
-          state.manifest.files.forEach(f => {
-            const isClientOnly = f.env && f.env.client === 'required' && f.env.server === 'unsupported';
-            state.allFiles.push({
-              id: `mod_${modIdCounter++}`,
-              type: 'mod',
-              path: f.path.startsWith('/') ? f.path.slice(1) : f.path,
-              fileSize: f.fileSize || 0,
-              hashes: f.hashes,
-              downloads: f.downloads,
-              isClientOnly: isClientOnly,
-              selected: true,
-              filteredOut: false
-            });
-          });
-        }
-      } else {
-        state.manifest = { files: [] };
-      }
-
-      state.sourceZip.forEach((zipPath, zipEntry) => {
-        if (!zipEntry.dir) {
-          let cleanPath = zipPath;
-          if (cleanPath.startsWith("overrides/")) {
-            cleanPath = cleanPath.replace(/^overrides\//, "");
-          }
-          if (!cleanPath || cleanPath === "modrinth.index.json") return;
-
-          const isJar = cleanPath.toLowerCase().endsWith('.jar') || cleanPath.startsWith("mods/");
-          const isClientOnly = isJar
-            ? /-(client|gui|visual|hud|sound|recording|replay|voice)\b/i.test(cleanPath)
-            : (cleanPath.startsWith("resourcepacks/") || cleanPath.startsWith("shaderpacks/"));
-
-          state.allFiles.push({
-            id: isJar ? `mod_override_${modIdCounter++}` : `override_${zipPath}`,
-            type: isJar ? 'mod' : 'override',
-            path: cleanPath,
-            zipPath: zipPath,
-            fileSize: zipEntry._data ? zipEntry._data.uncompressedSize || 0 : 0,
-            isClientOnly: isClientOnly,
-            selected: true,
-            filteredOut: false
-          });
-        }
-      });
-
-      // По умолчанию папки свернуты
-      state.collapsedFolders = new Set(getAllFolderPaths());
-
-      const deps = state.manifest?.dependencies || {};
-      let loaderName = 'Загрузчик';
-      if (deps.fabric) {
-        loaderName = 'Fabric';
-      } else if (deps.forge) {
-        loaderName = 'Forge';
-      } else if (deps['neoforge']) {
-        loaderName = 'NeoForge';
-      } else if (deps.quilt) {
-        loaderName = 'Quilt';
-      }
-
-      const mcVer = deps.minecraft || '';
-      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-      if (DOM.fileMeta) {
-        DOM.fileMeta.innerText = mcVer ? `${sizeMB} MB • ${loaderName} • ${mcVer}` : `${sizeMB} MB • ${loaderName}`;
-      }
-
-      applyModeFilters();
-      if (DOM.btnDownload) DOM.btnDownload.disabled = false;
-      updateStatus('Готов к сборке', 'Отметьте файлы галочками и нажмите «Скачать .ZIP»', '#00f5a0');
-      if (DOM.treeContainer) DOM.treeContainer.scrollTop = 0;
-    } catch (err) {
-      console.error(err);
-      alert("Не удалось прочесть файл: " + err.message);
-      resetApp();
-    }
-  }
-  window.processMrpack = processMrpack;
-
-  function getAllFolderPaths() {
-    const set = new Set();
-    state.allFiles.forEach(f => {
-      const parts = f.path.split('/');
-      parts.pop();
-      let curr = '';
-      parts.forEach(p => {
-        curr = curr ? `${curr}/${p}` : p;
-        set.add(curr);
-      });
-    });
-    return Array.from(set);
-  }
-
-  function applyModeFilters() {
-    const isServerMode = document.querySelector('input[name="packMode"]:checked')?.value === 'server';
-    
-    if (DOM.normalModeCard && DOM.serverModeCard && DOM.lblNormalTitle && DOM.lblServerTitle) {
-      if (isServerMode) {
-        DOM.normalModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
-        DOM.serverModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
-        DOM.lblNormalTitle.className = "font-medium text-sm text-gray-300 font-sans";
-        DOM.lblServerTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
-      } else {
-        DOM.normalModeCard.className = "border border-[#00f5a0]/50 bg-[#0b1017]/90 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_0_25px_rgba(0,245,160,0.12),inset_0_1px_0_rgba(0,245,160,0.25)] relative";
-        DOM.serverModeCard.className = "border border-white/10 bg-[#070b10]/90 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between cursor-pointer shadow-[0_4px_25px_rgba(0,0,0,0.4)]";
-        DOM.lblNormalTitle.className = "font-bold text-sm text-[#00f5a0] font-sans";
-        DOM.lblServerTitle.className = "font-medium text-sm text-gray-300 font-sans";
-      }
-    }
-
-    if (!state.allFiles || state.allFiles.length === 0) return;
-
-    state.allFiles.forEach(f => {
-      let shouldSelect = true;
-      const isMod = f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar');
-      if (isServerMode) {
-        if (f.isClientOnly && isMod) shouldSelect = false;
-        if (f.path.startsWith('resourcepacks/') || f.path.startsWith('shaderpacks/')) shouldSelect = false;
-      }
-      f.selected = shouldSelect;
-    });
-
-    updateStats();
-    renderDirectoryTree();
-  }
-
-  function updateStats() {
-    const mods = state.allFiles.filter(f => f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar'));
-    const clientMods = mods.filter(m => m.isClientOnly);
-    const configs = state.allFiles.filter(f => !(f.type === 'mod' || f.path.startsWith('mods/') || f.path.toLowerCase().endsWith('.jar')));
-    
-    const selectedFiles = state.allFiles.filter(f => f.selected);
-    const totalSelectedSize = selectedFiles.reduce((acc, cur) => acc + (cur.fileSize || 0), 0);
-
-    if (DOM.statTotalMods) DOM.statTotalMods.innerText = mods.length > 0 ? `${mods.length} JAR` : '—';
-    if (DOM.statClientMods) DOM.statClientMods.innerText = mods.length > 0 ? `${clientMods.length} модов` : '—';
-    if (DOM.statConfigs) DOM.statConfigs.innerText = configs.length > 0 ? `${configs.length} файлов` : '—';
-    if (DOM.statTargetSize) DOM.statTargetSize.innerText = selectedFiles.length > 0 ? `~${(totalSelectedSize / (1024 * 1024)).toFixed(1)} MB` : '—';
-    if (DOM.lblNormalCount) DOM.lblNormalCount.innerText = `${state.allFiles.length} файлов`;
-  }
-
-  function renderDirectoryTree() {
-    if (!DOM.treeContainer) return;
-    if (state.allFiles.length === 0) {
-      DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2"><span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span></div>';
-      return;
-    }
-
-    const root = { name: 'root', path: '', dirs: {}, files: [] };
-    let folderCount = 0;
-
-    state.allFiles.forEach(file => {
-      if (state.activeFilter === 'server' && file.isClientOnly) return;
-      if (state.activeFilter === 'client' && !file.isClientOnly) return;
-
-      const parts = file.path.split('/');
-      const fileName = parts.pop();
-      let currentDir = root;
-      let runningPath = '';
-
-      parts.forEach(part => {
-        runningPath = runningPath ? `${runningPath}/${part}` : part;
-        if (!currentDir.dirs[part]) {
-          folderCount++;
-          currentDir.dirs[part] = {
-            name: part,
-            path: runningPath,
-            dirs: {},
-            files: []
-          };
-        }
-        currentDir = currentDir.dirs[part];
-      });
-
-      currentDir.files.push({ ...file, name: fileName });
-    });
-
-    let html = '';
-    const topDirs = Object.values(root.dirs);
-    
-    topDirs.forEach(dir => {
-      html += renderFolderNode(dir, 0);
-    });
-
-    if (root.files.length > 0) {
-      html += `<div class="space-y-1 mt-1">`;
-      root.files.forEach(f => {
-        html += renderFileRow(f, 0);
-      });
-      html += `</div>`;
-    }
-
-    DOM.treeContainer.innerHTML = html || '<div class="p-8 text-center text-gray-500 font-mono">Нет файлов, соответствующих выбранному фильтру</div>';
-    
-    const totalSelected = state.allFiles.filter(f => f.selected).length;
-    if (DOM.treeSummary) DOM.treeSummary.innerText = `Папок: ${folderCount} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
-
-    if (window.lucide) lucide.createIcons();
-  }
-
-  function getDirStats(dirNode) {
-    let count = dirNode.files.length;
-    let totalSize = dirNode.files.reduce((acc, f) => acc + (f.fileSize || 0), 0);
-    let selectedCount = dirNode.files.filter(f => f.selected).length;
-
-    Object.values(dirNode.dirs).forEach(sub => {
-      const s = getDirStats(sub);
-      count += s.count;
-      totalSize += s.totalSize;
-      selectedCount += s.selectedCount;
-    });
-
-    return { count, totalSize, selectedCount };
-  }
-
-  function renderFolderNode(dir, depth) {
-    const isCollapsed = state.collapsedFolders.has(dir.path);
-    const stats = getDirStats(dir);
-    const indentPx = depth * 16;
-    const isAllSelected = stats.count > 0 && stats.selectedCount === stats.count;
-    const isPartSelected = stats.selectedCount > 0 && stats.selectedCount < stats.count;
-
-    const chevronIcon = isCollapsed ? 'chevron-right' : 'chevron-down';
-    const folderIcon = isCollapsed ? 'folder' : 'folder-open';
-    const sizeStr = (stats.totalSize / (1024 * 1024)).toFixed(1);
-
-    let folderColor = 'text-[#00f5a0]';
-    if (dir.name === 'mods') folderColor = 'text-[#00f5a0] font-bold';
-    else if (dir.name === 'config' || dir.name === 'overrides') folderColor = 'text-cyan-400 font-bold';
-    else if (dir.name === 'resourcepacks' || dir.name === 'shaderpacks') folderColor = 'text-emerald-300 font-bold';
-
-    const encodedPath = encodeURIComponent(dir.path);
-
-    let html = `
-      <div class="folder-group mb-1" data-folder-path="${encodedPath}">
-        <div class="flex items-center justify-between py-1.5 px-2.5 rounded-xl hover:bg-[#151f2b]/70 bg-[#0d141e]/60 border border-white/5 text-gray-200 transition group/f" style="margin-left: ${indentPx}px;">
-          <div class="flex items-center gap-2.5 overflow-hidden flex-1 mr-2">
-            <button type="button" onclick="window.toggleFolder(decodeURIComponent('${encodedPath}'))" class="p-1 -ml-1 text-gray-400 hover:text-white rounded focus:outline-none flex items-center cursor-pointer">
-              <i data-lucide="${chevronIcon}" class="w-3.5 h-3.5 folder-chevron"></i>
-            </button>
-            <input type="checkbox" onchange="window.toggleFolderCheck(decodeURIComponent('${encodedPath}'), this.checked)" ${isAllSelected ? 'checked' : ''} ${isPartSelected ? 'data-indeterminate="true"' : ''} class="accent-[#00f5a0] rounded cursor-pointer">
-            <span onclick="window.toggleFolder(decodeURIComponent('${encodedPath}'))" class="cursor-pointer flex items-center gap-2 truncate ${folderColor} text-xs font-mono select-none">
-              <i data-lucide="${folderIcon}" class="w-3.5 h-3.5 inline-block opacity-90 folder-icon"></i>
-              <span class="truncate">${dir.name}/</span>
-            </span>
-            <span class="text-[10px] text-gray-500 font-mono">(${stats.count})</span>
-          </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
-            <span class="text-[10px] text-gray-500 font-mono">~${sizeStr} MB</span>
-          </div>
-        </div>
-
-        <div class="folder-children ${isCollapsed ? 'collapsed' : ''} space-y-1 mt-1">
-    `;
-
-    Object.values(dir.dirs).forEach(sub => {
-      html += renderFolderNode(sub, depth + 1);
-    });
-
-    dir.files.forEach(f => {
-      html += renderFileRow(f, depth + 1);
-    });
-
-    html += `</div></div>`;
-    return html;
-  }
-
-  function renderFileRow(file, depth) {
-    const indentPx = (depth * 16) + 14;
-    const rowOpacity = file.selected ? 'text-gray-200' : 'text-gray-500 line-through opacity-60';
-    const sizeStr = file.fileSize ? `${(file.fileSize / (1024 * 1024)).toFixed(2)} MB` : '0 KB';
-
-    let tag = '';
-    const isJar = file.path.toLowerCase().endsWith('.jar') || file.path.startsWith('mods/') || file.type === 'mod';
-
-    if (isJar) {
-      tag = file.isClientOnly 
-        ? '<span class="text-[10px] px-1.5 py-0.2 bg-red-950/40 text-red-400 border border-red-900/40 rounded flex-shrink-0">Клиент</span>' 
-        : '<span class="text-[10px] px-1.5 py-0.2 bg-[#00f5a0]/10 text-[#00f5a0] border border-[#00f5a0]/30 rounded flex-shrink-0">Сервер</span>';
-    } else if (file.path.startsWith('resourcepacks/') || file.path.startsWith('shaderpacks/')) {
-      tag = '<span class="text-[10px] px-1.5 py-0.2 bg-amber-950/40 text-amber-400 border border-amber-900/40 rounded flex-shrink-0">Ресурспак</span>';
-    } else if (file.path.startsWith('config/') || file.path.endsWith('.json') || file.path.endsWith('.toml') || file.path.endsWith('.cfg') || file.path.endsWith('.txt') || file.path.endsWith('.properties')) {
-      tag = '<span class="text-[10px] px-1.5 py-0.2 bg-cyan-950/40 text-cyan-400 border border-cyan-900/40 rounded flex-shrink-0">Конфиг</span>';
-    } else {
-      tag = '<span class="text-[10px] px-1.5 py-0.2 bg-cyan-950/40 text-cyan-400 border border-cyan-900/40 rounded flex-shrink-0">Файл</span>';
-    }
-
-    return `
-      <div class="flex items-center justify-between py-1 px-2.5 hover:bg-[#121a24]/60 rounded-lg transition text-xs ${rowOpacity}" style="margin-left: ${indentPx}px;">
-        <label class="flex items-center gap-2 cursor-pointer truncate flex-1 mr-2">
-          <input type="checkbox" onchange="window.toggleFile('${file.id}', this.checked)" ${file.selected ? 'checked' : ''} class="accent-[#00f5a0] rounded">
-          <span class="text-gray-500 font-mono text-[11px] select-none flex-shrink-0">📄</span>
-          <span class="truncate font-mono text-[11.5px]">${file.name}</span>
-          ${tag}
-        </label>
-        <span class="text-[10px] text-gray-500 font-mono flex-shrink-0">${sizeStr}</span>
-      </div>
-    `;
-  }
-
-  window.toggleFolder = function(folderPath) {
-    if (state.collapsedFolders.has(folderPath)) {
-      state.collapsedFolders.delete(folderPath);
-    } else {
-      state.collapsedFolders.add(folderPath);
-    }
-    renderDirectoryTree();
-  };
-
-  window.toggleFolderCheck = function(folderPath, isChecked) {
-    state.allFiles.forEach(f => {
-      if (f.path === folderPath || f.path.startsWith(folderPath + '/')) {
-        f.selected = isChecked;
-      }
-    });
-    updateStats();
-    renderDirectoryTree();
-  };
-
-  window.toggleFile = function(fileId, isChecked) {
-    const file = state.allFiles.find(f => f.id === fileId);
-    if (file) {
-      file.selected = isChecked;
-      updateStats();
-      const totalSelected = state.allFiles.filter(f => f.selected).length;
-      if (DOM.treeSummary) DOM.treeSummary.innerText = `Папок: ${getAllFolderPaths().length} • Файлов в сборке: ${totalSelected} из ${state.allFiles.length}`;
-    }
-  };
-
-  DOM.modeRadios.forEach(r => r.addEventListener('change', applyModeFilters));
-  if (DOM.optAddEula) DOM.optAddEula.addEventListener('change', applyModeFilters);
-
-  if (DOM.btnDownload) {
-    DOM.btnDownload.addEventListener('click', startBuildAndDownload);
-  }
-  window.startBuildAndDownload = startBuildAndDownload;
-
-  async function downloadModWithFallbacks(mod, signal) {
-    const urls = Array.isArray(mod.downloads) && mod.downloads.length > 0 ? mod.downloads : [];
-    if (urls.length === 0) return null;
-
-    for (let uIdx = 0; uIdx < urls.length; uIdx++) {
-      const url = urls[uIdx];
-      try {
-        let resp = await fetch(url, { signal });
-        if (resp && resp.ok) {
-          return await resp.arrayBuffer();
-        }
-      } catch (err) {
-        if (err.name === 'AbortError') throw err;
-      }
-
-      // Пробуем через CORS-прокси
-      try {
-        let respProxy = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, { signal });
-        if (respProxy && respProxy.ok) {
-          return await respProxy.arrayBuffer();
-        }
-      } catch (proxyErr) {
-        if (proxyErr.name === 'AbortError') throw proxyErr;
-      }
-    }
-    return null;
-  }
-
-  async function startBuildAndDownload() {
-    if (state.isProcessing || !state.sourceZip) return;
-    state.isProcessing = true;
-    state.abortController = new AbortController();
-
-    if (DOM.btnDownload) DOM.btnDownload.disabled = true;
-    if (DOM.btnCancel) DOM.btnCancel.disabled = false;
-    if (DOM.progressBar) DOM.progressBar.style.width = '0%';
-
-    const outZip = new JSZip();
-    const selectedModsToDownload = state.allFiles.filter(f => f.type === 'mod' && f.selected && !f.zipPath && f.downloads && f.downloads.length > 0);
-    const selectedZipEntries = state.allFiles.filter(f => f.selected && f.zipPath);
-    const totalMods = selectedModsToDownload.length;
-    let loadedMods = 0;
-
-    updateStatus('Сборка архива...', `0 / ${totalMods} модов`, '#00f5a0');
-
-    try {
-      // 1. Копируем файлы overrides из существующего zip
-      for (const fileItem of selectedZipEntries) {
-        const zipEntry = state.sourceZip.file(fileItem.zipPath);
-        if (zipEntry) {
-          const data = await zipEntry.async("arraybuffer");
-          outZip.file(fileItem.path, data, { compression: "STORE" });
-        }
-      }
-
-      // 2. Добавляем eula.txt если режим сервера
-      const isServerMode = document.querySelector('input[name="packMode"]:checked')?.value === 'server';
-      const addEula = document.getElementById('optAddEula')?.checked ?? true;
-      if (isServerMode && addEula) {
-        outZip.file("eula.txt", "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).\neula=true\n", { compression: "STORE" });
-      }
-
-      // 3. Загружаем моды с высоким параллелизмом и динамическим статусом текущего файла
-      if (totalMods > 0) {
-        const CONCURRENCY = 8;
-        let queueIndex = 0;
-
-        const worker = async () => {
-          while (queueIndex < totalMods && state.isProcessing) {
-            const currentIdx = queueIndex++;
-            const mod = selectedModsToDownload[currentIdx];
-            const fileName = mod.path.split('/').pop();
-
-            // Мгновенное обновление статуса на скачиваемый прямо сейчас файл
-            const currentPct = Math.round((loadedMods / totalMods) * 88);
-            if (DOM.statusText) DOM.statusText.innerText = `Загрузка: ${currentPct}% (${loadedMods + 1} / ${totalMods})`;
-            if (DOM.statusDetail) {
-              DOM.statusDetail.innerText = `[GET] ${fileName}`;
-              DOM.statusDetail.classList.remove('hidden');
-            }
-
-            try {
-              const buf = await downloadModWithFallbacks(mod, state.abortController.signal);
-              if (buf) {
-                outZip.file(mod.path, buf, { compression: "STORE" });
-              } else {
-                console.warn(`Не удалось загрузить ${fileName}, пропуск.`);
-              }
-            } catch (singleErr) {
-              if (singleErr.name === 'AbortError') throw singleErr;
-              console.warn(`Ошибка загрузки мода ${fileName}:`, singleErr);
-            }
-
-            loadedMods++;
-            const pct = Math.round((loadedMods / totalMods) * 88);
-            if (DOM.progressBar) DOM.progressBar.style.width = `${pct}%`;
-            if (DOM.statusText) DOM.statusText.innerText = `Загрузка: ${pct}% (${loadedMods} / ${totalMods})`;
-            if (DOM.statusDetail) {
-              DOM.statusDetail.innerText = `[OK] ${fileName}`;
-              DOM.statusDetail.classList.remove('hidden');
-            }
-          }
-        };
-
-        const workers = [];
-        const actualWorkersCount = Math.min(CONCURRENCY, totalMods);
-        for (let w = 0; w < actualWorkersCount; w++) {
-          workers.push(worker());
-        }
-        await Promise.all(workers);
-      }
-
-      // 4. Сжатие и отдача пользователю без лишнего пережатия CPU
-      updateStatus('Сжатие архива...', 'Упаковка и генерация .zip файла', '#00f5a0');
-      const finalBlob = await outZip.generateAsync({ type: 'blob', compression: 'STORE' }, (meta) => {
-        const compressPct = 88 + Math.round(meta.percent * 0.12);
-        if (DOM.progressBar) DOM.progressBar.style.width = `${compressPct}%`;
-      });
-
-      const originalName = state.file ? state.file.name.replace(/\.(mrpack|zip)$/i, '') : 'modpack';
-      const targetName = `${originalName}${isServerMode ? '-server' : ''}.zip`;
-      saveAs(finalBlob, targetName);
-
-      if (DOM.progressBar) DOM.progressBar.style.width = '100%';
-      updateStatus('Готово!', `Архив ${targetName} сохранён`, '#00f5a0');
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        updateStatus('Отменено', 'Сборка прервана пользователем', '#ffb4ab');
-      } else {
-        console.error(err);
-        alert('Ошибка при сборке архива: ' + err.message);
-        updateStatus('Ошибка сборки', err.message, '#ffb4ab');
-      }
-    } finally {
-      state.isProcessing = false;
-      if (DOM.btnDownload) DOM.btnDownload.disabled = false;
-      if (DOM.btnCancel) DOM.btnCancel.disabled = true;
-    }
-  }
-
-  if (DOM.btnCancel) {
-    DOM.btnCancel.addEventListener('click', () => {
-      if (state.abortController) {
-        state.abortController.abort();
-      }
-      state.isProcessing = false;
-      updateStatus('Отменено', 'Сборка прервана', '#ffb4ab');
-    });
-  }
-
-  if (DOM.btnClear) DOM.btnClear.addEventListener('click', resetApp);
-
-  function resetApp() {
-    state.file = null;
-    state.sourceZip = null;
-    state.manifest = null;
-    state.allFiles = [];
-    state.collapsedFolders.clear();
-    if (DOM.fileTitle) DOM.fileTitle.innerText = 'Загрузите файл .mrpack';
-    if (DOM.fileMeta) DOM.fileMeta.innerText = 'Перетащите или выберите файл сборки';
-    if (DOM.statTotalMods) DOM.statTotalMods.innerText = '—';
-    if (DOM.statClientMods) DOM.statClientMods.innerText = '—';
-    if (DOM.statConfigs) DOM.statConfigs.innerText = '—';
-    if (DOM.statTargetSize) DOM.statTargetSize.innerText = '—';
-    if (DOM.treeContainer) DOM.treeContainer.innerHTML = '<div class="p-8 text-center text-gray-500 font-mono flex flex-col items-center justify-center gap-2"><span class="text-gray-500 text-sm">Загрузите .mrpack для отображения файлов</span></div>';
-    if (DOM.treeSummary) DOM.treeSummary.innerText = 'Папок: 0 • Файлов в архиве: 0';
-    if (DOM.progressBar) DOM.progressBar.style.width = '0%';
-    if (DOM.btnDownload) DOM.btnDownload.disabled = true;
-    if (DOM.btnClear) DOM.btnClear.disabled = true;
-    
-    const normalRadio = document.querySelector('input[name="packMode"][value="normal"]');
-    if (normalRadio) normalRadio.checked = true;
-    applyModeFilters();
-    updateStatus('Ожидание файла', '', '#6b7280');
-  }
-
-  function updateStatus(title, detail, color = '#00f5a0') {
-    if (DOM.statusText) DOM.statusText.innerText = title;
-    if (DOM.statusDetail) {
-      DOM.statusDetail.innerText = detail || '';
-      DOM.statusDetail.classList.toggle('hidden', !detail);
-    }
-    if (DOM.statusIndicatorDot) {
-      DOM.statusIndicatorDot.style.backgroundColor = color;
-      if (color === '#00f5a0') {
-        DOM.statusIndicatorDot.style.boxShadow = '0 0 10px #00f5a0';
-      } else {
-        DOM.statusIndicatorDot.style.boxShadow = 'none';
-      }
-    }
-  }
-</script>
-
-
-
-
-
-
-
-
 </body></html>
