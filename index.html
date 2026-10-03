@@ -361,8 +361,8 @@
 </div>
 </div>
 <!-- ==================== МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ==================== -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300 opacity-0 hidden" id="authModal" onclick="handleAuthModalBackdropClick(event)">
-<div class="w-full max-w-md rounded-2xl p-6 sm:p-8 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/30 shadow-2xl shadow-[0_0_50px_rgba(0,245,160,0.15)] transform transition-transform duration-300 scale-95" id="authModalCard" onclick="event.stopPropagation()">
+<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300" id="authModal" onclick="handleAuthModalBackdropClick(event)">
+<div class="w-full max-w-md rounded-2xl p-6 sm:p-8 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/30 shadow-2xl shadow-[0_0_50px_rgba(0,245,160,0.15)] transform transition-transform duration-300 scale-100" id="authModalCard" onclick="event.stopPropagation()">
 <button class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition" onclick="closeAuthModal()" title="Закрыть (Режим чтения)">
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
 </button>
@@ -375,14 +375,14 @@
 <h1 class="text-lg font-bold text-white font-heading flex items-center gap-2">
   Cloud.Mine <span class="text-[#00f5a0] text-xs font-mono font-normal px-2 py-0.5 rounded bg-[#00f5a0]/10 border border-[#00f5a0]/30">AUTH</span>
 </h1>
-<p class="text-xs text-gray-400 font-mono" id="authModalSubtitle">Авторизация игрока для доступа</p>
+<p class="text-xs text-gray-400 font-mono" id="authModalSubtitle">Для просмотра правил и IP сервера необходимо войти в аккаунт</p>
 </div>
 </div>
 </div>
 <!-- Предпросмотр скина игрока (fallback steave.png) -->
 <div class="flex items-center gap-4 p-4 rounded-xl bg-[#070b10] border border-white/10 mb-5">
 <div class="relative w-14 h-14 rounded-xl overflow-hidden bg-[#131c26] border border-[#00f5a0]/40 flex-shrink-0 flex items-center justify-center p-1 shadow-inner avatar-wrapper">
-<img alt="steave" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU4mthZwV3YOjflIt1BDkWjwD2ofgPLXFiwAJt3AHil0-JDgTUg4Emyc1R2dhdh8K-5mG7F3BvTdwjIy4goHyVg7X7irtlpcoCDSSrcnyLeSk-TE8NzAqGXC2muouPc5j6VLXz9iLq9HqMmi_1N3-C-02tgTlW6MKZM5Mi9CtTzkTMABNgjaDpD2x0pfOwg1SvPav5oPwEB-DCm2qb9gMdemprw0DxJzjrpS4UDffm1NTAIF8Qw-6OVQ">
+<img alt="steave" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
 <span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10] shadow-[0_0_6px_#00f5a0]"></span>
 </div>
 <div class="flex-1 min-w-0">
@@ -422,8 +422,12 @@
 </div>
 </div>
 <!-- Контейнер ошибки / статуса -->
-<div class="p-3 rounded-xl text-xs font-mono transition shadow-lg bg-amber-950/70 border border-amber-500/60 text-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.2)] hidden" id="authErrorMsg">
-</div>
+<div class="p-3 rounded-xl text-xs font-mono transition shadow-lg bg-amber-950/70 border border-amber-500/60 text-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.2)]" id="authErrorMsg">
+        <div class="flex items-start gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock shrink-0 text-amber-400 mt-0.5 w-4 h-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span class="leading-relaxed font-mono text-[11px]">Для просмотра правил и IP сервера необходимо войти в аккаунт</span>
+        </div>
+      </div>
 <!-- Кнопки: Вход и Гостевой режим -->
 <div class="pt-2 flex flex-col gap-2">
 <button class="cyber-btn-primary w-full py-3.5 px-4 font-bold text-xs tracking-wider rounded-xl font-heading flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 disabled:pointer-events-none" id="btnSubmit" type="submit">
