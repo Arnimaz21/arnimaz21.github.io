@@ -1,0 +1,845 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Cloud.Mine — Панель Администратора</title>
+<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: JetBrains Mono & Space Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#00f5a0',
+              glow: 'rgba(0, 245, 160, 0.4)',
+              dark: '#00bd7a',
+              light: '#50ffaf',
+              bg: '#070b10',
+              surface: '#0b1017',
+              border: '#1a2b27'
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Space Grotesk', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      background-color: #070b10;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .neon-border {
+      border: 1px solid rgba(0, 245, 160, 0.3);
+      box-shadow: 0 0 25px rgba(0, 245, 160, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .neon-glow {
+      box-shadow: 0 0 15px rgba(0, 245, 160, 0.35);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(11, 16, 23, 0.6);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #1b282e;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #00f5a0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-6 antialiased select-none relative bg-[#070b10]">
+<!-- Фоновый WebGL-шейдер (кибер-волна и сетка) -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10" style="display:block;">
+<canvas height="778" id="shader-canvas" style="display:block;width:100%;height:100%" width="1280"></canvas>
+</div>
+<!-- Основной контент страницы -->
+<div class="max-w-6xl w-full mx-auto space-y-6 pb-20 relative z-10">
+<!-- Верхняя шапка / Навигация -->
+<header class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl p-4 md:p-5 flex flex-wrap items-center justify-between gap-4 shadow-lg backdrop-blur-md">
+<div class="flex items-center gap-3.5">
+<div class="p-3 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.15)]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" aria-hidden="true" class="lucide lucide-shield-alert w-6 h-6 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+</div>
+<div>
+<div class="font-bold text-white tracking-wide text-base md:text-lg font-sans flex items-center gap-2">
+        Cloud.Users
+</div>
+<div class="text-xs text-gray-400 mt-0.5 font-mono tracking-tight flex items-center gap-2">
+</div>
+</div>
+</div>
+<!-- Правая панель действий -->
+<div class="flex items-center gap-3">
+<!-- Ссылка на Discord -->
+<a class="px-3.5 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+<span class="font-sans font-medium">Discord</span>
+</a>
+</div>
+</header>
+<!-- БЛОК ЗАЩИТЫ МАСТЕР-ПАРОЛЕМ (Если панель заблокирована) -->
+<div class="hidden bg-[#0b1017]/95 border border-amber-500/30 rounded-2xl p-8 shadow-2xl backdrop-blur-md max-w-lg mx-auto text-center space-y-5" id="adminLockScreen">
+<div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" aria-hidden="true" class="lucide lucide-shield-alert w-7 h-7"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+</div>
+<div>
+<h3 class="text-lg font-bold text-white font-sans">Вход в панель администратора</h3>
+<p class="text-xs text-gray-400 mt-1.5 font-mono leading-relaxed">
+      Доступ к управлению аккаунтами Cloud.Mine защищён. Введите мастер-пароль администратора сервера для продолжения.
+    </p>
+</div>
+<form class="space-y-3 font-mono text-xs" id="adminLockForm">
+<div class="relative max-w-md mx-auto">
+<input class="w-full px-4 py-2.5 bg-[#070b10] border border-white/10 focus:border-amber-400 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-amber-400 transition text-center tracking-wider" id="lockMasterKeyInput" placeholder="Мастер-пароль админа..." required="" type="password">
+</div>
+<div class="hidden text-xs text-red-400" id="lockKeyFeedback"></div>
+<button class="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-xl transition duration-150 inline-flex items-center gap-2 shadow-[0_0_15px_rgba(245,158,11,0.25)]" type="submit">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="unlock" aria-hidden="true" class="lucide lucide-unlock w-4 h-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+<span class="">РАЗБЛОКИРОВАТЬ ПАНЕЛЬ</span>
+</button>
+</form>
+</div>
+<!-- ОСНОВНАЯ ПАНЕЛЬ АДМИНИСТРАТОРА (Контент панели) -->
+<div class="space-y-6" id="adminMainContent">
+<!-- 1. СЕКЦИЯ: РЕГИСТРАЦИЯ НОВОГО ИГРОКА (Быстрое добавление с живым предпросмотром скина) -->
+<div class="bg-[#0b1017]/90 border border-[#00f5a0]/30 rounded-2xl p-5 md:p-6 shadow-xl backdrop-blur-md relative overflow-hidden">
+<div class="absolute top-0 right-0 w-96 h-96 bg-[#00f5a0]/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-3 border-b border-white/10">
+<div class="flex items-center gap-2.5">
+<div class="p-2 rounded-lg bg-[#00f5a0]/10 text-[#00f5a0] border border-[#00f5a0]/20">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user-plus" aria-hidden="true" class="lucide lucide-user-plus w-4 h-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>
+</div>
+<div>
+<h2 class="text-base font-bold text-white font-sans">Регистрация нового игрока</h2>
+</div>
+</div>
+</div>
+<form class="space-y-4" id="createUserForm">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+<!-- Предпросмотр скина игрока -->
+<div class="lg:col-span-3 flex lg:flex-col items-center justify-center p-4 bg-[#070b10] border border-white/10 rounded-xl gap-3">
+<div class="relative">
+<img alt="Steve" class="w-16 h-16 rounded-xl object-cover bg-black/50 border-2 border-[#00f5a0]/40 shadow-[0_0_15px_rgba(0,245,160,0.2)]" id="previewAvatar" onerror="handleSkinError(this)" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png">
+<span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="Шлюз скина готов"></span>
+</div>
+<div class="text-left lg:text-center">
+<span class="text-white text-xs font-bold block truncate max-w-[150px]" id="skinPreviewNick">Никнейм</span>
+<span class="text-[10px] text-gray-500 font-mono block">Живой предпросмотр</span>
+</div>
+</div>
+<!-- Поля формы -->
+<div class="lg:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-3">
+<!-- Никнейм -->
+<div>
+<label class="block text-gray-300 mb-1.5 font-medium text-xs font-mono">Никнейм (Minecraft) *</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" class="lucide lucide-user w-3.5 h-3.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+</span>
+<input autocomplete="off" class="w-full pl-9 pr-3 py-2 bg-[#070b10] border border-white/10 focus:border-[#00f5a0] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#00f5a0] text-xs font-mono transition" id="regUsername" placeholder="Steve_Mine" required="" type="text">
+</div>
+</div>
+<!-- Пароль с автогенерацией -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-gray-300 font-medium text-xs font-mono">Пароль *</label>
+<button class="text-[10px] text-[#00f5a0] hover:underline" onclick="generateRandomPassword()" type="button">Генерировать</button>
+</div>
+<div class="relative flex gap-1.5">
+<input class="w-full px-3 py-2 bg-[#070b10] border border-white/10 focus:border-[#00f5a0] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#00f5a0] text-xs font-mono transition select-all" id="newUserPass" placeholder="Пароль доступа" required="" type="text">
+<button class="px-2.5 py-2 bg-[#131c26] hover:bg-[#1a2634] text-gray-300 border border-white/10 rounded-xl transition flex-shrink-0" onclick="generateRandomPassword()" title="Сгенерировать надёжный случайный пароль" type="button">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+</button>
+</div>
+</div>
+<!-- Роль -->
+<div>
+<label class="block text-gray-300 mb-1.5 font-medium text-xs font-mono">Роль в системе</label>
+<select class="w-full px-3 py-2 bg-[#070b10] border border-white/10 focus:border-[#00f5a0] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f5a0] text-xs font-mono transition" id="newUserRole">
+<option selected="" value="player">Игрок (Player)</option>
+<option value="admin">Администратор (Admin)</option>
+</select>
+</div>
+<!-- Нижняя строка: статус & кнопка добавления -->
+<div class="md:col-span-3 flex flex-wrap items-center justify-between gap-3 pt-2">
+<div class="text-xs font-mono" id="createUserNotice"></div>
+<button class="px-5 py-2.5 bg-[#00f5a0] hover:bg-[#50ffaf] text-[#002111] font-bold text-xs rounded-xl transition flex items-center gap-2 shadow-[0_0_15px_rgba(0,245,160,0.25)] ml-auto" id="btnCreateUser" type="submit">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="plus-circle" aria-hidden="true" class="lucide lucide-plus-circle w-4 h-4"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+<span class="">ЗАРЕГИСТРИРОВАТЬ И ВЫДАТЬ ДОСТУП</span>
+</button>
+</div>
+</div>
+</div>
+</form>
+</div>
+<!-- 2. СЕКЦИЯ: УПРАВЛЕНИЕ БАЗОЙ ДАННЫХ ИГРОКОВ -->
+<div class="bg-[#0b1017]/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
+<!-- Панель управления поиском, фильтрами и синхронизацией -->
+<div class="p-4 border-b border-white/10 bg-[#070b10]/90 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+<div class="flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="database" aria-hidden="true" class="lucide lucide-database w-4 h-4 text-[#00f5a0]"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
+<span class="text-white font-bold font-sans text-sm">База данных игроков</span>
+<span class="px-2 py-0.5 rounded bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/30 text-[10px]" id="userCountTag">0</span>
+</div>
+<!-- Поиск и фильтр по роли -->
+<div class="flex flex-wrap items-center gap-2 flex-grow sm:flex-grow-0">
+<div class="relative w-full sm:w-48">
+<span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-gray-500">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" aria-hidden="true" class="lucide lucide-search w-3 h-3"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+</span>
+<input class="w-full pl-8 pr-2.5 py-1.5 bg-[#0b1017] border border-white/10 focus:border-[#00f5a0] rounded-xl text-white placeholder-gray-500 text-xs focus:outline-none" id="searchInput" placeholder="Поиск по нику..." type="text">
+</div>
+<select class="bg-[#0b1017] border border-white/10 text-gray-300 py-1.5 px-2.5 rounded-xl text-xs focus:outline-none focus:border-[#00f5a0]" id="roleFilter">
+<option value="all">Все роли</option>
+<option value="player">Игроки</option>
+<option value="admin">Администраторы</option>
+</select>
+<!-- Экспорт / Импорт / Синхронизация -->
+<div class="flex items-center gap-1.5 ml-auto sm:ml-0">
+<button class="px-3 py-1.5 bg-[#121a22] hover:bg-[#18232e] text-gray-300 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl transition flex items-center gap-1.5" onclick="refreshUsersList(true)" title="Синхронизировать с Cloudflare Worker KV">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="syncUsersIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+<span class="font-medium">Синхр.</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Таблица зарегистрированных игроков -->
+<div class="overflow-x-auto custom-scroll">
+<table class="w-full text-left text-xs font-mono border-collapse">
+<thead>
+<tr class="border-b border-white/10 bg-[#090e15] text-gray-400 text-[11px]">
+<th class="py-3 px-4">Игрок / Скин</th>
+<th class="py-3 px-4">Пароль для входа</th>
+<th class="py-3 px-4">Роль</th>
+<th class="py-3 px-4">Дата создания</th>
+<th class="py-3 px-4 text-right">Быстрые действия</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5" id="usersTableBody">
+<tr>
+<td class="py-8 text-center text-gray-500 font-mono" colspan="5">
+            В базе пока нет зарегистрированных игроков. Создайте первого пользователя выше.
+          </td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Нижняя плашка таблицы -->
+<div class="p-3 border-t border-white/10 bg-[#070b10]/80 text-[11px] text-gray-400 font-mono flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-2" id="kvSyncStatusWrapper">
+<span class="w-2 h-2 rounded-full bg-emerald-400" id="kvSyncStatusDot"></span>
+<span class="text-gray-400 font-mono text-[11px]" id="lastKvSyncTime">KV: Синхр. --:--:--</span>
+</div>
+</div>
+</div>
+</div>
+<!-- МОДАЛЬНОЕ ОКНО: Редактирование пользователя -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" id="editUserModal">
+<div class="bg-[#0b1017] border border-[#00f5a0]/40 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
+<div class="flex items-center justify-between border-b border-white/10 pb-3">
+<h3 class="text-white font-bold font-sans flex items-center gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="edit-3" aria-hidden="true" class="lucide lucide-edit-3 w-4 h-4 text-[#00f5a0]"><path d="M13 21h8"></path><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>
+        Редактирование аккаунта
+      </h3>
+<button class="text-gray-400 hover:text-white" onclick="closeEditModal()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<form class="space-y-3 font-mono text-xs" id="editUserForm">
+<input id="editUserId" type="hidden">
+<div>
+<label class="block text-gray-400 mb-1">Никнейм игрока</label>
+<input class="w-full px-3 py-2 bg-[#070b10] border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#00f5a0]" id="editUserNick" required="" type="text">
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="text-gray-400">Пароль игрока</label>
+<button class="text-[10px] text-[#00f5a0] hover:underline" onclick="generateEditPassword()" type="button">Случайный</button>
+</div>
+<input class="w-full px-3 py-2 bg-[#070b10] border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#00f5a0]" id="editUserPass" required="" type="text">
+</div>
+<div>
+<label class="block text-gray-400 mb-1">Роль</label>
+<select class="w-full px-3 py-2 bg-[#070b10] border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#00f5a0]" id="editUserRole">
+<option value="player">Игрок (Player)</option>
+<option value="admin">Администратор (Admin)</option>
+</select>
+</div>
+<div class="flex items-center justify-end gap-2 pt-3 border-t border-white/10">
+<button class="px-4 py-2 bg-[#131c26] text-gray-300 rounded-xl hover:bg-[#1a2636] transition" onclick="closeEditModal()" type="button">Отмена</button>
+<button class="px-4 py-2 bg-[#00f5a0] text-[#002111] font-bold rounded-xl hover:bg-[#50ffaf] transition" type="submit">Сохранить</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- Футер страницы -->
+<footer class="text-center py-4 text-[11px] font-mono select-none relative z-10">
+<span class="text-gray-300 [text-shadow:_0_1px_2px_rgb(0_0_0_/_90%),_0_0_8px_rgb(0_0_0_/_80%)]">by Arnimaz21 for</span>
+<a class="text-[#7289da] hover:underline font-semibold ml-1 inline-flex items-center gap-1" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+    vunya100's server
+    <svg class="w-3.5 h-3.5 fill-current inline-block" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+</a>
+</footer>
+<!-- Скрипт логики панели администратора -->
+<script>
+  // Инициализация иконок Lucide
+  lucide.createIcons();
+
+  const CONFIG = {
+    WORKER_URL: 'https://cloud-stats.arnimaz27.workers.dev',
+    ADMIN_MASTER_KEY: 'vunya100_admin',
+    LOCAL_USERS_KEY: 'cloud_tech_registered_users',
+    ADMIN_LOCK_KEY: 'cloud_admin_unlocked',
+    FALLBACK_STEVE_SKIN: 'https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'
+  };
+
+  let state = {
+    isUnlocked: true,
+    usersList: [],
+    searchQuery: '',
+    roleFilter: 'all',
+    revealedPasswords: {} // id -> boolean
+  };
+
+  const DOM = {
+    adminLockScreen: document.getElementById('adminLockScreen'),
+    adminMainContent: document.getElementById('adminMainContent'),
+    adminLockForm: document.getElementById('adminLockForm'),
+    lockMasterKeyInput: document.getElementById('lockMasterKeyInput'),
+    lockKeyFeedback: document.getElementById('lockKeyFeedback'),
+    createUserForm: document.getElementById('createUserForm'),
+    newUserNick: document.getElementById('regUsername'),
+    newUserPass: document.getElementById('newUserPass'),
+    newUserRole: document.getElementById('newUserRole'),
+    createUserNotice: document.getElementById('createUserNotice'),
+    skinLivePreview: document.getElementById('previewAvatar'),
+    skinPreviewNick: document.getElementById('skinPreviewNick'),
+    usersTableBody: document.getElementById('usersTableBody'),
+    userCountTag: document.getElementById('userCountTag'),
+    lastKvSyncTime: document.getElementById('lastKvSyncTime'),
+    syncUsersIcon: document.getElementById('syncUsersIcon'),
+    searchInput: document.getElementById('searchInput'),
+    roleFilter: document.getElementById('roleFilter'),
+    editUserModal: document.getElementById('editUserModal'),
+    editUserForm: document.getElementById('editUserForm'),
+    editUserId: document.getElementById('editUserId'),
+    editUserNick: document.getElementById('editUserNick'),
+    editUserPass: document.getElementById('editUserPass'),
+    editUserRole: document.getElementById('editUserRole')
+  };
+
+  // Получение первичного URL скина игрока (GitHub репозиторий)
+  function getPlayerSkinUrl(nickname) {
+    const trimmed = (nickname || '').trim();
+    if (!trimmed) {
+      return CONFIG.FALLBACK_STEVE_SKIN;
+    }
+    return `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(trimmed)}.png`;
+  }
+
+  // Обработчик фоллбека для скинов: если ${username}.png не найден, загружаем steave.png из репозитория
+  window.handleSkinError = function(imgElement) {
+    if (!imgElement) return;
+    if (imgElement.src !== CONFIG.FALLBACK_STEVE_SKIN) {
+      imgElement.src = CONFIG.FALLBACK_STEVE_SKIN;
+    } else {
+      // Защита от бесконечного цикла, если steave.png недоступен
+      imgElement.onerror = null;
+    }
+  };
+
+  // Генератор случайного надёжного пароля
+  window.generateRandomPassword = function() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
+    let pass = '';
+    for (let i = 0; i < 10; i++) {
+      pass += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    DOM.newUserPass.value = pass;
+  };
+
+  window.generateEditPassword = function() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%';
+    let pass = '';
+    for (let i = 0; i < 10; i++) {
+      pass += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    DOM.editUserPass.value = pass;
+  };
+
+  // Живой предпросмотр скина при вводе никнейма в #regUsername
+  let nickDebounceTimer = null;
+  DOM.newUserNick.addEventListener('input', (e) => {
+    const nick = e.target.value.trim();
+    DOM.skinPreviewNick.innerText = nick || 'Никнейм';
+    
+    clearTimeout(nickDebounceTimer);
+    nickDebounceTimer = setTimeout(() => {
+      DOM.skinLivePreview.onerror = function() {
+        handleSkinError(this);
+      };
+      if (!nick) {
+        DOM.skinLivePreview.src = CONFIG.FALLBACK_STEVE_SKIN;
+      } else {
+        DOM.skinLivePreview.src = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(nick)}.png`;
+      }
+    }, 200);
+  });
+
+  // Запуск при старте
+  window.addEventListener('DOMContentLoaded', async () => {
+    // Проверка статуса блокировки
+    const lockState = localStorage.getItem(CONFIG.ADMIN_LOCK_KEY);
+    if (lockState === 'locked') {
+      lockAdminPanel();
+    } else {
+      unlockAdminPanel();
+    }
+
+    // Загрузка пользователей строго из удалённого хранилища или кэша
+    await refreshUsersList(false);
+    generateRandomPassword();
+
+    // Слушатели поиска и фильтрации
+    DOM.searchInput.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value.toLowerCase().trim();
+      renderUsersTable();
+    });
+
+    DOM.roleFilter.addEventListener('change', (e) => {
+      state.roleFilter = e.target.value;
+      renderUsersTable();
+    });
+  });
+
+  // Блокировка/разблокировка админ-панели
+  function lockAdminPanel() {
+    state.isUnlocked = false;
+    localStorage.setItem(CONFIG.ADMIN_LOCK_KEY, 'locked');
+    DOM.adminLockScreen.classList.remove('hidden');
+    DOM.adminMainContent.classList.add('hidden');
+  }
+
+  function unlockAdminPanel() {
+    state.isUnlocked = true;
+    localStorage.setItem(CONFIG.ADMIN_LOCK_KEY, 'unlocked');
+    DOM.adminLockScreen.classList.add('hidden');
+    DOM.adminMainContent.classList.remove('hidden');
+  }
+
+  DOM.adminLockForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const key = DOM.lockMasterKeyInput.value.trim();
+    if (key === CONFIG.ADMIN_MASTER_KEY) {
+      DOM.lockKeyFeedback.classList.add('hidden');
+      DOM.lockMasterKeyInput.value = '';
+      unlockAdminPanel();
+    } else {
+      DOM.lockKeyFeedback.innerText = 'Неверный мастер-пароль администратора!';
+      DOM.lockKeyFeedback.classList.remove('hidden');
+    }
+  });
+
+  // Регистрация нового игрока
+  DOM.createUserForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nick = DOM.newUserNick.value.trim();
+    const pass = DOM.newUserPass.value.trim();
+    const role = DOM.newUserRole.value;
+
+    if (!nick || !pass) return;
+
+    // Проверка уникальности ника
+    const exists = state.usersList.some(u => u.username.toLowerCase() === nick.toLowerCase());
+    if (exists) {
+      DOM.createUserNotice.innerHTML = `<span class="text-red-400 font-mono">Ошибка: игрок с ником "${nick}" уже есть в базе!</span>`;
+      return;
+    }
+
+    const newUser = {
+      id: 'usr_' + Date.now(),
+      username: nick,
+      password: pass,
+      role: role || 'player',
+      createdAt: new Date().toISOString()
+    };
+
+    state.usersList.unshift(newUser);
+    await saveUsersToDatabase();
+
+    DOM.createUserNotice.innerHTML = `<span class="text-[#00f5a0] flex items-center gap-1 font-mono"><i data-lucide="check" class="w-3.5 h-3.5"></i> Пользователь <b>${nick}</b> добавлен и сохранён в KV!</span>`;
+    
+    // Сброс и генерация нового пароля для следующего игрока
+    DOM.newUserNick.value = '';
+    generateRandomPassword();
+    DOM.skinPreviewNick.innerText = 'Никнейм';
+    DOM.skinLivePreview.onerror = function() { handleSkinError(this); };
+    DOM.skinLivePreview.src = CONFIG.FALLBACK_STEVE_SKIN;
+
+    renderUsersTable();
+    updateUsersMetrics();
+    lucide.createIcons();
+  });
+
+  // Переключение показа пароля в строке
+  window.toggleRowPassword = function(userId) {
+    state.revealedPasswords[userId] = !state.revealedPasswords[userId];
+    renderUsersTable();
+  };
+
+  // Копирование пароля
+  window.copyUserPassword = function(password) {
+    navigator.clipboard.writeText(password).then(() => {
+      alert('Пароль скопирован в буфер обмена!');
+    });
+  };
+
+  // Копирование готового приглашения для игрока
+  window.copyInvite = function(username, password) {
+    const inviteText = `🌟 Привет, ${username}!\nТвой аккаунт на сервере Cloud.Mine успешно активирован!\n\n🕹 Данные для входа в игру:\n• IP сервера: 185.9.145.7:27019\n• Твой никнейм: ${username}\n• Пароль: ${password}\n\n🌐 Портал сервера: https://arnimaz21.github.io/\nПриятной игры на Cloud.Mine!`;
+    
+    navigator.clipboard.writeText(inviteText).then(() => {
+      alert(`Текст приглашения для игрока "${username}" скопирован в буфер обмена!\nВы можете отправить его в Discord или личные сообщения.`);
+    }).catch(() => {
+      prompt('Скопируйте приглашение вручную:', inviteText);
+    });
+  };
+
+  // Удаление пользователя
+  window.deleteUser = async function(userId) {
+    const user = state.usersList.find(u => u.id === userId);
+    if (!user) return;
+
+    if (!confirm(`Вы действительно хотите удалить аккаунт игрока "${user.username}"? Он потеряет доступ к серверу.`)) return;
+
+    state.usersList = state.usersList.filter(u => u.id !== userId);
+    await saveUsersToDatabase();
+    renderUsersTable();
+    updateUsersMetrics();
+  };
+
+  // Модалка редактирования пользователя
+  window.openEditModal = function(userId) {
+    const user = state.usersList.find(u => u.id === userId);
+    if (!user) return;
+
+    DOM.editUserId.value = user.id;
+    DOM.editUserNick.value = user.username;
+    DOM.editUserPass.value = user.password;
+    DOM.editUserRole.value = user.role || 'player';
+
+    DOM.editUserModal.classList.remove('hidden');
+    lucide.createIcons();
+  };
+
+  window.closeEditModal = function() {
+    DOM.editUserModal.classList.add('hidden');
+  };
+
+  DOM.editUserForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = DOM.editUserId.value;
+    const nick = DOM.editUserNick.value.trim();
+    const pass = DOM.editUserPass.value.trim();
+    const role = DOM.editUserRole.value;
+
+    const user = state.usersList.find(u => u.id === id);
+    if (!user) return;
+
+    user.username = nick;
+    user.password = pass;
+    user.role = role;
+
+    await saveUsersToDatabase();
+    closeEditModal();
+    renderUsersTable();
+    updateUsersMetrics();
+  });
+
+  // Отрисовка таблицы с поиском и фильтром
+  function renderUsersTable() {
+    let filtered = state.usersList;
+
+    if (state.searchQuery) {
+      filtered = filtered.filter(u => u.username && u.username.toLowerCase().includes(state.searchQuery));
+    }
+
+    if (state.roleFilter !== 'all') {
+      filtered = filtered.filter(u => u.role === state.roleFilter);
+    }
+
+    if (filtered.length === 0) {
+      DOM.usersTableBody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-8 text-center text-gray-500 font-mono">
+            ${state.usersList.length === 0 ? 'В базе пока нет зарегистрированных игроков. Создайте первого пользователя выше.' : 'Пользователи по заданному фильтру не найдены.'}
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(u => {
+      const skinUrl = getPlayerSkinUrl(u.username);
+      const isPassShown = !!state.revealedPasswords[u.id];
+      const displayPass = isPassShown ? u.password : '••••••••';
+      
+      const roleBadge = u.role === 'admin' 
+        ? '<span class="px-2 py-0.5 rounded bg-red-950/40 text-red-400 border border-red-900/40 text-[10px] font-semibold">Админ</span>'
+        : '<span class="px-2 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 text-[10px]">Игрок</span>';
+
+      const created = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ru-RU') : '—';
+      const safeNick = escapeQuotes(u.username);
+
+      html += `
+        <tr class="hover:bg-[#121a24]/60 transition">
+          <td class="py-2.5 px-4 flex items-center gap-2.5">
+            <img src="${skinUrl}" onerror="handleSkinError(this)" class="w-7 h-7 rounded-lg object-cover bg-black/40 border border-white/10" alt="${safeNick}">
+            <div>
+              <span class="text-white font-semibold block leading-tight">${safeNick}</span>
+              <span class="text-[10px] text-gray-500 font-mono">Minecraft</span>
+            </div>
+          </td>
+          <td class="py-2.5 px-4">
+            <div class="inline-flex items-center gap-1.5 bg-black/40 px-2 py-1 rounded-lg border border-white/5">
+              <span class="text-gray-300 font-mono select-all ${isPassShown ? 'text-[#00f5a0]' : ''}">${displayPass}</span>
+              <button onclick="toggleRowPassword('${u.id}')" class="text-gray-500 hover:text-gray-300 ml-1" title="${isPassShown ? 'Скрыть' : 'Показать'}">
+                <i data-lucide="${isPassShown ? 'eye-off' : 'eye'}" class="w-3 h-3"></i>
+              </button>
+              <button onclick="copyUserPassword('${escapeQuotes(u.password)}')" class="text-gray-500 hover:text-[#00f5a0]" title="Копировать только пароль">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+              </button>
+            </div>
+          </td>
+          <td class="py-2.5 px-4">${roleBadge}</td>
+          <td class="py-2.5 px-4 text-gray-500 text-[11px]">${created}</td>
+          <td class="py-2.5 px-4 text-right space-x-1.5">
+            <!-- Кнопка Скопировать приглашение -->
+            <button onclick="copyInvite('${safeNick}', '${escapeQuotes(u.password)}')" title="Скопировать готовое приглашение с данными для игрока" class="px-2.5 py-1.5 bg-[#131c26] hover:bg-[#00f5a0]/20 text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl text-[11px] transition inline-flex items-center gap-1.5 font-medium shadow-[0_0_10px_rgba(0,245,160,0.1)]">
+              <i data-lucide="share-2" class="w-3 h-3"></i>
+              <span>Приглашение</span>
+            </button>
+
+            <!-- Кнопка Редактировать -->
+            <button onclick="openEditModal('${u.id}')" title="Редактировать пароль и роль" class="p-1.5 bg-[#121a22] hover:bg-[#1a2634] text-gray-300 border border-white/10 rounded-xl text-[11px] transition inline-flex items-center">
+              <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+            </button>
+
+            <!-- Кнопка Удалить -->
+            <button onclick="deleteUser('${u.id}')" title="Удалить учётную запись" class="p-1.5 bg-red-950/20 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-[11px] transition inline-flex items-center">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    DOM.usersTableBody.innerHTML = html;
+    lucide.createIcons();
+  }
+
+  function escapeQuotes(str) {
+    return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  }
+
+  // Обновление метрик
+  function updateUsersMetrics() {
+    const total = state.usersList.length;
+    DOM.userCountTag.innerText = total;
+  }
+
+  // Синхронизация с базой Cloudflare Worker KV
+  async function refreshUsersList(showAnimation = false) {
+    if (showAnimation && DOM.syncUsersIcon) {
+      DOM.syncUsersIcon.classList.add('animate-spin');
+    }
+
+    let loadedFromKv = false;
+    try {
+      const resp = await fetch(`${CONFIG.WORKER_URL}/users`, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data.users)) {
+          state.usersList = data.users;
+          loadedFromKv = true;
+        }
+      }
+    } catch (err) {
+      console.warn('Воркер KV не ответил, используется локальное хранилище:', err);
+    }
+
+    if (!loadedFromKv) {
+      try {
+        const raw = localStorage.getItem(CONFIG.LOCAL_USERS_KEY);
+        if (raw) {
+          state.usersList = JSON.parse(raw);
+        } else {
+          // Чистый старт без каких-либо дефолтных или захардкоженных пользователей
+          state.usersList = [];
+        }
+      } catch (e) {
+        state.usersList = [];
+      }
+    }
+
+    updateUsersMetrics();
+    renderUsersTable();
+    DOM.lastKvSyncTime.innerText = `KV: Синхр. ${new Date().toLocaleTimeString('ru-RU')}`;
+    lucide.createIcons();
+
+    if (showAnimation && DOM.syncUsersIcon) {
+      setTimeout(() => {
+        DOM.syncUsersIcon.classList.remove('animate-spin');
+      }, 500);
+    }
+  }
+
+  // Сохранение пользователей в KV и LocalStorage
+  async function saveUsersToDatabase() {
+    try {
+      localStorage.setItem(CONFIG.LOCAL_USERS_KEY, JSON.stringify(state.usersList));
+    } catch (e) {}
+
+    try {
+      await fetch(`${CONFIG.WORKER_URL}/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ users: state.usersList })
+      });
+      DOM.lastKvSyncTime.innerText = `KV: Сохранено ${new Date().toLocaleTimeString('ru-RU')}`;
+    } catch (err) {
+      console.warn('Не удалось отправить в воркер, данные сохранены локально:', err);
+    }
+  }
+</script>
+<!-- WebGL-шейдер на чистом GLSL -->
+<script>
+  (function initLivingShader() {
+    const canvas = document.getElementById('shader-canvas');
+    if (!canvas) return;
+
+    function resize() {
+      const w = window.innerWidth || 1280;
+      const h = window.innerHeight || 720;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const gl = canvas.getContext('webgl');
+    if (!gl) return;
+
+    const vsSource = `
+      attribute vec2 a_position;
+      void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+      }
+    `;
+
+    const fsSource = `
+      precision mediump float;
+      uniform float u_time;
+      uniform vec2 u_resolution;
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+        vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+
+        float t = u_time * 0.12;
+
+        // Координатная сетка
+        float cellSize = 42.0;
+        vec2 pixelCoord = gl_FragCoord.xy;
+        vec2 gridDist = abs(fract(pixelCoord / cellSize) - 0.5) * cellSize;
+        float dist = min(gridDist.x, gridDist.y);
+        float gridLine = 1.0 - smoothstep(0.0, 1.4, dist);
+
+        // Кибер-волны энергии
+        float wave1 = sin(p.y * 3.0 + p.x * 2.0 + t) * 0.5 + 0.5;
+        float wave2 = cos(p.x * 2.5 - p.y * 1.8 - t * 1.2) * 0.5 + 0.5;
+        float wave = pow(wave1 * wave2, 2.5);
+
+        vec3 baseColor = vec3(0.025, 0.04, 0.06);
+        vec3 neonEmerald = vec3(0.0, 0.96, 0.62); // #00f5a0
+        vec3 deepCyan = vec3(0.02, 0.25, 0.22);
+
+        vec3 color = baseColor;
+        color += deepCyan * wave * 0.7;
+        color += neonEmerald * pow(wave, 4.0) * 0.6;
+        color += neonEmerald * gridLine * 0.035;
+
+        // Виньетка по краям
+        float vignette = length(uv - 0.5);
+        color *= smoothstep(1.15, 0.2, vignette);
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    function compileShader(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, vsSource));
+    gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsSource));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+
+    const pos = gl.getAttribLocation(prog, 'a_position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(prog, 'u_time');
+    const uRes = gl.getUniformLocation(prog, 'u_resolution');
+
+    let lastTime = 0;
+    function render(now) {
+      if (now - lastTime > 32) {
+        lastTime = now;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        if (uTime) gl.uniform1f(uTime, now * 0.001);
+        if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  })();
+</script>
+
+
+</body></html>
