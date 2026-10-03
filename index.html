@@ -66,31 +66,26 @@
       background-color: rgba(255, 255, 255, 0.02);
     }
   </style>
-<!-- Защита сессии с безопасным предпросмотром для рендеринга портала -->
+<!-- СТРОГАЯ ЗАЩИТА СЕССИИ И ПРОВЕРКА АВТОРИЗАЦИИ ПЕРЕД ОТРИСОВКОЙ -->
 <script>
-    (function() {
-      try {
-        let userJson = localStorage.getItem('cloud_auth_user') || sessionStorage.getItem('cloud_auth_user');
-        if (!userJson) {
-          // Если запущен локально или в превью-контейнере без авторизации, инициализируем дефолтного пользователя
-          const mockUser = {
-            username: "Arnimaz21",
-            role: "admin",
-            avatar: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/Arnimaz21.png"
-          };
-          window.currentUser = mockUser;
-          // Сохраняем для консистентности сессии
-          localStorage.setItem('cloud_auth_user', JSON.stringify(mockUser));
-        } else {
-          window.currentUser = JSON.parse(userJson);
-        }
-      } catch (e) {
-        window.currentUser = { username: "Arnimaz21", role: "admin" };
-      }
-    })();
-  </script>
+  (function() {
+    let rawAuth = localStorage.getItem('cloud_auth_user') || sessionStorage.getItem('cloud_auth_user');
+    let currentUser = null;
+    try {
+      if (rawAuth) currentUser = JSON.parse(rawAuth);
+    } catch(e) {}
+
+    if (!currentUser || !currentUser.username) {
+      const isGithub = window.location.origin.includes('github.io');
+      const targetLogin = isGithub ? 'https://arnimaz21.github.io/login/' : './login/';
+      window.location.replace(targetLogin);
+      return;
+    }
+    window.currentUser = currentUser;
+  })();
+</script>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10]" id="mainBody">
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10] opacity-0 transition-opacity duration-300" id="mainBody">
 <!-- Живой WebGL Canvas фон -->
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10">
 <canvas class="w-full h-full block" id="shader-canvas"></canvas>
@@ -142,13 +137,13 @@
 <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
 <span class="font-sans font-medium hidden sm:inline">Discord</span>
 </a>
-<!-- Профиль пользователя в шапке -->
+<!-- Профиль пользователя в шапке (динамический) -->
 <div class="flex items-center gap-2 pl-2 border-l border-white/10">
 <div class="flex items-center gap-2 px-2.5 py-1.5 bg-[#121a22] border border-[#00f5a0]/30 rounded-xl">
 <div class="w-6 h-6 rounded-lg bg-[#18232e] avatar-wrapper overflow-hidden border border-[#00f5a0]/50 shrink-0">
-<img alt="Skin" class="w-full h-full object-contain" id="headerUserAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcl3uXeIUDMM0jGwsAEsXpUr7okw_95Vqyf5QvtpMh_kcbDDFukszHzAECEIsAAps7M53-IHohmnzStQGIyvBDTkOaImktOmB-JkPGmYyMIDkJM3HOyhGeiAAeOVclmadOOpilhEs8oQuHmSaGJhLZ5Hg5IWxAOZWzZSNej58HPVVkJBsTaBoJOJaI-zaT-DxQBxIT-wUUXqafBvPfGD5wNF7ZOLvrXxjDwJr2Y4TizMJZy1mJoNY8"/>
+<img alt="Skin" class="w-full h-full object-contain" id="headerUserAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtsn3u7LLgFlBTrbjy76QupGU8-x4rl4CIorJaMzcPaLn3ej8NwDKGexibTd_jOMlXSLr-5cJB3bPsHPhTfs8bEN9gWpc739ebV0KkeQIqNyKQmq81u6oLK6WrtEhg5Wusru6WRjSFPtTbOObgvEzOPar96pTwrk6MW_NRCyZEIzbxfzapztaaI1v319HkOXEeqHaekKNyfuRyNWYq2pqF6MEZ7obBoIftfJ8hLXFMTfi0wE7QnW0m"/>
 </div>
-<span class="text-xs font-bold text-white font-sans truncate max-w-[90px] sm:max-w-[120px]" id="headerUserNick">Arnimaz21</span>
+<span class="text-xs font-bold text-white font-sans truncate max-w-[90px] sm:max-w-[120px]" id="headerUserNick">Загрузка...</span>
 </div>
 <!-- Выход -->
 <button class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200" onclick="logoutUser()" title="Завершить сессию">
@@ -219,20 +214,20 @@
 </button>
 </nav>
 </div>
-<!-- КАРТОЧКА АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ (НИЗ САЙДБАРА) -->
+<!-- КАРТОЧКА АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ (НИЗ САЙДБАРА - ДИНАМИЧЕСКИЙ) -->
 <div class="p-3 bg-[#070b10]/95 border-t border-white/10 flex items-center justify-between gap-3">
 <div class="flex items-center gap-2.5 min-w-0">
 <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/40 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(0,245,160,0.25)]">
-<img alt="Скин" class="w-full h-full object-contain" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcIJyTHwosVujZIyIveT9-4bbD8e3-2li7ep8BpbQ7oEoeWUMTEXwxQkDO5QRNlwdzpy6-vCQKdkjS0wA8N4PLflFk0zPjne0_6zzSJEApiMdjEOavy2sbmXFPB3ALk9THESKfamKLBsfNYT03xUX50qdyyHJf5ZP4v2pOxV8YVU2feCp_VrLLkc6txmAjT4L6W9rHWyiiYkuZ5OQpBESlpi-fNlJRnCPmkY1CkdKuujxsIInPsQYA"/>
+<img alt="Скин" class="w-full h-full object-contain" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLyfQyTjd59bQS-NZGwLOoZH-kwYh1U8WRM9Ujv_X2OLPVFetNyzvmLbHVIi_rjr7Ho8cju1CO56s2dNoj1_kFUjGb3J8brAnSIeO-_Uhpr7zULHKtIHLI4j3lHr_kWSVIhuOJdd_ZqdL7eoCuNvKjTA5eDH_Vtl4z_5TjoYxN57vpQEvkS_F-WbW2wqfbL0LByvusKnn6qMCiEf-IHGWb4Nd9BH3Ae3ouotj0sAkgVtuGkIrtnB6P"/>
 <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="В сети"></span>
 </div>
 <div class="min-w-0">
 <div class="font-sans font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
-                Arnimaz21
+                ...
               </div>
 <div class="flex items-center gap-1.5">
-<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-red-950/40 text-red-400 border border-red-900/40 font-semibold" id="userSidebarRole">
-                  АДМИН
+<span class="text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold" id="userSidebarRole">
+                  ...
                 </span>
 <span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">0м онлайн</span>
 </div>
@@ -282,10 +277,10 @@
 <div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px]" id="messagesContainer">
 <!-- Сообщения рендерятся через JS -->
 </div>
-<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ -->
-<div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95">
-<!-- Форма отправки сообщения -->
-<form class="space-y-2" id="adminPostForm" onsubmit="handlePostMessage(event)">
+<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ ИЛИ ПЛАШКА ДЛЯ ИГРОКА -->
+<div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95" id="chatActionContainer">
+<!-- Форма отправки сообщения для Администратора -->
+<form class="space-y-2 hidden" id="adminPostForm" onsubmit="handlePostMessage(event)">
 <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 px-1">
 <span class="text-[#00f5a0] flex items-center gap-1.5">
 <svg class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
@@ -303,6 +298,10 @@
 </button>
 </div>
 </form>
+<!-- Информационная плашка для обычных игроков (не-админов) -->
+<div class="hidden py-3 px-4 rounded-xl bg-[#121a22]/70 border border-white/10 text-xs font-mono text-gray-400 flex items-center justify-center gap-2 text-center" id="playerNoticeBlock">
+<span>🔒 Только администраторы могут отправлять сообщения в этот канал</span>
+</div>
 </div>
 </main>
 </div>
@@ -321,7 +320,7 @@
 <script>
     const CONFIG = {
       STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
-      LOGIN_URL: "https://arnimaz21.github.io/login",
+      LOGIN_URL: window.location.origin.includes('github.io') ? "https://arnimaz21.github.io/login/" : "./login/",
       FALLBACK_STEVE: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png",
       CHANNELS_STORAGE_KEY: "cloudmine_portal_channel_posts_v2"
     };
@@ -519,8 +518,8 @@
 
       let html = '';
       posts.forEach(post => {
-        const isSelfAdmin = (post.role || '').toUpperCase() === 'ADMIN';
-        const roleBadge = isSelfAdmin
+        const isAuthorAdmin = (post.role || '').toUpperCase() === 'ADMIN';
+        const roleBadge = isAuthorAdmin
           ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">АДМИН</span>'
           : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">ИГРОК</span>';
 
@@ -563,19 +562,24 @@
 
     window.handlePostMessage = function(e) {
       if (e) e.preventDefault();
+      const user = window.currentUser;
+      if (!user || (user.role || '').toLowerCase() !== 'admin') {
+        alert('У вас нет прав для отправки сообщений.');
+        return;
+      }
+
       const input = document.getElementById('messageTextInput');
       if (!input) return;
       const text = input.value.trim();
       if (!text) return;
 
-      const user = window.currentUser || { username: 'Arnimaz21', role: 'admin' };
       const now = new Date();
       const timeStr = `Сегодня в ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
       const newPost = {
         id: 'msg-' + Date.now(),
         author: user.username,
-        role: (user.role || 'admin').toUpperCase(),
+        role: (user.role || 'player').toUpperCase(),
         time: timeStr,
         content: text
       };
@@ -596,38 +600,53 @@
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
-      lucide.createIcons();
+      const user = window.currentUser;
+      if (!user || !user.username) {
+        return;
+      }
 
-      const user = window.currentUser || { username: 'Arnimaz21', role: 'admin' };
-      const username = user.username || 'Arnimaz21';
-      const role = (user.role || 'admin').toLowerCase();
+      const username = user.username;
+      const role = (user.role || 'player').toLowerCase();
       const isAdmin = (role === 'admin' || role === 'administrator');
+      const avatarSkinUrl = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(username)}.png`;
 
-      // Шапка
+      // 1. Отображение в шапке
       const headerUserNick = document.getElementById('headerUserNick');
       const headerUserAvatar = document.getElementById('headerUserAvatar');
       if (headerUserNick) headerUserNick.textContent = username;
       if (headerUserAvatar) {
-        headerUserAvatar.src = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(username)}.png`;
+        headerUserAvatar.src = avatarSkinUrl;
       }
 
-      // Сайдбар
+      // 2. Отображение в сайдбаре
       const sidebarNick = document.getElementById('userSidebarNick');
       const sidebarAvatar = document.getElementById('userSidebarAvatar');
       const sidebarRole = document.getElementById('userSidebarRole');
 
       if (sidebarNick) sidebarNick.textContent = username;
       if (sidebarAvatar) {
-        sidebarAvatar.src = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(username)}.png`;
+        sidebarAvatar.src = avatarSkinUrl;
       }
       if (sidebarRole) {
         if (isAdmin) {
           sidebarRole.textContent = 'АДМИН';
-          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.2 rounded bg-red-950/40 text-red-400 border border-red-900/40 font-semibold';
+          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/40 text-red-400 border border-red-900/40 font-semibold';
         } else {
           sidebarRole.textContent = 'ИГРОК';
-          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold';
+          sidebarRole.className = 'text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold';
         }
+      }
+
+      // 3. Управление правами на форму отправки
+      const adminPostForm = document.getElementById('adminPostForm');
+      const playerNoticeBlock = document.getElementById('playerNoticeBlock');
+
+      if (isAdmin) {
+        if (adminPostForm) adminPostForm.classList.remove('hidden');
+        if (playerNoticeBlock) playerNoticeBlock.classList.add('hidden');
+      } else {
+        if (adminPostForm) adminPostForm.classList.add('hidden');
+        if (playerNoticeBlock) playerNoticeBlock.classList.remove('hidden');
       }
 
       const msgInput = document.getElementById('messageTextInput');
@@ -651,6 +670,13 @@
 
       loadSavedMessages();
       switchChannel('recruitment');
+      lucide.createIcons();
+
+      // После инициализации отображаем портал
+      const mainBody = document.getElementById('mainBody');
+      if (mainBody) {
+        mainBody.classList.remove('opacity-0');
+      }
 
       try {
         const res = await fetch(CONFIG.STATS_ENDPOINT, { cache: 'no-store' });
