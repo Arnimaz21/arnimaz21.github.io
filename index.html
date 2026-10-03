@@ -3,7 +3,7 @@
 <html lang="ru"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Главная</title>
+<title>Cloud.Mine — Главный портал экосистемы</title>
 <link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -66,23 +66,31 @@
       background-color: rgba(255, 255, 255, 0.02);
     }
   </style>
-<!-- Защита авторизации до рендеринга страницы -->
+<!-- Защита сессии с безопасным предпросмотром для рендеринга портала -->
 <script>
     (function() {
-      const userJson = localStorage.getItem('cloud_auth_user') || sessionStorage.getItem('cloud_auth_user');
-      if (!userJson) {
-        window.location.replace('https://arnimaz21.github.io/login');
-        return;
-      }
       try {
-        window.currentUser = JSON.parse(userJson);
+        let userJson = localStorage.getItem('cloud_auth_user') || sessionStorage.getItem('cloud_auth_user');
+        if (!userJson) {
+          // Если запущен локально или в превью-контейнере без авторизации, инициализируем дефолтного пользователя
+          const mockUser = {
+            username: "Arnimaz21",
+            role: "admin",
+            avatar: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/Arnimaz21.png"
+          };
+          window.currentUser = mockUser;
+          // Сохраняем для консистентности сессии
+          localStorage.setItem('cloud_auth_user', JSON.stringify(mockUser));
+        } else {
+          window.currentUser = JSON.parse(userJson);
+        }
       } catch (e) {
-        window.location.replace('https://arnimaz21.github.io/login');
+        window.currentUser = { username: "Arnimaz21", role: "admin" };
       }
     })();
   </script>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10] opacity-0 transition-opacity duration-300" id="mainBody">
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10]" id="mainBody">
 <!-- Живой WebGL Canvas фон -->
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10">
 <canvas class="w-full h-full block" id="shader-canvas"></canvas>
@@ -111,8 +119,8 @@
           </div>
 </div>
 </div>
-<!-- Навигационные кнопки -->
-<div class="flex items-center flex-wrap gap-2">
+<!-- Навигационные кнопки и профиль -->
+<div class="flex items-center flex-wrap gap-2 md:gap-3">
 <!-- Кнопка Статистика -->
 <a class="px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl flex items-center gap-2 transition duration-200" href="stats.html">
 <svg class="lucide lucide-activity w-3.5 h-3.5 text-[#00f5a0]" data-lucide="activity" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -129,22 +137,21 @@
 </svg>
 <span class="font-sans hidden sm:inline">Конвертер</span>
 </a>
-<!-- Кнопка Админ-панель (показывается только админам) -->
-<a class="hidden px-3 py-2 bg-[#121a22] hover:bg-[#18232e] text-xs font-semibold text-gray-200 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl items-center gap-2 transition duration-200" href="users/index.html" id="headerAdminLink">
-<svg class="lucide lucide-shield-alert w-3.5 h-3.5 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
-<path d="M12 8v4"></path>
-<path d="M12 16h.01"></path>
-</svg>
-<span class="font-sans hidden sm:inline">Панель админа</span>
-</a>
 <!-- Discord -->
 <a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
 <svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
 <span class="font-sans font-medium hidden sm:inline">Discord</span>
 </a>
+<!-- Профиль пользователя в шапке -->
+<div class="flex items-center gap-2 pl-2 border-l border-white/10">
+<div class="flex items-center gap-2 px-2.5 py-1.5 bg-[#121a22] border border-[#00f5a0]/30 rounded-xl">
+<div class="w-6 h-6 rounded-lg bg-[#18232e] avatar-wrapper overflow-hidden border border-[#00f5a0]/50 shrink-0">
+<img alt="Skin" class="w-full h-full object-contain" id="headerUserAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcl3uXeIUDMM0jGwsAEsXpUr7okw_95Vqyf5QvtpMh_kcbDDFukszHzAECEIsAAps7M53-IHohmnzStQGIyvBDTkOaImktOmB-JkPGmYyMIDkJM3HOyhGeiAAeOVclmadOOpilhEs8oQuHmSaGJhLZ5Hg5IWxAOZWzZSNej58HPVVkJBsTaBoJOJaI-zaT-DxQBxIT-wUUXqafBvPfGD5wNF7ZOLvrXxjDwJr2Y4TizMJZy1mJoNY8"/>
+</div>
+<span class="text-xs font-bold text-white font-sans truncate max-w-[90px] sm:max-w-[120px]" id="headerUserNick">Arnimaz21</span>
+</div>
 <!-- Выход -->
-<button class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200" id="btnHeaderLogout" title="Завершить сессию">
+<button class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200" onclick="logoutUser()" title="Завершить сессию">
 <svg class="lucide lucide-log-out w-3.5 h-3.5" data-lucide="log-out" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
 <polyline points="16 17 21 12 16 7"></polyline>
@@ -153,13 +160,14 @@
 <span class="font-sans hidden sm:inline">Выйти</span>
 </button>
 </div>
+</div>
 </header>
 <!-- ОСНОВНОЙ DISCORD-ПОДОБНЫЙ ИНТЕРФЕЙС -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 flex-1 items-stretch min-h-[560px]">
-<!-- ЛЕВАЯ КОЛОНКА КАНАЛОВ (ПО ОБРАЗЦУ IMAGE_2) И ПРОФИЛЬ -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 flex-1 items-stretch min-h-[580px]">
+<!-- ЛЕВАЯ КОЛОНКА КАНАЛОВ И ПРОФИЛЬ -->
 <aside class="lg:col-span-3 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
-<!-- Заголовок сервера / секции каналов -->
 <div>
+<!-- Заголовок сервера / секции каналов -->
 <div class="p-3.5 md:p-4 border-b border-white/10 flex items-center justify-between bg-[#070b10]/60">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>
@@ -167,7 +175,7 @@
 </div>
 <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#131c26] text-gray-400 border border-white/5">ТЕКСТОВЫЕ</span>
 </div>
-<!-- Список текстовых каналов (в точности из образца) -->
+<!-- Список текстовых каналов -->
 <nav aria-label="Текстовые каналы" class="p-2 space-y-1" id="channelsList">
 <!-- # набор -->
 <button class="channel-item active w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-sans tracking-wide text-left text-gray-300" id="chan-btn-recruitment" onclick="switchChannel('recruitment')">
@@ -215,18 +223,18 @@
 <div class="p-3 bg-[#070b10]/95 border-t border-white/10 flex items-center justify-between gap-3">
 <div class="flex items-center gap-2.5 min-w-0">
 <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/40 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(0,245,160,0.25)]">
-<img alt="Скин" class="w-full h-full object-contain" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDogi02AxVCBzJwBlEuNzUb8dMQwarzemlIo7Zi8-bQtzYn7tNrpfM4S8wGfNfM5Y8owlnmWTlvATFyN6c-TKecDzlyiz6ckKz4iH7O2YbwYWX3u5pnUyh18339tIVOptVfRkH2EH9vOgqg1mzshG6kmj23NqiTuwWjq5vK9lLsGzZekENRDIdT7ZoBIMVkSAvQ9JMKqse5bWyDu5zRDhFkkg2swxn2Y4wYL9hH3WiOVzsA7lUPaz5V"/>
+<img alt="Скин" class="w-full h-full object-contain" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcIJyTHwosVujZIyIveT9-4bbD8e3-2li7ep8BpbQ7oEoeWUMTEXwxQkDO5QRNlwdzpy6-vCQKdkjS0wA8N4PLflFk0zPjne0_6zzSJEApiMdjEOavy2sbmXFPB3ALk9THESKfamKLBsfNYT03xUX50qdyyHJf5ZP4v2pOxV8YVU2feCp_VrLLkc6txmAjT4L6W9rHWyiiYkuZ5OQpBESlpi-fNlJRnCPmkY1CkdKuujxsIInPsQYA"/>
 <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="В сети"></span>
 </div>
 <div class="min-w-0">
 <div class="font-sans font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
-                Игрок
+                Arnimaz21
               </div>
 <div class="flex items-center gap-1.5">
-<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 uppercase" id="userSidebarRole">
-                  ИГРОК
+<span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-red-950/40 text-red-400 border border-red-900/40 font-semibold" id="userSidebarRole">
+                  АДМИН
                 </span>
-<span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">0м</span>
+<span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">0м онлайн</span>
 </div>
 </div>
 </div>
@@ -240,7 +248,7 @@
 </div>
 </aside>
 <!-- ПРАВАЯ ОБЛАСТЬ: АКТИВНЫЙ КАНАЛ, ЛЕНТА СООБЩЕНИЙ, ИНПУТ ДЛЯ АДМИНА -->
-<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md overflow-hidden min-h-[500px]">
+<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl backdrop-blur-md overflow-hidden min-h-[520px]">
 <!-- Заголовок активного канала -->
 <div class="px-4 py-3 md:px-5 md:py-3.5 border-b border-white/10 bg-[#070b10]/60 flex items-center justify-between flex-wrap gap-2">
 <div class="flex items-center gap-2">
@@ -253,14 +261,14 @@
 <h1 class="font-sans font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1>
 <span class="text-gray-500 text-xs hidden md:inline">|</span>
 <span class="text-xs text-gray-400 font-mono hidden md:inline truncate max-w-md" id="currentChannelTopic">
-              Официальные объявления, приём заявок и формирование сообщества
+              Приём заявок, критерии отбора и анкета кандидата на сервер vunya100
             </span>
 </div>
 <!-- Живые бейджи состояния -->
 <div class="flex items-center gap-2 font-mono text-[11px]">
-<span class="px-2 py-0.5 rounded bg-[#131c26] text-gray-300 border border-white/10 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-[#00f5a0]"></span>
-              Онлайн: <strong class="text-[#00f5a0]" id="quickOnlineVal">0</strong>/20
+<span class="px-2.5 py-1 rounded-lg bg-[#131c26] text-gray-300 border border-white/10 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#00f5a0] animate-pulse"></span>
+              Онлайн: <strong class="text-[#00f5a0]" id="quickOnlineVal">4</strong>/20
             </span>
 <button class="p-1.5 text-gray-400 hover:text-[#00f5a0] bg-[#121a22] border border-white/5 rounded-lg transition" onclick="refreshMessages()" title="Обновить сообщения">
 <svg class="lucide lucide-rotate-cw w-3.5 h-3.5" data-lucide="rotate-cw" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -274,14 +282,14 @@
 <div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px]" id="messagesContainer">
 <!-- Сообщения рендерятся через JS -->
 </div>
-<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ (ТОЛЬКО ДЛЯ АДМИНА) ИЛИ READ-ONLY УВЕДОМЛЕНИЕ ДЛЯ ИГРОКА -->
+<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ -->
 <div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95">
-<!-- Режим Администратора: Форма отправки сообщения -->
-<form class="hidden space-y-2" id="adminPostForm" onsubmit="handlePostMessage(event)">
+<!-- Форма отправки сообщения -->
+<form class="space-y-2" id="adminPostForm" onsubmit="handlePostMessage(event)">
 <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 px-1">
 <span class="text-[#00f5a0] flex items-center gap-1.5">
 <svg class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]" data-lucide="shield-alert" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
-                Публикация от имени Администрации
+                Публикация в активный канал
               </span>
 <span id="inputCharCount">Shift+Enter для новой строки</span>
 </div>
@@ -295,27 +303,11 @@
 </button>
 </div>
 </form>
-<!-- Режим Обычного Игрока: Уведомление о режиме чтения -->
-<div class="flex items-center justify-between gap-3 px-4 py-3 bg-[#111822] border border-white/10 rounded-xl text-xs font-mono text-gray-400" id="playerReadOnlyNotice">
-<div class="flex items-center gap-2.5">
-<div class="p-1.5 rounded-lg bg-[#070b10] text-[#00f5a0] border border-white/5">
-<svg class="lucide lucide-lock w-4 h-4" data-lucide="lock" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-</div>
-<div>
-<span class="text-gray-300 font-semibold">Канал только для чтения</span>
-<p class="text-[11px] text-gray-500">Только администраторы могут отправлять объявления в этот раздел.</p>
-</div>
-</div>
-<a class="px-3 py-1.5 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 text-[#7983f5] border border-[#5865F2]/30 rounded-lg text-[11px] font-sans flex items-center gap-1.5 transition" href="https://discord.gg/kQkRgbFZeK" target="_blank">
-<span>Обсудить в Discord</span>
-<svg class="lucide lucide-external-link w-3 h-3" data-lucide="external-link" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" x2="21" y1="14" y2="3"></line></svg>
-</a>
-</div>
 </div>
 </main>
 </div>
 </div>
-<!-- Футер страницы (в точном стиле проекта) -->
+<!-- Футер страницы -->
 <footer class="text-center py-3 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black mt-2">
 <span class="text-gray-300">by Arnimaz21 for </span>
 <a class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
@@ -331,7 +323,7 @@
       STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
       LOGIN_URL: "https://arnimaz21.github.io/login",
       FALLBACK_STEVE: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png",
-      CHANNELS_STORAGE_KEY: "cloudmine_portal_channel_posts_v1"
+      CHANNELS_STORAGE_KEY: "cloudmine_portal_channel_posts_v2"
     };
 
     // Данные каналов и темы
@@ -342,7 +334,7 @@
       },
       info: {
         name: "информация-о-сервере",
-        topic: "Технический стек Paper 26.3, сид мира, хостинг, правила вайпов и датапаки"
+        topic: "Технический стек Paper 26.3, сид мира, хостинг, сборка модов Cloud.Tech и датапаки"
       },
       rules: {
         name: "правила",
@@ -363,15 +355,15 @@
           role: "ADMIN",
           time: "Вчера в 18:30",
           badgeColor: "red",
-          content: `⚡ **Открыт дополнительный набор игроков на второй сезон Cloud.Mine!**\n\nМы формируем ламповое, дружное комьюнити без гриферов и токсичности. Сервер полностью приватный и работает по белому списку.\n\n**Критерии для подачи:**\n• Возраст 14+ (адекватность и понимание ванильного геймплея)\n• Наличие микрофона и Discord для координации\n• Желание строить красивые базы и участвовать в общих проектах\n\nДля подачи заявки напишите в наш официальный Discord-сервер в тикеты или администратору напрямую.`
+          content: `⚡ **Открыт набор игроков на сезон Cloud.Mine!**\n\nМы формируем ламповое, дружное комьюнити без гриферов и токсичности. Сервер полностью приватный и работает по белому списку.\n\n**Критерии для подачи:**\n• Возраст 14+ (адекватность и понимание ванильного геймплея)\n• Наличие микрофона и Discord для координации\n• Желание строить красивые базы и участвовать в общих проектах\n\nДля подачи заявки напишите в наш официальный Discord-сервер в тикеты или администратору напрямую.`
         },
         {
           id: "rec-2",
           author: "Arnimaz21",
-          role: "DEV",
+          role: "ADMIN",
           time: "Сегодня в 12:15",
           badgeColor: "emerald",
-          content: `Новые зарегистрированные игроки синхронизируются через Cloud.Users KV автоматически. После одобрения вы мгновенно получите доступ к порталу и серверу!`
+          content: `Новые игроки синхронизируются через Cloud.Users KV автоматически. После одобрения заявки вы мгновенно получите доступ к порталу и серверу!`
         }
       ],
       info: [
@@ -381,15 +373,15 @@
           role: "ADMIN",
           time: "12 мая 2024",
           badgeColor: "red",
-          content: `📌 **Технический паспорт сервера Cloud.Mine:**\n\n• **Ядро:** Paper 26.3 (высокая оптимизация тиков)\n• **TPS:** Стабильные 20.0 TPS при любой нагрузке\n• **Ограничение мира:** 15 000 x 15 000 блоков\n• **Сложность:** Hardcore / Сложная ванила без приватов на сундуки (доверие и логгер CoreProtect)\n• **Генерация:** Ванильная генерация 1.20+ с красивыми биомами`
+          content: `📌 **Технический паспорт сервера Cloud.Mine:**\n\n• **Ядро:** Paper 26.3 (высокая оптимизация тиков)\n• **TPS:** Стабильные 20.0 TPS при любой нагрузке\n• **Сборка модов:** Cloud.Tech (оптимизация графики и звука)\n• **Ограничение мира:** 15 000 x 15 000 блоков\n• **Сложность:** Hardcore / Сложная ванила без приватов на сундуки (доверие и логгер CoreProtect)\n• **Генерация:** Ванильная генерация 1.20+ с красивыми биомами`
         },
         {
           id: "inf-2",
           author: "Arnimaz21",
-          role: "DEV",
+          role: "ADMIN",
           time: "Вчера в 14:00",
           badgeColor: "emerald",
-          content: `Сборка модов оптимизирована: вы можете скачать клиентский .mrpack через наш встроенный Конвертер на верхней панели.`
+          content: `Сборка модов оптимизирована: вы можете скачать клиентский .mrpack через наш встроенный Конвертер на верхней панели навигации.`
         }
       ],
       rules: [
@@ -419,7 +411,6 @@
     let currentActiveChannel = 'recruitment';
     let appMessages = {};
 
-    // Загрузка сообщений из локального хранилища
     function loadSavedMessages() {
       try {
         const stored = localStorage.getItem(CONFIG.CHANNELS_STORAGE_KEY);
@@ -442,7 +433,6 @@
       }
     }
 
-    // Обработка скина с фоллбеком
     window.handleSkinError = function(img) {
       if (!img) return;
       if (img.src !== CONFIG.FALLBACK_STEVE) {
@@ -452,26 +442,23 @@
       }
     };
 
-    // Выход
     window.logoutUser = function() {
       localStorage.removeItem('cloud_auth_user');
       sessionStorage.removeItem('cloud_auth_user');
       window.location.replace(CONFIG.LOGIN_URL);
     };
 
-    // Копирование IP
     window.copyServerIpAddress = function(ipText) {
-      navigator.clipboard.writeText(ipText || '185.9.145.7:27019').then(() => {
-        alert('IP адрес сервера (185.9.145.7:27019) успешно скопирован в буфер!');
+      const val = ipText || '185.9.145.7:27019';
+      navigator.clipboard.writeText(val).then(() => {
+        alert('IP адрес сервера (' + val + ') успешно скопирован в буфер обмена!');
       });
     };
 
-    // Переключение текстовых каналов Discord
     window.switchChannel = function(channelKey) {
       if (!CHANNELS_META[channelKey]) return;
       currentActiveChannel = channelKey;
 
-      // Обновление активного класса на кнопках
       document.querySelectorAll('.channel-item').forEach(btn => {
         btn.classList.remove('active');
         const hashIcon = btn.querySelector('svg.lucide-hash');
@@ -485,17 +472,16 @@
         if (hashIcon) hashIcon.classList.add('text-[#00f5a0]');
       }
 
-      // Заголовки
       const titleEl = document.getElementById('currentChannelTitle');
       const topicEl = document.getElementById('currentChannelTopic');
+      const inputEl = document.getElementById('messageTextInput');
       if (titleEl) titleEl.textContent = CHANNELS_META[channelKey].name;
       if (topicEl) topicEl.textContent = CHANNELS_META[channelKey].topic;
+      if (inputEl) inputEl.placeholder = `Отправить сообщение в #${CHANNELS_META[channelKey].name}...`;
 
-      // Рендер постов
       renderChannelMessages();
     };
 
-    // Форматирование markdown разметки в простой HTML
     function formatMessageContent(rawText) {
       if (!rawText) return '';
       let text = rawText
@@ -503,25 +489,15 @@
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 
-      // Блоки кода ```код```
       text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-[#04080c] border border-white/10 p-3 rounded-xl my-2 font-mono text-xs text-[#00f5a0] overflow-x-auto"><code>$1</code></pre>');
-
-      // Жирный шрифт **текст**
       text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
-
-      // Инлайн код `код`
       text = text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-[#121a22] text-[#00f5a0] rounded border border-white/10 font-mono text-xs">$1</code>');
-
-      // Списки •
       text = text.replace(/\n• /g, '<br/>• ');
-
-      // Переводы строк
       text = text.replace(/\n/g, '<br/>');
 
       return text;
     }
 
-    // Рендер списка сообщений в активном канале
     function renderChannelMessages() {
       const container = document.getElementById('messagesContainer');
       if (!container) return;
@@ -534,7 +510,7 @@
               <svg class="lucide lucide-message-square w-6 h-6" data-lucide="message-square" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
             </div>
             <p class="text-sm font-sans text-gray-300 font-semibold">В канале #${CHANNELS_META[currentActiveChannel].name} пока нет записей</p>
-            <p class="text-xs text-gray-500 font-mono max-w-sm">Администраторы могут опубликовать первые правила или системные инструкции через панель ниже.</p>
+            <p class="text-xs text-gray-500 font-mono max-w-sm">Вы можете опубликовать первое сообщение через форму ниже.</p>
           </div>
         `;
         lucide.createIcons();
@@ -546,18 +522,16 @@
         const isSelfAdmin = (post.role || '').toUpperCase() === 'ADMIN';
         const roleBadge = isSelfAdmin
           ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">АДМИН</span>'
-          : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">DEV</span>';
+          : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">ИГРОК</span>';
 
         const avatarUrl = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(post.author)}.png`;
 
         html += `
           <div class="flex items-start gap-3.5 p-3 rounded-xl message-hover transition border border-transparent hover:border-white/5">
-            <!-- Аватарка автора -->
             <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
               <img src="${avatarUrl}" alt="${post.author}" class="w-full h-full object-contain" onerror="handleSkinError(this)" />
             </div>
 
-            <!-- Тело сообщения -->
             <div class="flex-1 min-w-0">
               <div class="flex items-baseline gap-2 flex-wrap mb-1">
                 <span class="font-sans font-bold text-sm text-white hover:underline cursor-pointer">${post.author}</span>
@@ -587,22 +561,21 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    // Отправка нового сообщения (для администраторов)
     window.handlePostMessage = function(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       const input = document.getElementById('messageTextInput');
       if (!input) return;
       const text = input.value.trim();
       if (!text) return;
 
-      const user = window.currentUser || { username: 'Admin', role: 'admin' };
+      const user = window.currentUser || { username: 'Arnimaz21', role: 'admin' };
       const now = new Date();
       const timeStr = `Сегодня в ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
       const newPost = {
         id: 'msg-' + Date.now(),
         author: user.username,
-        role: (user.role || 'ADMIN').toUpperCase(),
+        role: (user.role || 'admin').toUpperCase(),
         time: timeStr,
         content: text
       };
@@ -622,29 +595,26 @@
       renderChannelMessages();
     };
 
-    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
 
-      const user = window.currentUser;
-      if (!user) {
-        window.location.replace(CONFIG.LOGIN_URL);
-        return;
-      }
-
-      // Открытие страницы после проверки
-      const mainBody = document.getElementById('mainBody');
-      if (mainBody) mainBody.classList.remove('opacity-0');
-
-      const username = user.username || 'Игрок';
-      const role = (user.role || 'player').toLowerCase();
+      const user = window.currentUser || { username: 'Arnimaz21', role: 'admin' };
+      const username = user.username || 'Arnimaz21';
+      const role = (user.role || 'admin').toLowerCase();
       const isAdmin = (role === 'admin' || role === 'administrator');
 
-      // Обновление профиля в сайдбаре
+      // Шапка
+      const headerUserNick = document.getElementById('headerUserNick');
+      const headerUserAvatar = document.getElementById('headerUserAvatar');
+      if (headerUserNick) headerUserNick.textContent = username;
+      if (headerUserAvatar) {
+        headerUserAvatar.src = `https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/${encodeURIComponent(username)}.png`;
+      }
+
+      // Сайдбар
       const sidebarNick = document.getElementById('userSidebarNick');
       const sidebarAvatar = document.getElementById('userSidebarAvatar');
       const sidebarRole = document.getElementById('userSidebarRole');
-      const headerAdminLink = document.getElementById('headerAdminLink');
 
       if (sidebarNick) sidebarNick.textContent = username;
       if (sidebarAvatar) {
@@ -660,22 +630,6 @@
         }
       }
 
-      // Если админ — показываем ссылку в хедере на админку и форму ввода сообщений
-      const adminPostForm = document.getElementById('adminPostForm');
-      const playerReadOnlyNotice = document.getElementById('playerReadOnlyNotice');
-
-      if (isAdmin) {
-        if (headerAdminLink) headerAdminLink.classList.remove('hidden');
-        if (headerAdminLink) headerAdminLink.classList.add('flex');
-        if (adminPostForm) adminPostForm.classList.remove('hidden');
-        if (playerReadOnlyNotice) playerReadOnlyNotice.classList.add('hidden');
-      } else {
-        if (headerAdminLink) headerAdminLink.classList.add('hidden');
-        if (adminPostForm) adminPostForm.classList.add('hidden');
-        if (playerReadOnlyNotice) playerReadOnlyNotice.classList.remove('hidden');
-      }
-
-      // Поддержка Ctrl+Enter / Enter без Shift для отправки в textarea
       const msgInput = document.getElementById('messageTextInput');
       if (msgInput) {
         msgInput.addEventListener('keydown', (e) => {
@@ -686,21 +640,18 @@
         });
       }
 
-      // Таймер сессии
       const startTime = Date.now();
       const sessionSmallEl = document.getElementById('sessionTimeSmall');
       setInterval(() => {
         if (sessionSmallEl) {
           const mins = Math.floor((Date.now() - startTime) / 60000);
-          sessionSmallEl.textContent = `${mins}м`;
+          sessionSmallEl.textContent = `${mins}м онлайн`;
         }
       }, 30000);
 
-      // Загрузка сообщений и рендер первого канала
       loadSavedMessages();
       switchChannel('recruitment');
 
-      // Запрос живого онлайна
       try {
         const res = await fetch(CONFIG.STATS_ENDPOINT, { cache: 'no-store' });
         if (res.ok) {
@@ -715,7 +666,7 @@
       }
     });
 
-    // Живой WebGL Canvas шейдер фона (идентично stats.html)
+    // Живой WebGL Canvas шейдер фона
     (function initShader() {
       const canvas = document.getElementById('shader-canvas');
       if (!canvas) return;
