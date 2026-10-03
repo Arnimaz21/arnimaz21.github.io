@@ -721,7 +721,7 @@
     };
 
     window.copyInvite = function(username, password) {
-      const inviteText = `🌟 Привет, ${username}!\nТвой аккаунт на сервере Cloud.Mine успешно активирован!\n\n🕹 Данные для входа в игру:\n• IP сервера: 185.9.145.7:27019\n• Твой никнейм: ${username}\n• Пароль: ${password}\n\n🌐 Портал сервера: https://arnimaz21.github.io/\nПриятной игры на Cloud.Mine!`;
+      const inviteText = `🌟 Привет, ${username}!\nТвой аккаунт на сервере Cloud.Mine успешно активирован!\n\n🕹 Данные для входа в игру:\n\n• Твой никнейм: ${username}\n• Пароль: ${password}\n\n🌐 Портал сервера: https://arnimaz21.github.io/\n\nПриятной игры на Cloud.Mine!`;
       
       navigator.clipboard.writeText(inviteText).then(() => {
         alert(`Текст приглашения для игрока "${username}" скопирован в буфер обмена!`);
