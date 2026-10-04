@@ -3,331 +3,195 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Главная</title>
 <link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png">
-<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Шрифты Space Grotesk и JetBrains Mono -->
 <link href="https://fonts.googleapis.com" rel="preconnect">
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
-<!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
-    :root {
-      --primary: #00f5a0;
-      --primary-hover: #50ffaf;
-      --surface-void: #070b10;
-      --surface-1: #0b1017;
-      --surface-2: #0e151d;
-      --surface-3: #131c26;
-      --border-quiescent: #1a2b27;
-      --border-accent: rgba(0, 245, 160, 0.35);
-    }
-    body {
-      background-color: #070b10;
-      color: #dfe2ea;
-      font-family: 'JetBrains Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    h1, h2, h3, h4, .font-heading {
-      font-family: 'Space Grotesk', sans-serif;
-    }
-    .custom-scroll::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(11, 16, 23, 0.6);
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #1b282e;
-      border-radius: 4px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: #00f5a0;
-    }
-    .text-outline-black {
-      text-shadow:
-        -1px -1px 0 #000,
-         1px -1px 0 #000,
-        -1px  1px 0 #000,
-         1px  1px 0 #000,
-         0px  2px 4px rgba(0, 0, 0, 0.9);
-    }
-    .avatar-wrapper img, .mc-skin-avatar {
-      image-rendering: pixelated;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: crisp-edges;
-      object-fit: cover;
-    }
-    .channel-item {
-      position: relative;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .channel-item:hover {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: #dfe2ea;
-    }
-    .channel-item.active {
-      background-color: rgba(0, 245, 160, 0.12);
-      color: #00f5a0;
-      border-left: 3px solid #00f5a0;
-      font-weight: 600;
-      box-shadow: inset 0 0 16px rgba(0, 245, 160, 0.08);
-    }
-    .channel-item.active svg {
-      color: #00f5a0;
-      filter: drop-shadow(0 0 6px rgba(0, 245, 160, 0.5));
-    }
-    .message-hover:hover {
-      background-color: rgba(255, 255, 255, 0.02);
-    }
-    .cyber-card {
-      background: rgba(14, 21, 29, 0.92);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(26, 43, 39, 0.85);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-    .cyber-btn-primary {
-      background-color: #00f5a0;
-      color: #070b10;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 16px rgba(0, 245, 160, 0.35);
-    }
-    .cyber-btn-primary:hover {
-      background-color: #50ffaf;
-      box-shadow: 0 0 24px rgba(0, 245, 160, 0.6);
-      transform: translateY(-1px);
-    }
-    .neon-border {
-      border: 1px solid rgba(0, 245, 160, 0.35);
-    }
-    .neon-border:focus-within, .neon-border-active {
-      border-color: #00f5a0;
-      box-shadow: 0 0 16px rgba(0, 245, 160, 0.25);
-    }
-    .cyber-grid-bg {
-      background-image: 
-        radial-gradient(circle at 50% 45%, rgba(0, 245, 160, 0.12) 0%, rgba(2, 45, 30, 0.25) 35%, rgba(7, 11, 16, 0.95) 75%),
-        linear-gradient(rgba(0, 245, 160, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 160, 0.035) 1px, transparent 1px);
-      background-size: 100% 100%, 36px 36px, 36px 36px;
-    }
-
-    /* Кибернетическая плавная анимация переключения каналов */
-    @keyframes channelFadeSlide {
-      0% {
-        opacity: 0;
-        transform: translateY(10px) scale(0.995);
-        filter: brightness(1.25) contrast(1.1);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: brightness(1) contrast(1);
-      }
-    }
-    .channel-transition-enter {
-      animation: channelFadeSlide 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      will-change: transform, opacity;
-    }
-    .message-item-enter {
-      animation: channelFadeSlide 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-
-    /* Легкий кибер-сканлайн эффект при переходе */
-    .scanline-overlay {
-      position: relative;
-    }
-    .scanline-overlay::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,245,160,0.06), transparent 80%);
-      pointer-events: none;
+  :root {
+    --primary: #00f5a0;
+    --primary-hover: #50ffaf;
+  }
+  body {
+    background-color: #070b10;
+    color: #dfe2ea;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+  .custom-scroll::-webkit-scrollbar-track { background: rgba(11, 16, 23, 0.6); }
+  .custom-scroll::-webkit-scrollbar-thumb { background: #1b282e; border-radius: 4px; }
+  .custom-scroll::-webkit-scrollbar-thumb:hover { background: #00f5a0; }
+  .avatar-wrapper img, .mc-skin-avatar {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    object-fit: cover;
+  }
+  .channel-item {
+    position: relative;
+    border-left: 3px solid transparent;
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .channel-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #dfe2ea;
+  }
+  .channel-item.active {
+    background-color: rgba(0, 245, 160, 0.12);
+    color: #00f5a0;
+    border-left-color: #00f5a0;
+    font-weight: 600;
+    box-shadow: inset 4px 0 12px -3px rgba(0, 245, 160, 0.25);
+  }
+  .channel-item.active svg {
+    color: #00f5a0;
+    filter: drop-shadow(0 0 6px rgba(0, 245, 160, 0.5));
+    transition: color 0.25s ease, filter 0.25s ease;
+  }
+  .cyber-btn-primary {
+    background-color: #00f5a0;
+    color: #070b10;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 16px rgba(0, 245, 160, 0.35);
+  }
+  .cyber-btn-primary:hover:not(:disabled) {
+    background-color: #50ffaf;
+    box-shadow: 0 0 24px rgba(0, 245, 160, 0.6);
+    transform: translateY(-1px);
+  }
+  @keyframes channelFadeIn {
+    0% {
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transform: translateY(6px);
     }
-    .scanline-active::after {
+    100% {
       opacity: 1;
-    }
-
-    /* Ховер экшн-бар для сообщений */
-    .message-action-bar {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-4px);
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .group:hover .message-action-bar {
-      opacity: 1;
-      pointer-events: auto;
       transform: translateY(0);
     }
-  </style>
+  }
+  .channel-fade-transition {
+    animation: channelFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .channel-fade-out {
+    opacity: 0 !important;
+    transform: translateY(-4px) scale(0.995);
+    transition: opacity 0.14s ease-out, transform 0.14s ease-out !important;
+  }
+  .channel-header-transition {
+    transition: opacity 0.14s ease-out, transform 0.14s ease-out;
+  }
+  .channel-header-out {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+</style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10]" id="mainBody">
-<!-- Живой оптимизированный WebGL Canvas фон -->
+<body class="min-h-screen flex flex-col justify-between p-3 md:p-5 antialiased select-none relative bg-[#070b10]">
 <div class="fixed inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
 <canvas class="w-full h-full block" height="752" id="shader-canvas" width="1280"></canvas>
 </div>
-<!-- ==================== ОСНОВНОЙ ПОРТАЛ ==================== -->
-<div class="max-w-7xl w-full mx-auto flex flex-col gap-3 md:gap-4 flex-1 relative z-10 pb-4 transition-all duration-300" id="portalContent">
-<!-- ВЕРХНЯЯ ШАПКА / НАВИГАЦИЯ ЭКОСИСТЕМЫ -->
+<div class="max-w-7xl w-full mx-auto flex flex-col gap-3 md:gap-4 flex-1 relative z-10 pb-4" id="portalContent">
 <header class="border border-[#00f5a0]/25 bg-[#0b1017]/90 rounded-2xl px-4 py-3 md:px-5 md:py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-lg backdrop-blur-md">
 <div class="flex items-center gap-3">
-<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.2)]">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="server" aria-hidden="true" class="lucide lucide-server w-5 h-5 text-[#00f5a0]"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>
-</div>
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(0,245,160,0.2)]"><svg class="w-5 h-5 text-[#00f5a0]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="8" rx="2" ry="2" width="20" x="2" y="2"></rect><rect height="8" rx="2" ry="2" width="20" x="2" y="14"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg></div>
 <div>
 <div class="font-bold text-white tracking-wide text-base md:text-lg font-heading flex items-center gap-2">
-            Cloud.Mine
+  Cloud.Mine
 </div>
 </div>
 </div>
-<!-- Навигационные кнопки и профиль -->
 <div class="flex items-center flex-wrap gap-2 md:gap-3">
-<!-- Discord -->
-<a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200 font-heading font-medium" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
+<a class="px-3 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition font-heading font-medium" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>
 <span class="hidden sm:inline">Discord</span>
 </a>
-<!-- Профиль пользователя в шапке -->
-<div class="flex items-center gap-2 pl-2 border-l border-white/10" id="headerProfileChip">
-</div>
+<div class="flex items-center gap-2 pl-2 border-l border-white/10" id="headerProfileChip"></div>
 </div>
 </header>
-<!-- ОСНОВНОЙ ТЕРМИНАЛЬНЫЙ DISCORD-ИНТЕРФЕЙС -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 flex-1 items-stretch min-h-[580px]">
-<!-- ЛЕВАЯ КОЛОНКА КАНАЛОВ И ПРОФИЛЬ -->
 <aside class="lg:col-span-3 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl backdrop-blur-md">
 <div>
-<!-- Заголовок сервера -->
 <div class="p-3.5 md:p-4 border-b border-white/10 flex items-center justify-between bg-[#070b10]/60">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-[#00f5a0] shadow-[0_0_8px_#00f5a0]"></span>
 <h2 class="font-heading font-bold text-sm tracking-wide text-white">CloudMine</h2>
 </div>
 </div>
-<!-- Список текстовых каналов -->
-<nav aria-label="Текстовые каналы" class="p-2 space-y-1" id="channelsList">
-            <button onclick="switchChannel('recruitment')" class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left active text-[#00f5a0]" id="chan-btn-recruitment">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 shrink-0 text-[#00f5a0]"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
-              <span class="truncate">набор</span>
-            </button>
-          
-            <button onclick="switchChannel('info')" class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-400 hover:text-gray-200" id="chan-btn-info">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-4 h-4 shrink-0 text-gray-500"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
-              <span class="truncate">информация-о-сервере</span>
-            </button>
-          
-            <button onclick="handleLockedChannelClick('rules')" class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-rules" title="Требуется авторизация">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span class="truncate line-through decoration-gray-600 decoration-1 text-gray-500 group-hover:text-gray-400">правила</span>
-              </div>
-              <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span>
-            </button>
-          
-            <button onclick="handleLockedChannelClick('ip')" class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-ip" title="Требуется авторизация">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                <span class="truncate line-through decoration-gray-600 decoration-1 text-gray-500 group-hover:text-gray-400">ip</span>
-              </div>
-              <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span>
-            </button>
-          </nav>
+<nav aria-label="Текстовые каналы" class="p-2 space-y-1" id="channelsList"><button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left active text-[#00f5a0]" id="chan-btn-recruitment" onclick="switchChannel('recruitment')"><svg class="w-4 h-4 shrink-0 text-[#00f5a0]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg><span class="truncate">набор</span></button><button class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-400 hover:text-gray-200" id="chan-btn-info" onclick="switchChannel('info')"><svg class="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg><span class="truncate">информация-о-сервере</span></button><button class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-chat" onclick="handleLockedChannelClick('chat')"><div class="flex items-center gap-2.5 min-w-0"><svg class="w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span class="truncate line-through decoration-gray-600 text-gray-500 group-hover:text-gray-400">chat</span></div><span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span></button><button class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-rules" onclick="handleLockedChannelClick('rules')"><div class="flex items-center gap-2.5 min-w-0"><svg class="w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span class="truncate line-through decoration-gray-600 text-gray-500 group-hover:text-gray-400">правила</span></div><span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span></button><button class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-ip" onclick="handleLockedChannelClick('ip')"><div class="flex items-center gap-2.5 min-w-0"><svg class="w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span class="truncate line-through decoration-gray-600 text-gray-500 group-hover:text-gray-400">ip</span></div><span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span></button></nav>
 </div>
-<!-- КАРТОЧКА ПОЛЬЗОВАТЕЛЯ -->
 <div class="p-3 bg-[#070b10]/95 border-t border-white/10 flex items-center justify-between gap-3" id="sidebarUserCard">
 <div class="flex items-center gap-2.5 min-w-0">
 <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/40 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-[0_0_12px_rgba(0,245,160,0.25)]">
-<img alt="Скин" class="w-full h-full object-cover mc-skin-avatar" id="userSidebarAvatar" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
+<img alt="Скин" class="w-full h-full object-cover mc-skin-avatar" id="userSidebarAvatar" onerror="handleSkinError(this)" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
 </div>
 <div class="min-w-0">
-<div class="font-heading font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">
-  Гость
-</div>
+<div class="font-heading font-bold text-xs text-white truncate flex items-center gap-1.5" id="userSidebarNick">Гость</div>
 <div class="flex items-center gap-1.5">
 <span class="text-[10px] text-gray-500 font-mono truncate" id="sessionTimeSmall">Режим чтения</span>
 </div>
 </div>
 </div>
-<div id="sidebarUserActionBtn">
-<button class="p-2 text-gray-400 hover:text-[#00f5a0] hover:bg-[#121a22] border border-white/5 rounded-lg transition" onclick="openAuthModal()" title="Войти в аккаунт">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-in" aria-hidden="true" class="lucide lucide-log-in w-4 h-4"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
-</button>
-</div>
+<div id="sidebarUserActionBtn"><button class="p-2 text-gray-400 hover:text-[#00f5a0] hover:bg-[#121a22] border border-white/5 rounded-lg transition" onclick="openAuthModal()" title="Войти в аккаунт"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg></button></div>
 </div>
 </aside>
-<!-- ПРАВАЯ ОБЛАСТЬ: АКТИВНЫЙ КАНАЛ, ЛЕНТА СООБЩЕНИЙ, ИНПУТ -->
-<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl overflow-hidden min-h-[520px] backdrop-blur-md relative scanline-overlay" id="mainChannelPanel">
-<!-- Заголовок активного канала -->
+<main class="lg:col-span-9 flex flex-col justify-between bg-[#0b1017]/90 border border-white/10 rounded-2xl shadow-xl overflow-hidden min-h-[520px] backdrop-blur-md relative" id="mainChannelPanel">
 <div class="px-4 py-3 md:px-5 md:py-3.5 border-b border-white/10 bg-[#070b10]/60 flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center gap-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="hash" aria-hidden="true" class="lucide lucide-hash w-5 h-5 text-[#00f5a0]"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg>
-<h1 class="font-heading font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1>
-</div>
-<!-- Живые бейджи состояния + KV статус -->
+<div class="flex items-center gap-2 channel-header-transition" id="channelHeaderTitleGroup"><svg class="w-5 h-5 text-[#00f5a0]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg><h1 class="font-heading font-bold text-base md:text-lg text-white" id="currentChannelTitle">набор</h1></div>
 <div class="flex items-center gap-2 font-mono text-[11px] flex-wrap">
-<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#070b10] border border-white/5" id="kvDbBadge" title="Статус подключения к Cloudflare KV Worker">
-<span class="w-2 h-2 rounded-full bg-[#00f5a0]" id="kvDbDot"></span>
-<span class="text-gray-300 text-[11px]" id="kvDbText">KV DB: готово</span>
-</div>
-<button class="p-1.5 text-gray-400 hover:text-[#00f5a0] bg-[#121a22] border border-white/5 rounded-lg transition" id="btnRefreshMessages" onclick="refreshMessages()" title="Обновить сообщения из Cloudflare KV">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="rotate-cw" aria-hidden="true" class="lucide lucide-rotate-cw w-3.5 h-3.5"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
-</button>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#5865F2]/10 border border-[#5865F2]/30 text-[#7983f5] hidden" id="discordWebhookBadge" title="Синхронизация сообщений с Discord">
+<span class="w-2 h-2 rounded-full bg-[#5865F2] shadow-[0_0_6px_#5865F2]" id="discordWebhookDot"></span>
+<span class="text-[11px]" id="discordWebhookText">Discord: Синхронизирован</span>
 </div>
 </div>
-<!-- Лента сообщений канала -->
-<div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px] transition-all duration-200 channel-transition-enter" id="messagesContainer" style="opacity: 1; transform: none;">
-          <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
-            <div class="p-3.5 rounded-2xl bg-[#121a22] text-gray-500 border border-white/10 shadow-inner">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-square" aria-hidden="true" class="lucide lucide-message-square w-6 h-6 text-[#00f5a0]/60"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
-            </div>
-            <div>
-              <p class="text-sm font-heading text-gray-200 font-semibold tracking-wide">В канале #набор пока нет сообщений</p>
-              <p class="text-xs text-gray-500 font-mono mt-1 max-w-sm">База данных Cloudflare KV пуста для этого канала или ожидает первой публикации.</p>
-            </div>
-          </div>
-        </div>
-<!-- НИЖНЯЯ ПАНЕЛЬ: ВВОД СООБЩЕНИЯ ИЛИ ПЛАШКА ДЛЯ ИГРОКА/ГОСТЯ -->
+</div>
+<div class="p-4 md:p-6 overflow-y-auto custom-scroll flex-1 space-y-5 bg-[#080d13]/50 max-h-[580px] channel-fade-transition" id="messagesContainer">
+<div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
+<div class="p-3.5 rounded-2xl bg-[#121a22] text-gray-500 border border-white/10 shadow-inner">
+<svg aria-hidden="true" class="lucide lucide-message-square w-6 h-6 text-[#00f5a0]/60" data-lucide="message-square" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>
+</div>
+<div>
+<p class="text-sm font-heading text-gray-200 font-semibold tracking-wide">В канале #набор пока нет сообщений</p>
+</div>
+</div>
+</div>
 <div class="p-3 md:p-4 border-t border-white/10 bg-[#070b10]/95" id="chatActionContainer">
-<!-- Форма отправки сообщения для Администратора -->
 <form class="space-y-2 hidden" id="adminPostForm" onsubmit="handlePostMessage(event)">
 <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 px-1">
-<span class="text-[#00f5a0] flex items-center gap-1.5">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" aria-hidden="true" class="lucide lucide-shield-alert w-3 h-3 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
-  Публикация в активный канал (Cloudflare KV)
+<span class="text-[#00f5a0] flex items-center gap-1.5 flex-wrap">
+<svg aria-hidden="true" class="lucide lucide-send w-3 h-3 text-[#00f5a0]" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+<span class="" id="postModeLabel">Публикация объявления в KV</span>
+<span class="text-indigo-400 flex items-center gap-1 ml-1.5 pl-1.5 border-l border-white/10 text-[10px] hidden" id="discordInputIndicator">
+  + Discord
+</span>
 </span>
 <span class="" id="inputCharCount">Shift+Enter для новой строки</span>
 </div>
 <div class="flex items-center gap-2">
 <div class="relative flex-1">
-<textarea class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-none" id="messageTextInput" placeholder="Отправить сообщение в #набор..." rows="2"></textarea>
+<textarea class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-none" id="messageTextInput" placeholder="Опубликовать объявление в #набор..." rows="2"></textarea>
 </div>
 <button class="cyber-btn-primary px-4 py-3 font-bold text-xs rounded-xl flex items-center gap-2 shrink-0 font-heading cursor-pointer disabled:opacity-50 disabled:pointer-events-none" id="adminSendBtn" type="submit">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" aria-hidden="true" class="lucide lucide-send w-4 h-4"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
-<span id="adminSendBtnText" class="">Отправить</span>
+<svg aria-hidden="true" class="lucide lucide-send w-4 h-4" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg>
+<span class="" id="adminSendBtnText">Отправить</span>
 </button>
 </div>
 </form>
-<!-- Информационная плашка для обычных игроков (не-админов) и гостей -->
-<div class="py-3 px-4 rounded-xl bg-[#121a22]/70 border border-white/10 text-xs font-mono text-gray-400 flex items-center justify-between flex-wrap gap-2 text-center" id="playerNoticeBlock">
-<span class="flex items-center gap-2 text-left">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock text-gray-500 shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-<span class="" id="playerNoticeText">Канал доступен для чтения</span>
-</span>
-<button class="text-[11px] font-heading text-[#00f5a0] hover:underline flex items-center gap-1 font-semibold ml-auto" id="guestNoticeLoginBtn" onclick="openAuthModal()">
-<span class="">Войти в аккаунт →</span>
-</button>
-</div>
+<div class="py-3 px-4 rounded-xl bg-[#121a22]/70 border border-white/10 text-xs font-mono text-gray-400 flex items-center gap-3 cursor-pointer hover:bg-[#121a22] transition group" id="playerNoticeBlock" onclick="openAuthModal()"><svg class="w-4 h-4 text-gray-400 group-hover:text-[#00f5a0] transition shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span class="text-gray-300 group-hover:text-white font-mono tracking-wide transition" id="playerNoticeText">Войдите в аккаунт</span></div>
 </div>
 </main>
 </div>
 </div>
-<!-- Футер страницы -->
-<footer class="text-center py-3 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black mt-2">
+<footer class="text-center py-3 text-xs font-mono tracking-wider select-none relative z-10 text-outline-black mt-2" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgba(0, 0, 0, 0.8) 0px 2px 4px;">
 <span class="text-gray-300">by Arnimaz21 for </span>
 <a class="text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-1 font-semibold" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
 <span class="">vunya100's server</span>
@@ -336,1420 +200,1189 @@
 </svg>
 </a>
 </footer>
-<!-- МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ СООБЩЕНИЯ -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm hidden transition-opacity duration-200" id="deleteConfirmModal">
-<div class="cyber-card w-full max-w-sm p-5 rounded-2xl border border-red-500/30 shadow-2xl relative">
-<div class="flex items-center gap-3 mb-3 text-red-400">
-<div class="p-2 rounded-xl bg-red-950/50 border border-red-500/30">
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" aria-hidden="true" class="lucide lucide-trash-2 w-5 h-5"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-</div>
-<div>
-<h3 class="font-heading font-bold text-sm text-white">Удалить сообщение?</h3>
-<p class="text-[11px] font-mono text-gray-400">Это действие удалит запись из базы Cloudflare KV</p>
-</div>
-</div>
-<div class="p-3 bg-[#070b10] border border-white/5 rounded-xl mb-4 text-xs font-mono text-gray-300 line-clamp-2 italic" id="deletePreviewText">
-  "..."
-</div>
-<div class="flex items-center justify-end gap-2">
-<button class="px-3.5 py-2 rounded-xl text-xs font-mono font-medium text-gray-400 hover:text-white hover:bg-white/5 transition" onclick="closeDeleteConfirmModal()">Отмена</button>
-<button class="px-4 py-2 bg-red-600/90 hover:bg-red-500 text-white rounded-xl text-xs font-mono font-semibold transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(239,68,68,0.4)]" id="confirmDeleteBtn" onclick="executeDeleteMessage()">
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" aria-hidden="true" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-  Удалить
-</button>
-</div>
-</div>
-</div>
-<!-- ==================== МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ==================== -->
-<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300" id="authModal" onclick="handleAuthModalBackdropClick(event)">
-<div class="w-full max-w-md rounded-2xl p-6 sm:p-8 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/30 shadow-2xl shadow-[0_0_50px_rgba(0,245,160,0.15)] transform transition-transform duration-300 scale-100" id="authModalCard" onclick="event.stopPropagation()">
-<button class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition" onclick="closeAuthModal()" title="Закрыть (Режим чтения)">
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+<!-- Модальное окно авторизации (по умолчанию строго скрыто) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300 opacity-0 hidden pointer-events-none" id="authModal" onclick="handleAuthModalBackdropClick(event)">
+<div class="w-full max-w-md rounded-2xl p-6 sm:p-8 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/30 shadow-2xl transform transition-transform duration-300 pointer-events-auto scale-95" id="authModalCard" onclick="event.stopPropagation()">
+<button class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition" onclick="closeAuthModal()" title="Закрыть">
+<svg aria-hidden="true" class="lucide lucide-x w-5 h-5" data-lucide="x" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
 </button>
 <div class="flex items-center justify-between mb-5 pb-4 border-b border-white/10 pr-8">
 <div class="flex items-center gap-3">
-<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-inner">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-5 h-5 text-[#00f5a0]"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center">
+<svg aria-hidden="true" class="lucide lucide-shield-check w-5 h-5 text-[#00f5a0]" data-lucide="shield-check" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
 </div>
 <div>
 <h1 class="text-lg font-bold text-white font-heading flex items-center gap-2">
   Cloud.Mine <span class="text-[#00f5a0] text-xs font-mono font-normal px-2 py-0.5 rounded bg-[#00f5a0]/10 border border-[#00f5a0]/30">AUTH</span>
 </h1>
-<p class="text-xs text-gray-400 font-mono" id="authModalSubtitle">Для просмотра правил и IP сервера необходимо войти в аккаунт</p>
+<p class="text-xs text-gray-400 font-mono" id="authModalSubtitle">Войдите в аккаунт</p>
 </div>
 </div>
 </div>
-<!-- Предпросмотр скина игрока (fallback steave.png) -->
 <div class="flex items-center gap-4 p-4 rounded-xl bg-[#070b10] border border-white/10 mb-5">
 <div class="relative w-14 h-14 rounded-xl overflow-hidden bg-[#131c26] border border-[#00f5a0]/40 flex-shrink-0 flex items-center justify-center p-1 shadow-inner avatar-wrapper">
-<img alt="steave" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png'" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
-<span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10] shadow-[0_0_6px_#00f5a0]"></span>
+<img alt="steave" class="w-full h-full rounded-lg object-cover mc-skin-avatar transition-all duration-200" id="avatarPreview" onerror="handleSkinError(this)" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
+<span class="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10]"></span>
 </div>
 <div class="flex-1 min-w-0">
 <div class="text-[10px] uppercase tracking-wider text-gray-400 font-mono font-semibold">профиль</div>
 <div class="text-white font-bold text-sm truncate font-mono" id="usernamePreviewText">Стив</div>
 <div class="text-[11px] text-gray-400 font-mono mt-0.5 flex items-center gap-1.5">
-<span class="w-1.5 h-1.5 rounded-full bg-gray-500 transition-colors" id="skinStatusDot"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-gray-500" id="skinStatusDot"></span>
 <span class="text-[11px] text-gray-400 font-mono" id="skinSourceNotice">Ожидание ввода ника...</span>
 </div>
 </div>
 </div>
-<!-- Форма входа -->
 <form class="space-y-4" id="modalLoginForm" onsubmit="handleModalLogin(event)">
 <div>
-<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">
-  Логин <span class="text-[#00f5a0]">*</span>
-</label>
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputUsername">Логин <span class="text-[#00f5a0]">*</span></label>
 <div class="relative">
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-user w-4 h-4" data-lucide="user" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
 </div>
-<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputUsername" oninput="handleNicknameInput(this.value)" placeholder="Ваш ник" required="" type="text">
+<input autocomplete="username" class="w-full bg-[#0e1622] text-white pl-9 pr-4 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600" id="inputUsername" oninput="handleNicknameInput(this.value)" placeholder="Ваш ник" required="" type="text">
 </div>
 </div>
 <div>
-<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputPassword">
-  Пароль&nbsp;<span class="text-[#00f5a0]">*</span>
-</label>
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-1.5" for="inputPassword">Пароль <span class="text-[#00f5a0]">*</span></label>
 <div class="relative">
 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="key-round" aria-hidden="true" class="lucide lucide-key-round w-4 h-4"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-key-round w-4 h-4" data-lucide="key-round" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path><circle cx="16.5" cy="7.5" fill="currentColor" r=".5"></circle></svg>
 </div>
-<input autocomplete="current-password" class="w-full bg-[#0e1622] text-white pl-9 pr-10 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600 shadow-inner" id="inputPassword" placeholder="Введите пароль учётной записи" required="" type="password">
-<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 focus:outline-none" id="togglePasswordBtn" onclick="togglePasswordVisibility()" type="button">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" aria-hidden="true" class="lucide lucide-eye w-4 h-4" id="eyeIcon"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+<input autocomplete="current-password" class="w-full bg-[#0e1622] text-white pl-9 pr-10 py-2.5 text-xs font-mono rounded-xl border border-white/10 focus:border-[#00f5a0] focus:ring-1 focus:ring-[#00f5a0] outline-none transition placeholder-gray-600" id="inputPassword" placeholder="Введите пароль" required="" type="password">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200" onclick="togglePasswordVisibility()" type="button">
+<svg aria-hidden="true" class="lucide lucide-eye w-4 h-4" data-lucide="eye" fill="none" height="24" id="eyeIcon" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
 </button>
 </div>
 </div>
-<!-- Контейнер ошибки / статуса -->
-<div class="p-3 rounded-xl text-xs font-mono transition shadow-lg bg-amber-950/70 border border-amber-500/60 text-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.2)]" id="authErrorMsg">
-        <div class="flex items-start gap-2.5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lock" aria-hidden="true" class="lucide lucide-lock shrink-0 text-amber-400 mt-0.5 w-4 h-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          <span class="leading-relaxed font-mono text-[11px]">Для просмотра правил и IP сервера необходимо войти в аккаунт</span>
-        </div>
-      </div>
-<!-- Кнопки: Вход и Гостевой режим -->
+<div class="hidden p-3 rounded-xl text-xs font-mono transition shadow-lg border" id="authErrorMsg"></div>
 <div class="pt-2 flex flex-col gap-2">
-<button class="cyber-btn-primary w-full py-3.5 px-4 font-bold text-xs tracking-wider rounded-xl font-heading flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 disabled:pointer-events-none" id="btnSubmit" type="submit">
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-in" aria-hidden="true" class="lucide lucide-log-in w-4 h-4"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
-<span id="btnSubmitText" class="">Войти</span>
+<button class="cyber-btn-primary w-full py-3.5 px-4 font-bold text-xs tracking-wider rounded-xl font-heading flex items-center justify-center gap-2.5 cursor-pointer" id="btnSubmit" type="submit">
+<svg aria-hidden="true" class="lucide lucide-log-in w-4 h-4" data-lucide="log-in" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path></svg>
+<span class="" id="btnSubmitText">Войти</span>
 </button>
 <button class="w-full py-2.5 px-4 text-xs font-mono text-gray-400 hover:text-white bg-[#121a22] hover:bg-[#18232e] border border-white/10 rounded-xl transition flex items-center justify-center gap-2" onclick="closeAuthModal()" type="button">
-<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" aria-hidden="true" class="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+<svg aria-hidden="true" class="lucide lucide-eye w-3.5 h-3.5" data-lucide="eye" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
 <span class="">Продолжить без входа (Режим чтения)</span>
 </button>
 </div>
 </form>
-<!-- Футер карточки -->
-<div class="mt-6 pt-4 border-t border-white/5 text-center text-[11px] font-mono text-gray-500 flex items-center justify-center gap-1.5">
-<span class="">by Arnimaz21 for</span>
-<a class="text-indigo-400 hover:text-indigo-300 font-semibold inline-flex items-center gap-1" href="https://discord.gg/kQkRgbFZeK" rel="noopener" target="_blank">
-<span class="">vunya100's server</span>
-<svg class="w-3 h-3 fill-current text-[#5865F2]" viewBox="0 0 127.14 96.36">
-<path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"></path>
-</svg>
-</a>
+<div class="text-center text-[10px] font-mono tracking-wider select-none text-gray-400 mt-4" style="text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px, rgba(0, 0, 0, 0.8) 0px 2px 4px;">by Arnimaz21 for vunya100's server</div>
+</div>
+</div>
+<!-- Модальное окно редактирования сообщения -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300 opacity-0 hidden pointer-events-none" id="editModal" onclick="handleEditModalBackdropClick(event)">
+<div class="w-full max-w-lg rounded-2xl p-6 sm:p-7 relative overflow-hidden bg-[#0b1017] border border-[#00f5a0]/40 shadow-2xl transform transition-transform duration-300 scale-95 pointer-events-auto" id="editModalCard" onclick="event.stopPropagation()">
+<button class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition" onclick="closeEditModal()" title="Закрыть">
+<svg aria-hidden="true" class="lucide lucide-x w-5 h-5" data-lucide="x" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+<div class="flex items-center gap-3 mb-5 pb-4 border-b border-white/10 pr-8">
+<div class="p-2.5 bg-[#131c26] text-[#00f5a0] border border-[#00f5a0]/40 rounded-xl flex items-center justify-center shadow-[0_0_12px_rgba(0,245,160,0.25)]">
+<svg aria-hidden="true" class="lucide lucide-edit-3 w-5 h-5 text-[#00f5a0]" data-lucide="edit-3" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M13 21h8"></path><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>
+</div>
+<div>
+<h2 class="text-base sm:text-lg font-bold text-white font-heading flex items-center gap-2">Редактирование сообщения</h2>
+<p class="text-xs text-gray-400 font-mono" id="editModalChannelSubtitle">Канал #набор</p>
+</div>
+</div>
+<form class="space-y-4" onsubmit="executeEditMessage(event)">
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono mb-2" for="editTextarea">Текст сообщения</label>
+<textarea class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-xl px-4 py-3 text-xs text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-y custom-scroll min-h-[120px]" id="editTextarea" placeholder="Введите исправленный текст..." required="" rows="4"></textarea>
+</div>
+<div class="flex items-center justify-end gap-3 pt-2">
+<button class="px-4 py-2.5 text-xs font-mono text-gray-400 hover:text-white bg-[#121a22] hover:bg-[#18232e] border border-white/10 rounded-xl transition" onclick="closeEditModal()" type="button">Отмена</button>
+<button class="cyber-btn-primary px-5 py-2.5 font-bold text-xs rounded-xl flex items-center gap-2 font-heading cursor-pointer disabled:opacity-50" id="saveEditBtn" type="submit">
+<svg aria-hidden="true" class="lucide lucide-check w-4 h-4" data-lucide="check" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>
+<span class="" id="saveEditBtnText">Сохранить изменения</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Модальное окно подтверждения удаления сообщения -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-black/75 backdrop-blur-md transition-opacity duration-300 opacity-0 hidden pointer-events-none" id="deleteConfirmModal" onclick="handleDeleteModalBackdropClick(event)">
+<div class="w-full max-w-md rounded-2xl p-6 relative overflow-hidden bg-[#0b1017] border border-red-500/40 shadow-2xl transform transition-transform duration-300 scale-95 pointer-events-auto" id="deleteModalCard" onclick="event.stopPropagation()">
+<button class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition" onclick="closeDeleteModal()" title="Закрыть">
+<svg aria-hidden="true" class="lucide lucide-x w-5 h-5" data-lucide="x" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+<div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10 pr-8">
+<div class="p-2.5 bg-red-950/40 text-red-400 border border-red-500/30 rounded-xl flex items-center justify-center shadow-[0_0_12px_rgba(239,68,68,0.2)]">
+<svg aria-hidden="true" class="lucide lucide-trash-2 w-5 h-5 text-red-400" data-lucide="trash-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+</div>
+<div>
+<h2 class="text-base sm:text-lg font-bold text-white font-heading">Удалить сообщение?</h2>
+<p class="text-xs text-gray-400 font-mono">Это действие невозможно отменить</p>
+</div>
+</div>
+<div class="p-3 bg-[#070b10] border border-white/10 rounded-xl mb-5">
+<div class="text-[10px] uppercase font-mono text-gray-500 mb-1">Предпросмотр</div>
+<p class="text-xs font-mono text-gray-300 italic line-clamp-3 break-words" id="deletePreviewText">...</p>
+</div>
+<div class="flex items-center justify-end gap-3">
+<button class="px-4 py-2.5 text-xs font-mono text-gray-400 hover:text-white bg-[#121a22] hover:bg-[#18232e] border border-white/10 rounded-xl transition" onclick="closeDeleteModal()" type="button">Отмена</button>
+<button class="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-heading font-bold text-xs rounded-xl flex items-center gap-2 transition shadow-[0_0_15px_rgba(239,68,68,0.35)] cursor-pointer disabled:opacity-50" id="executeDeleteBtn" onclick="executeDeleteMessage()">
+<svg aria-hidden="true" class="lucide lucide-trash-2 w-4 h-4" data-lucide="trash-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+<span class="" id="executeDeleteBtnText">Удалить</span>
+</button>
 </div>
 </div>
 </div>
-<!-- ==================== СЦЕНАРИИ КЛИЕНТА ПОРТАЛА CLOUDMINE ==================== -->
 <script>
-    const CONFIG = {
-      STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
-      USERS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/users",
-      MESSAGES_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/messages",
-      SKIN_BASE_URL: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/",
-      FALLBACK_STEVE: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png",
-      CHANNELS_STORAGE_KEY: "cloudmine_portal_channel_posts_kv_cache_v3",
-      AUTH_STORAGE_KEY: "cloud_auth_user"
-    };
+  const CONFIG = {
+    STATS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/update",
+    USERS_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/users",
+    MESSAGES_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/messages",
+    WEBHOOK_PROXY_ENDPOINT: "https://cloud-stats.arnimaz27.workers.dev/webhook",
+    DISCORD_WEBHOOK_URL: 'https://discord.com/api/webhooks/1556004708894908647/J7Y_PK7Crqt2nLhRuBUM8AnQ_qftqld2MA6usiCHXzOivi3DgFdkU8cppF2FGajE-LbG',
+    SKIN_BASE_URL: "https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/",
+    FALLBACK_STEVE: "https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true",
+    CHANNELS_STORAGE_KEY: "cloudmine_portal_posts_v5",
+    AUTH_STORAGE_KEY: "cloud_auth_user"
+  };
 
-    const CHANNELS_META = {
-      recruitment: {
-        name: "набор",
-        topic: "Приём заявок, критерии отбора и анкета кандидата на сервер vunya100",
-        guestAllowed: true
-      },
-      info: {
-        name: "информация-о-сервере",
-        topic: "Технический стек Paper 26.3, сид мира, хостинг, сборка модов Cloud.Tech и датапаки",
-        guestAllowed: true
-      },
-      rules: {
-        name: "правила",
-        topic: "Свод законов Cloud.Mine: честная игра, запрет читов и уважение к чужим постройкам",
-        guestAllowed: false
-      },
-      ip: {
-        name: "ip",
-        topic: "Сетевые шлюзы, прямой адрес подключения и проверка доступности порта",
-        guestAllowed: false
-      }
-    };
+  const CHANNELS_META = {
+    recruitment: { name: "набор", topic: "Набор в команду и заявки игроков", guestAllowed: true, isDiscord: false },
+    info: { name: "информация-о-сервере", topic: "Официальные объявления и информация о проекте", guestAllowed: true, isDiscord: false },
+    chat: { name: "chat", topic: "Живой чат сообщества и Discord", guestAllowed: false, isDiscord: true },
+    rules: { name: "правила", topic: "Правила и регламент сервера CloudMine", guestAllowed: false, isDiscord: false },
+    ip: { name: "ip", topic: "Адреса подключения и порты серверов", guestAllowed: false, isDiscord: false }
+  };
 
-    let currentActiveChannel = 'recruitment';
-    let appMessages = {
-      recruitment: [],
-      info: [],
-      rules: [],
-      ip: []
-    };
-    let isFetchingMessages = false;
-    let skinCheckTimeout = null;
-    let editingMessageId = null;
-    let pendingDeleteId = null;
+  let currentActiveChannel = 'recruitment';
+  let appMessages = { recruitment: [], info: [], chat: [], rules: [], ip: [] };
+  let isSending = false;
+  let isChannelSwitching = false;
+  let pollIntervalTimer = null;
+  let skinCheckTimeout = null;
 
-    function isUserAuthenticated() {
-      return !!(window.currentUser && window.currentUser.username);
+  // Состояние редактирования и удаления
+  let activeEditingMessageId = null;
+  let activeDeletingMessageId = null;
+
+  function isDiscordMessage(post) {
+    if (!post) return false;
+    return Boolean(
+      post.source === 'discord' ||
+      post.fromDiscord ||
+      post.discord ||
+      (post.id && String(post.id).startsWith('dc_')) ||
+      String(post.role).toUpperCase() === 'DISCORD'
+    );
+  }
+
+  function isDiscordMessageToday(post) {
+    if (!isDiscordMessage(post)) return true;
+
+    const timeStr = String(post.time || '').trim().toLowerCase();
+    if (timeStr.includes('сегодня') || timeStr.includes('today')) {
+      return true;
     }
-
-    function isUserAdmin() {
-      if (!isUserAuthenticated()) return false;
-      const role = (window.currentUser.role || '').toLowerCase();
-      return role === 'admin' || role === 'administrator';
-    }
-
-    function canAccessChannel(channelKey) {
-      if (!CHANNELS_META[channelKey]) return false;
-      if (CHANNELS_META[channelKey].guestAllowed) return true;
-      return isUserAuthenticated();
-    }
-
-    // Динамический рендеринг списка каналов с контролем прав
-    function renderChannelsNav() {
-      const nav = document.getElementById('channelsList');
-      if (!nav) return;
-
-      const authenticated = isUserAuthenticated();
-      const channelKeys = ['recruitment', 'info', 'rules', 'ip'];
-
-      let html = '';
-      channelKeys.forEach(key => {
-        const meta = CHANNELS_META[key];
-        const isActive = (currentActiveChannel === key);
-        const isLockedForGuest = !authenticated && !meta.guestAllowed;
-
-        if (isLockedForGuest) {
-          html += `
-            <button onclick="handleLockedChannelClick('${key}')" class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-${key}" title="Требуется авторизация">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <i data-lucide="lock" class="w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400"></i>
-                <span class="truncate line-through decoration-gray-600 decoration-1 text-gray-500 group-hover:text-gray-400">${meta.name}</span>
-              </div>
-              <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span>
-            </button>
-          `;
-        } else {
-          const activeClasses = isActive 
-            ? 'active text-[#00f5a0]' 
-            : 'text-gray-400 hover:text-gray-200';
-          const iconClasses = isActive ? 'text-[#00f5a0]' : 'text-gray-500';
-
-          html += `
-            <button onclick="switchChannel('${key}')" class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left ${activeClasses}" id="chan-btn-${key}">
-              <i data-lucide="hash" class="w-4 h-4 shrink-0 ${iconClasses}"></i>
-              <span class="truncate">${meta.name}</span>
-            </button>
-          `;
-        }
-      });
-
-      nav.innerHTML = html;
-      lucide.createIcons();
-    }
-
-    window.handleLockedChannelClick = function(channelKey) {
-      openAuthModal("Для просмотра правил и IP сервера необходимо войти в аккаунт");
-    };
-
-    function setKvStatus(state, label) {
-      const dot = document.getElementById('kvDbDot');
-      const text = document.getElementById('kvDbText');
-      const btnRefresh = document.getElementById('btnRefreshMessages');
-
-      if (btnRefresh) {
-        if (state === 'loading') {
-          btnRefresh.classList.add('animate-spin', 'text-[#00f5a0]');
-        } else {
-          btnRefresh.classList.remove('animate-spin');
-        }
-      }
-
-      if (!dot || !text) return;
-
-      if (state === 'loading') {
-        dot.className = 'w-2 h-2 rounded-full bg-yellow-400 animate-pulse';
-        text.className = 'text-yellow-400';
-        text.textContent = label || 'KV DB: загрузка...';
-      } else if (state === 'success') {
-        dot.className = 'w-2 h-2 rounded-full bg-[#00f5a0] shadow-[0_0_6px_#00f5a0]';
-        text.className = 'text-gray-300';
-        text.textContent = label || 'KV DB: синхронизировано';
-      } else if (state === 'local') {
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-        text.className = 'text-gray-400';
-        text.textContent = label || 'KV DB: локальный кэш';
-      } else {
-        dot.className = 'w-2 h-2 rounded-full bg-red-400';
-        text.className = 'text-red-400';
-        text.textContent = label || 'KV DB: оффлайн';
-      }
-    }
-
-    function loadLocalCache() {
-      try {
-        const stored = localStorage.getItem(CONFIG.CHANNELS_STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (parsed && typeof parsed === 'object') {
-            appMessages = {
-              recruitment: Array.isArray(parsed.recruitment) ? parsed.recruitment : [],
-              info: Array.isArray(parsed.info) ? parsed.info : [],
-              rules: Array.isArray(parsed.rules) ? parsed.rules : [],
-              ip: Array.isArray(parsed.ip) ? parsed.ip : []
-            };
-          }
-        }
-      } catch (e) {
-        appMessages = { recruitment: [], info: [], rules: [], ip: [] };
-      }
-    }
-
-    function saveLocalCache() {
-      try {
-        localStorage.setItem(CONFIG.CHANNELS_STORAGE_KEY, JSON.stringify(appMessages));
-      } catch (e) {}
-    }
-
-    // Рендеринг спиннера загрузки Obsidian Terminal
-    function renderLoadingSkeleton() {
-      const container = document.getElementById('messagesContainer');
-      if (!container) return;
-      container.innerHTML = `
-        <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
-          <div class="p-3.5 rounded-2xl bg-[#121a22] text-[#00f5a0] border border-[#00f5a0]/30 shadow-inner">
-            <svg class="animate-spin w-6 h-6 text-[#00f5a0]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </div>
-          <div>
-            <p class="text-sm font-heading text-gray-200 font-semibold tracking-wide">Подключение к Cloudflare KV Worker...</p>
-            <p class="text-xs text-gray-500 font-mono mt-1">Синхронизация ленты сообщений #${CHANNELS_META[currentActiveChannel]?.name || currentActiveChannel}</p>
-          </div>
-        </div>
-      `;
-      lucide.createIcons();
-    }
-
-    // Запрос всех сообщений или сообщений конкретного канала из Cloudflare KV
-    async function fetchMessagesFromKV(channelKey) {
-      if (isFetchingMessages) return;
-      isFetchingMessages = true;
-      setKvStatus('loading', 'KV DB: чтение...');
-
-      const targetChannel = channelKey || currentActiveChannel;
-      const url = `${CONFIG.MESSAGES_ENDPOINT}?channel=${encodeURIComponent(targetChannel)}&t=${Date.now()}`;
-
-      try {
-        const resp = await fetch(url, {
-          cache: 'no-store',
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (resp.ok) {
-          const data = await resp.json();
-          let serverPosts = null;
-
-          if (Array.isArray(data)) {
-            // Ответ в виде массива сообщений
-            serverPosts = data;
-          } else if (data && typeof data === 'object') {
-            if (Array.isArray(data.messages)) {
-              serverPosts = data.messages;
-            } else if (data.data && typeof data.data === 'object') {
-              if (Array.isArray(data.data[targetChannel])) {
-                serverPosts = data.data[targetChannel];
-              } else if (Array.isArray(data.data)) {
-                serverPosts = data.data;
-              }
-            } else if (Array.isArray(data[targetChannel])) {
-              serverPosts = data[targetChannel];
-            } else if (data.recruitment || data.info || data.rules || data.ip) {
-              // Полный объект всех каналов
-              appMessages.recruitment = Array.isArray(data.recruitment) ? data.recruitment : [];
-              appMessages.info = Array.isArray(data.info) ? data.info : [];
-              appMessages.rules = Array.isArray(data.rules) ? data.rules : [];
-              appMessages.ip = Array.isArray(data.ip) ? data.ip : [];
-              saveLocalCache();
-              setKvStatus('success', 'KV DB: синхронизировано');
-              renderChannelMessages();
-              isFetchingMessages = false;
-              return;
-            }
-          }
-
-          if (serverPosts && Array.isArray(serverPosts)) {
-            appMessages[targetChannel] = serverPosts;
-            saveLocalCache();
-            setKvStatus('success', 'KV DB: синхронизировано');
-            renderChannelMessages();
-            isFetchingMessages = false;
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Worker /messages fetch error:', err);
-      }
-
-      // Fallback на общий запрос всех каналов
-      await fetchAllMessagesFromKV(false);
-      isFetchingMessages = false;
-    }
-
-    async function fetchAllMessagesFromKV(showLoadingState = true) {
-      if (showLoadingState) setKvStatus('loading', 'KV DB: загрузка...');
-
-      try {
-        const resp = await fetch(`${CONFIG.MESSAGES_ENDPOINT}?t=${Date.now()}`, {
-          cache: 'no-store',
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (resp.ok) {
-          const data = await resp.json();
-          let parsedData = null;
-
-          if (data && typeof data === 'object') {
-            parsedData = data.messages || data.data || data;
-          }
-
-          if (parsedData && typeof parsedData === 'object') {
-            if (Array.isArray(parsedData)) {
-              const grouped = { recruitment: [], info: [], rules: [], ip: [] };
-              parsedData.forEach(item => {
-                const ch = item.channel || 'recruitment';
-                if (grouped[ch]) grouped[ch].push(item);
-              });
-              appMessages.recruitment = grouped.recruitment;
-              appMessages.info = grouped.info;
-              appMessages.rules = grouped.rules;
-              appMessages.ip = grouped.ip;
-            } else {
-              appMessages.recruitment = Array.isArray(parsedData.recruitment) ? parsedData.recruitment : [];
-              appMessages.info = Array.isArray(parsedData.info) ? parsedData.info : [];
-              appMessages.rules = Array.isArray(parsedData.rules) ? parsedData.rules : [];
-              appMessages.ip = Array.isArray(parsedData.ip) ? parsedData.ip : [];
-            }
-
-            saveLocalCache();
-            setKvStatus('success', 'KV DB: синхронизировано');
-            renderChannelMessages();
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn('Worker /messages offline, using local cache:', err);
-      }
-
-      loadLocalCache();
-      setKvStatus('local', 'KV DB: локальный кэш');
-      renderChannelMessages();
-    }
-
-    // Предпросмотр скина игрока
-    function handleNicknameInput(val) {
-      const trimmed = (val || '').trim();
-      const previewText = document.getElementById('usernamePreviewText');
-      const avatarPreview = document.getElementById('avatarPreview');
-      const dot = document.getElementById('skinStatusDot');
-      const notice = document.getElementById('skinSourceNotice');
-
-      if (!trimmed) {
-        if (previewText) previewText.textContent = 'Стив';
-        if (avatarPreview) avatarPreview.src = CONFIG.FALLBACK_STEVE;
-        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-gray-500';
-        if (notice) {
-          notice.innerText = 'Ожидание ввода ника...';
-          notice.className = 'text-[11px] text-gray-400 font-mono';
-        }
-        return;
-      }
-
-      if (previewText) previewText.textContent = trimmed;
-      if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse';
-      if (notice) {
-        notice.innerText = 'Поиск скина...';
-        notice.className = 'text-[11px] text-yellow-400 font-mono';
-      }
-
-      clearTimeout(skinCheckTimeout);
-      skinCheckTimeout = setTimeout(() => {
-        const testImg = new Image();
-        const targetUrl = CONFIG.SKIN_BASE_URL + encodeURIComponent(trimmed) + '.png';
-
-        testImg.onload = function() {
-          if (avatarPreview) avatarPreview.src = targetUrl;
-          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#00f5a0]';
-          if (notice) {
-            notice.innerText = 'Скин найден в репозитории';
-            notice.className = 'text-[11px] text-[#00f5a0] font-mono';
-          }
-        };
-
-        testImg.onerror = function() {
-          const elyImg = new Image();
-          const elyUrl = `https://skin.ely.by/avatars/${encodeURIComponent(trimmed)}`;
-          elyImg.onload = function() {
-            if (avatarPreview) avatarPreview.src = elyUrl;
-            if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#00f5a0]';
-            if (notice) {
-              notice.innerText = 'Скин загружен из Ely.by';
-              notice.className = 'text-[11px] text-[#00f5a0] font-mono';
-            }
-          };
-          elyImg.onerror = function() {
-            if (avatarPreview) avatarPreview.src = CONFIG.FALLBACK_STEVE;
-            if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-yellow-500';
-            if (notice) {
-              notice.innerText = 'Дефолтный скин Стива';
-              notice.className = 'text-[11px] text-yellow-400 font-mono';
-            }
-          };
-          elyImg.src = elyUrl;
-        };
-
-        testImg.src = targetUrl;
-      }, 300);
-    }
-
-    function togglePasswordVisibility() {
-      const passInput = document.getElementById('inputPassword');
-      const eyeIcon = document.getElementById('eyeIcon');
-      if (!passInput) return;
-      if (passInput.type === 'password') {
-        passInput.type = 'text';
-        if (eyeIcon) eyeIcon.classList.add('text-[#00f5a0]');
-      } else {
-        passInput.type = 'password';
-        if (eyeIcon) eyeIcon.classList.remove('text-[#00f5a0]');
-      }
-    }
-
-    function showAuthError(msg) {
-      const errBox = document.getElementById('authErrorMsg');
-      if (!errBox) return;
-      errBox.innerHTML = `
-        <div class="flex items-start gap-2.5">
-          <i data-lucide="alert-circle" class="shrink-0 text-red-400 mt-0.5 w-4 h-4"></i>
-          <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
-        </div>
-      `;
-      errBox.className = 'p-3 rounded-xl text-xs font-mono transition shadow-lg bg-red-950/70 border border-red-600/70 text-red-300 shadow-[0_0_20px_rgba(239,68,68,0.25)]';
-      errBox.classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function showAuthWarning(msg) {
-      const errBox = document.getElementById('authErrorMsg');
-      if (!errBox) return;
-      errBox.innerHTML = `
-        <div class="flex items-start gap-2.5">
-          <i data-lucide="lock" class="shrink-0 text-amber-400 mt-0.5 w-4 h-4"></i>
-          <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
-        </div>
-      `;
-      errBox.className = 'p-3 rounded-xl text-xs font-mono transition shadow-lg bg-amber-950/70 border border-amber-500/60 text-amber-200 shadow-[0_0_20px_rgba(245,158,11,0.2)]';
-      errBox.classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function showAuthSuccess(msg) {
-      const errBox = document.getElementById('authErrorMsg');
-      if (!errBox) return;
-      errBox.innerHTML = `
-        <div class="flex items-start gap-2.5">
-          <i data-lucide="check-circle-2" class="shrink-0 text-[#00f5a0] mt-0.5 w-4 h-4"></i>
-          <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
-        </div>
-      `;
-      errBox.className = 'p-3 rounded-xl text-xs font-mono transition shadow-lg bg-[#00f5a0]/15 border border-[#00f5a0]/40 text-[#00f5a0] shadow-[0_0_20px_rgba(0,245,160,0.25)]';
-      errBox.classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function clearAuthFeedback() {
-      const errBox = document.getElementById('authErrorMsg');
-      if (errBox) {
-        errBox.classList.add('hidden');
-        errBox.textContent = '';
-      }
-    }
-
-    // Авторизация через Cloudflare Worker
-    async function handleModalLogin(e) {
-      if (e) e.preventDefault();
-      clearAuthFeedback();
-
-      const usernameInput = document.getElementById('inputUsername');
-      const passwordInput = document.getElementById('inputPassword');
-      const btnSubmit = document.getElementById('btnSubmit');
-      const btnText = document.getElementById('btnSubmitText');
-
-      const username = (usernameInput ? usernameInput.value : '').trim();
-      const password = (passwordInput ? passwordInput.value : '').trim();
-
-      if (!username || !password) {
-        showAuthError("Пожалуйста, заполните логин и пароль.");
-        return;
-      }
-
-      btnSubmit.disabled = true;
-      btnText.textContent = 'Проверка базы игроков...';
-
-      let matchedUser = null;
-
-      try {
-        const postResp = await fetch(CONFIG.USERS_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-        if (postResp.ok) {
-          const postData = await postResp.json();
-          if (postData && (postData.success || postData.user)) {
-            matchedUser = postData.user || {
-              username: username,
-              role: postData.role || 'player'
-            };
-          }
-        }
-      } catch (err) {}
-
-      if (!matchedUser) {
-        try {
-          const resp = await fetch(CONFIG.USERS_ENDPOINT, { cache: 'no-store' });
-          if (resp.ok) {
-            const data = await resp.json();
-            let usersList = Array.isArray(data) ? data : (data.users || data.db?.users || []);
-            if (typeof usersList === 'object' && !Array.isArray(usersList)) {
-              usersList = Object.values(usersList);
-            }
-
-            const found = usersList.find(u => {
-              const uName = (u.username || u.login || u.name || '').trim().toLowerCase();
-              return uName === username.toLowerCase() && String(u.password || u.pass || '') === password;
-            });
-
-            if (found) {
-              matchedUser = {
-                username: found.username || found.login || username,
-                role: found.role || found.permission || 'player',
-                skin: found.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png')
-              };
-            }
-          }
-        } catch (fetchErr) {}
-      }
-
-      if (!matchedUser) {
-        btnSubmit.disabled = false;
-        btnText.textContent = 'Войти';
-        showAuthError("Ошибка: неверный логин или пароль. Доступ разрешён зарегистрированным игрокам.");
-        return;
-      }
-
-      showAuthSuccess(`Доступ разрешён! Добро пожаловать, ${matchedUser.username}.`);
-
-      const sessionData = {
-        username: matchedUser.username,
-        role: (matchedUser.role || 'player').toLowerCase(),
-        skin: matchedUser.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(matchedUser.username) + '.png'),
-        loginTime: Date.now()
-      };
-
-      try {
-        localStorage.setItem(CONFIG.AUTH_STORAGE_KEY, JSON.stringify(sessionData));
-      } catch (err) {}
-
-      window.currentUser = sessionData;
-
-      setTimeout(() => {
-        closeAuthModal();
-        applyUserRolePortal(sessionData);
-        btnSubmit.disabled = false;
-        btnText.textContent = 'Войти';
-      }, 400);
-    }
-
-    window.openAuthModal = function(warningNotice) {
-      const modal = document.getElementById('authModal');
-      const card = document.getElementById('authModalCard');
-      const subtitle = document.getElementById('authModalSubtitle');
-
-      if (subtitle) {
-        subtitle.textContent = warningNotice || 'Авторизация игрока для доступа';
-      }
-
-      clearAuthFeedback();
-      if (warningNotice) {
-        showAuthWarning(warningNotice);
-      }
-
-      if (modal) {
-        modal.classList.remove('hidden');
-        setTimeout(() => {
-          modal.classList.remove('opacity-0');
-          if (card) {
-            card.classList.remove('scale-95');
-            card.classList.add('scale-100');
-          }
-        }, 10);
-      }
-      lucide.createIcons();
-    };
-
-    window.closeAuthModal = function() {
-      const modal = document.getElementById('authModal');
-      const card = document.getElementById('authModalCard');
-      const subtitle = document.getElementById('authModalSubtitle');
-      if (subtitle) {
-        subtitle.textContent = 'Авторизация игрока для доступа';
-      }
-
-      if (modal) {
-        modal.classList.add('opacity-0');
-        if (card) {
-          card.classList.remove('scale-100');
-          card.classList.add('scale-95');
-        }
-        setTimeout(() => {
-          modal.classList.add('hidden');
-        }, 280);
-      }
-    };
-
-    function handleAuthModalBackdropClick(event) {
-      if (event.target === document.getElementById('authModal')) {
-        closeAuthModal();
-      }
-    }
-
-    window.logoutUser = function() {
-      localStorage.removeItem(CONFIG.AUTH_STORAGE_KEY);
-      window.currentUser = null;
-      editingMessageId = null;
-      const userInp = document.getElementById('inputUsername');
-      const passInp = document.getElementById('inputPassword');
-      if (userInp) userInp.value = '';
-      if (passInp) passInp.value = '';
-      clearAuthFeedback();
-      handleNicknameInput('');
-
-      if (!CHANNELS_META[currentActiveChannel] || !CHANNELS_META[currentActiveChannel].guestAllowed) {
-        currentActiveChannel = 'recruitment';
-      }
-
-      applyUserRolePortal(null);
-    };
-
-    function renderHeaderProfile(user) {
-      const chipContainer = document.getElementById('headerProfileChip');
-      if (!chipContainer) return;
-
-      if (!user) {
-        chipContainer.innerHTML = `
-          <button onclick="openAuthModal()" class="px-3.5 py-2 cyber-btn-primary font-bold text-xs rounded-xl flex items-center gap-1.5 transition font-heading cursor-pointer">
-            <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
-            <span>Войти</span>
-          </button>
-        `;
-      } else {
-        const skinUrl = user.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(user.username) + '.png');
-        chipContainer.innerHTML = `
-          <div class="flex items-center gap-2 px-2.5 py-1.5 bg-[#121a22] border border-[#00f5a0]/30 rounded-xl">
-            <div class="w-6 h-6 rounded-lg bg-[#18232e] avatar-wrapper overflow-hidden border border-[#00f5a0]/50 shrink-0">
-              <img src="${skinUrl}" alt="${user.username}" class="w-full h-full object-cover mc-skin-avatar" onerror="this.onerror=null;this.src='${CONFIG.FALLBACK_STEVE}'">
-            </div>
-            <span class="text-xs font-bold text-white font-heading truncate max-w-[90px] sm:max-w-[120px]">${user.username}</span>
-          </div>
-          <button onclick="logoutUser()" title="Завершить сессию" class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition duration-200">
-            <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-            <span class="font-heading hidden sm:inline">Выйти</span>
-          </button>
-        `;
-      }
-      lucide.createIcons();
-    }
-
-    function applyUserRolePortal(user) {
-      renderHeaderProfile(user);
-
-      const sidebarNick = document.getElementById('userSidebarNick');
-      const sidebarAvatar = document.getElementById('userSidebarAvatar');
-      const sessionSmallEl = document.getElementById('sessionTimeSmall');
-      const sidebarUserActionBtn = document.getElementById('sidebarUserActionBtn');
-
-      const adminPostForm = document.getElementById('adminPostForm');
-      const playerNoticeBlock = document.getElementById('playerNoticeBlock');
-      const playerNoticeText = document.getElementById('playerNoticeText');
-      const guestNoticeLoginBtn = document.getElementById('guestNoticeLoginBtn');
-
-      if (!user) {
-        if (sidebarNick) sidebarNick.textContent = 'Гость';
-        if (sidebarAvatar) {
-          sidebarAvatar.src = CONFIG.FALLBACK_STEVE;
-          sidebarAvatar.onerror = function() {
-            this.onerror = null;
-            this.src = CONFIG.FALLBACK_STEVE;
-          };
-        }
-        if (sessionSmallEl) sessionSmallEl.textContent = 'Режим чтения';
-
-        if (sidebarUserActionBtn) {
-          sidebarUserActionBtn.innerHTML = `
-            <button onclick="openAuthModal()" title="Войти в аккаунт" class="p-2 text-gray-400 hover:text-[#00f5a0] hover:bg-[#121a22] border border-white/5 rounded-lg transition">
-              <i data-lucide="log-in" class="w-4 h-4"></i>
-            </button>
-          `;
-        }
-
-        if (adminPostForm) adminPostForm.classList.add('hidden');
-        if (playerNoticeBlock) playerNoticeBlock.classList.remove('hidden');
-        if (playerNoticeText) playerNoticeText.textContent = 'Канал доступен для чтения';
-        if (guestNoticeLoginBtn) guestNoticeLoginBtn.classList.remove('hidden');
-
-      } else {
-        const username = user.username;
-        const isAdmin = isUserAdmin();
-        const skinUrl = user.skin || (CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png');
-
-        if (sidebarNick) sidebarNick.textContent = username;
-        if (sidebarAvatar) {
-          sidebarAvatar.src = skinUrl;
-          sidebarAvatar.onerror = function() {
-            this.onerror = null;
-            this.src = CONFIG.FALLBACK_STEVE;
-          };
-        }
-        if (sessionSmallEl) sessionSmallEl.textContent = isAdmin ? 'Администратор' : 'В сети';
-
-        if (sidebarUserActionBtn) {
-          sidebarUserActionBtn.innerHTML = `
-            <button onclick="logoutUser()" title="Выйти из аккаунта" class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-950/30 border border-white/5 rounded-lg transition">
-              <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
-          `;
-        }
-
-        if (isAdmin) {
-          if (adminPostForm) adminPostForm.classList.remove('hidden');
-          if (playerNoticeBlock) playerNoticeBlock.classList.add('hidden');
-        } else {
-          if (adminPostForm) adminPostForm.classList.add('hidden');
-          if (playerNoticeBlock) playerNoticeBlock.classList.remove('hidden');
-          if (playerNoticeText) playerNoticeText.textContent = 'Канал доступен для чтения';
-          if (guestNoticeLoginBtn) guestNoticeLoginBtn.classList.add('hidden');
-        }
-      }
-
-      renderChannelsNav();
-      updateChannelHeaderView();
-      renderChannelMessages();
-      lucide.createIcons();
-    }
-
-    function updateChannelHeaderView() {
-      const meta = CHANNELS_META[currentActiveChannel] || CHANNELS_META.recruitment;
-      const titleEl = document.getElementById('currentChannelTitle');
-      const inputEl = document.getElementById('messageTextInput');
-      if (titleEl) titleEl.textContent = meta.name;
-      if (inputEl) inputEl.placeholder = `Отправить сообщение в #${meta.name}...`;
-    }
-
-    window.copyServerIpAddress = function(ipText) {
-      const val = ipText || '185.9.145.7:27019';
-      navigator.clipboard.writeText(val).then(() => {
-        alert('IP адрес сервера (' + val + ') скопирован в буфер обмена!');
-      });
-    };
-
-    // Переключение каналов с проверкой прав доступа и вызовом fetchMessagesFromKV
-    window.switchChannel = function(channelKey) {
-      if (!CHANNELS_META[channelKey]) return;
-
-      if (!canAccessChannel(channelKey)) {
-        openAuthModal("Для просмотра правил и IP сервера необходимо войти в аккаунт");
-        return;
-      }
-
-      currentActiveChannel = channelKey;
-      editingMessageId = null;
-
-      renderChannelsNav();
-      updateChannelHeaderView();
-
-      const container = document.getElementById('messagesContainer');
-      const panel = document.getElementById('mainChannelPanel');
-
-      if (container) {
-        container.style.opacity = '0';
-        container.style.transform = 'translateY(6px)';
-        if (panel) panel.classList.add('scanline-active');
-
-        setTimeout(() => {
-          renderChannelMessages();
-          container.classList.remove('channel-transition-enter');
-          void container.offsetWidth;
-          container.classList.add('channel-transition-enter');
-          container.style.opacity = '1';
-          container.style.transform = 'none';
-
-          if (panel) {
-            setTimeout(() => panel.classList.remove('scanline-active'), 250);
-          }
-
-          // Асинхронно запрашиваем свежие данные канала из Cloudflare KV
-          fetchMessagesFromKV(channelKey);
-        }, 80);
-      } else {
-        renderChannelMessages();
-        fetchMessagesFromKV(channelKey);
-      }
-    };
-
-    function formatMessageContent(rawText) {
-      if (!rawText) return '';
-      let text = rawText
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-      text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-[#04080c] border border-white/10 p-3 rounded-xl my-2 font-mono text-xs text-[#00f5a0] overflow-x-auto"><code>$1</code></pre>');
-      text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
-      text = text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-[#121a22] text-[#00f5a0] rounded border border-white/10 font-mono text-xs">$1</code>');
-      text = text.replace(/\n• /g, '<br/>• ');
-      text = text.replace(/\n/g, '<br/>');
-
-      return text;
-    }
-
-    function canUserManageMessage(post) {
-      if (isUserAdmin()) return true;
-      const user = window.currentUser;
-      if (user && post && post.author && user.username && post.author.toLowerCase() === user.username.toLowerCase()) {
-        return true;
-      }
+    if (timeStr.includes('вчера') || timeStr.includes('yesterday')) {
       return false;
     }
 
-    // Редактирование сообщений
-    window.startEditMessage = function(id) {
-      editingMessageId = id;
-      renderChannelMessages();
-      setTimeout(() => {
-        const textarea = document.getElementById(`edit-textarea-${id}`);
-        if (textarea) {
-          textarea.focus();
-          textarea.setSelectionRange(textarea.value.length, textarea.value.length);
-        }
-      }, 50);
-    };
-
-    window.cancelEditMessage = function() {
-      editingMessageId = null;
-      renderChannelMessages();
-    };
-
-    window.saveEditedMessage = async function(id) {
-      const textarea = document.getElementById(`edit-textarea-${id}`);
-      if (!textarea) return;
-      const newText = textarea.value.trim();
-      if (!newText) {
-        alert("Сообщение не может быть пустым.");
-        return;
-      }
-
-      const posts = appMessages[currentActiveChannel] || [];
-      const targetPost = posts.find(p => p.id === id);
-      if (!targetPost) return;
-
-      if (!canUserManageMessage(targetPost)) {
-        alert("У вас нет прав для изменения этого сообщения.");
-        return;
-      }
-
-      targetPost.content = newText;
-      targetPost.isEdited = true;
-      targetPost.updatedAt = Date.now();
-      saveLocalCache();
-
-      editingMessageId = null;
-      renderChannelMessages();
-
-      // Отправка в Worker KV
-      setKvStatus('loading', 'KV DB: сохранение...');
-      try {
-        await fetch(CONFIG.MESSAGES_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'edit',
-            channel: currentActiveChannel,
-            id: id,
-            content: newText
-          })
-        });
-        setKvStatus('success', 'KV DB: синхронизировано');
-      } catch (e) {
-        setKvStatus('local', 'KV DB: сохранено локально');
-      }
-    };
-
-    // Удаление сообщений
-    window.promptDeleteMessage = function(id) {
-      const posts = appMessages[currentActiveChannel] || [];
-      const targetPost = posts.find(p => p.id === id);
-      if (!targetPost) return;
-
-      if (!canUserManageMessage(targetPost)) {
-        alert("У вас нет прав для удаления этого сообщения.");
-        return;
-      }
-
-      pendingDeleteId = id;
-      const previewEl = document.getElementById('deletePreviewText');
-      if (previewEl) {
-        const snippet = targetPost.content.replace(/[*`#]/g, '').trim();
-        previewEl.textContent = `"${snippet.substring(0, 100)}${snippet.length > 100 ? '...' : ''}"`;
-      }
-
-      const modal = document.getElementById('deleteConfirmModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        lucide.createIcons();
-      }
-    };
-
-    window.closeDeleteConfirmModal = function() {
-      pendingDeleteId = null;
-      const modal = document.getElementById('deleteConfirmModal');
-      if (modal) modal.classList.add('hidden');
-    };
-
-    window.executeDeleteMessage = function() {
-      if (!pendingDeleteId) return;
-      const idToDelete = pendingDeleteId;
-      closeDeleteConfirmModal();
-
-      const el = document.getElementById(`message-item-${idToDelete}`);
-      if (el) {
-        el.style.transition = 'all 0.25s ease-out';
-        el.style.opacity = '0';
-        el.style.transform = 'scale(0.95) translateY(-6px)';
-        el.style.maxHeight = el.offsetHeight + 'px';
-        setTimeout(() => {
-          el.style.maxHeight = '0px';
-          el.style.paddingTop = '0px';
-          el.style.paddingBottom = '0px';
-          el.style.marginBottom = '0px';
-          setTimeout(() => {
-            performMessageRemoval(idToDelete);
-          }, 200);
-        }, 120);
-      } else {
-        performMessageRemoval(idToDelete);
-      }
-    };
-
-    async function performMessageRemoval(id) {
-      const posts = appMessages[currentActiveChannel] || [];
-      appMessages[currentActiveChannel] = posts.filter(p => p.id !== id);
-      saveLocalCache();
-      renderChannelMessages();
-
-      // Отправка запроса DELETE / POST на Cloudflare Worker
-      setKvStatus('loading', 'KV DB: удаление...');
-      try {
-        let resp = await fetch(`${CONFIG.MESSAGES_ENDPOINT}?channel=${encodeURIComponent(currentActiveChannel)}&id=${encodeURIComponent(id)}`, {
-          method: 'DELETE'
-        });
-        if (!resp.ok) {
-          resp = await fetch(CONFIG.MESSAGES_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              action: 'delete',
-              channel: currentActiveChannel,
-              id: id
-            })
-          });
-        }
-        setKvStatus('success', 'KV DB: синхронизировано');
-      } catch (e) {
-        setKvStatus('local', 'KV DB: сохранено локально');
+    const rawDateVal = post.timestamp || post.createdAt || post.date || post.time;
+    if (rawDateVal) {
+      const parsedDate = new Date(rawDateVal);
+      if (!isNaN(parsedDate.getTime())) {
+        const today = new Date();
+        return (
+          parsedDate.getFullYear() === today.getFullYear() &&
+          parsedDate.getMonth() === today.getMonth() &&
+          parsedDate.getDate() === today.getDate()
+        );
       }
     }
 
-    // Отображение сообщений или пустой плашки Obsidian Terminal
-    function renderChannelMessages() {
-      const container = document.getElementById('messagesContainer');
-      if (!container) return;
-
-      const posts = appMessages[currentActiveChannel] || [];
-      const currentChannelMeta = CHANNELS_META[currentActiveChannel] || { name: currentActiveChannel };
-
-      if (posts.length === 0) {
-        container.innerHTML = `
-          <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
-            <div class="p-3.5 rounded-2xl bg-[#121a22] text-gray-500 border border-white/10 shadow-inner">
-              <i data-lucide="message-square" class="w-6 h-6 text-[#00f5a0]/60"></i>
-            </div>
-            <div>
-              <p class="text-sm font-heading text-gray-200 font-semibold tracking-wide">В канале #${currentChannelMeta.name} пока нет сообщений</p>
-              <p class="text-xs text-gray-500 font-mono mt-1 max-w-sm">База данных Cloudflare KV пуста для этого канала или ожидает первой публикации.</p>
-            </div>
-          </div>
-        `;
-        lucide.createIcons();
-        return;
-      }
-
-      let html = '';
-      posts.forEach((post, idx) => {
-        const isAuthorAdmin = (post.role || '').toUpperCase() === 'ADMIN';
-        const roleBadge = isAuthorAdmin
-          ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">[АДМИН]</span>'
-          : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">[ИГРОК]</span>';
-
-        const avatarUrl = CONFIG.SKIN_BASE_URL + encodeURIComponent(post.author || 'steave') + '.png';
-        const delay = (idx * 0.04).toFixed(2);
-        const hasActions = isUserAdmin() || canUserManageMessage(post);
-        const isEditing = (editingMessageId === post.id);
-
-        html += `
-          <div id="message-item-${post.id}" class="group relative flex items-start gap-3.5 p-3 rounded-xl message-hover message-item-enter transition border border-transparent hover:border-white/5" style="animation-delay: ${delay}s">
-            
-            ${hasActions && !isEditing ? `
-              <div class="message-action-bar absolute top-2 right-2 flex items-center gap-1 bg-[#101823]/95 border border-[#00f5a0]/25 rounded-lg p-1 shadow-lg backdrop-blur-md z-20">
-                <button onclick="startEditMessage('${post.id}')" title="Редактировать" class="p-1.5 hover:bg-[#1a2736] text-gray-400 hover:text-[#00f5a0] rounded-md transition duration-150">
-                  <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                </button>
-                <button onclick="promptDeleteMessage('${post.id}')" title="Удалить" class="p-1.5 hover:bg-red-950/40 text-gray-400 hover:text-red-400 rounded-md transition duration-150">
-                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                </button>
-              </div>
-            ` : ''}
-
-            <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
-              <img src="${avatarUrl}" alt="${post.author}" class="w-full h-full object-cover mc-skin-avatar" onerror="this.onerror=null;this.src='${CONFIG.FALLBACK_STEVE}'" />
-            </div>
-
-            <div class="flex-1 min-w-0 pr-8">
-              <div class="flex items-baseline gap-2 flex-wrap mb-1">
-                <span class="font-heading font-bold text-sm text-white hover:underline cursor-pointer">${post.author || 'Игрок'}</span>
-                ${roleBadge}
-                <span class="text-[11px] font-mono text-gray-500">${post.time || 'Только что'}</span>
-                ${post.isEdited ? '<span class="text-[10px] font-mono text-gray-400 italic bg-white/5 px-1 rounded">(изменено)</span>' : ''}
-              </div>
-
-              ${isEditing ? `
-                <div class="mt-2 space-y-2 bg-[#090e15] p-3 rounded-xl border border-[#00f5a0]/40">
-                  <textarea id="edit-textarea-${post.id}" rows="3" class="w-full bg-[#101823] border border-white/10 focus:border-[#00f5a0] rounded-lg p-2.5 text-xs text-white font-mono focus:outline-none focus:ring-1 focus:ring-[#00f5a0] resize-y custom-scroll">${(post.content || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;')}</textarea>
-                  <div class="flex items-center justify-end gap-2 pt-1">
-                    <button onclick="cancelEditMessage()" class="px-3 py-1.5 rounded-lg text-xs font-mono text-gray-400 hover:text-white hover:bg-white/5 transition">Отмена</button>
-                    <button onclick="saveEditedMessage('${post.id}')" class="cyber-btn-primary px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5">
-                      <i data-lucide="check" class="w-3.5 h-3.5"></i>
-                      Сохранить
-                    </button>
-                  </div>
-                </div>
-              ` : `
-                <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
-                  ${formatMessageContent(post.content)}
-                </div>
-              `}
-
-              ${post.hasCopyAction && !isEditing ? `
-                <div class="mt-3">
-                  <button onclick="copyServerIpAddress('${post.copyValue || '185.9.145.7:27019'}')" class="px-3.5 py-1.5 bg-[#121a22] hover:bg-[#192430] text-[#00f5a0] border border-[#00f5a0]/30 hover:border-[#00f5a0] rounded-xl text-xs font-mono flex items-center gap-2 transition duration-200 shadow-sm cursor-pointer active:scale-95">
-                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                    <span>Скопировать IP сервера (185.9.145.7:27019)</span>
-                  </button>
-                </div>
-              ` : ''}
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-      lucide.createIcons();
-      if (!editingMessageId) {
-        container.scrollTop = container.scrollHeight;
-      }
-    }
-
-    // Отправка сообщений администратором через POST в Cloudflare KV Worker
-    window.handlePostMessage = async function(e) {
-      if (e) e.preventDefault();
-      const user = window.currentUser;
-      if (!user || !isUserAdmin()) {
-        alert('У вас нет прав для отправки сообщений.');
-        return;
-      }
-
-      const input = document.getElementById('messageTextInput');
-      const sendBtn = document.getElementById('adminSendBtn');
-      const sendBtnText = document.getElementById('adminSendBtnText');
-      if (!input) return;
-      const text = input.value.trim();
-      if (!text) return;
-
+    // Если дата явно указана числом ДД.ММ.ГГГГ или ГГГГ-ММ-ДД
+    const matchDmy = timeStr.match(/(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})/);
+    if (matchDmy) {
       const now = new Date();
-      const timeStr = `Сегодня в ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const d = parseInt(matchDmy[1], 10);
+      const m = parseInt(matchDmy[2], 10) - 1;
+      let y = parseInt(matchDmy[3], 10);
+      if (y < 100) y += 2000;
+      return d === now.getDate() && m === now.getMonth() && y === now.getFullYear();
+    }
 
-      // Блокируем кнопку отправки и информируем о статусе
-      if (sendBtn) sendBtn.disabled = true;
-      if (sendBtnText) sendBtnText.textContent = 'Отправка...';
-      setKvStatus('loading', 'KV DB: отправка...');
+    // Если нет даты, но указано только время "Сегодня в ..." или "14:30"
+    if (/^\d{1,2}:\d{2}/.test(timeStr)) {
+      return true;
+    }
 
-      const payload = {
-        channel: currentActiveChannel,
-        author: user.username,
-        role: 'ADMIN',
-        content: text
-      };
+    return true;
+  }
 
-      try {
-        const resp = await fetch(CONFIG.MESSAGES_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+  window.handleSkinError = function(img) {
+    if (!img) return;
+    img.onerror = null;
+    img.src = CONFIG.FALLBACK_STEVE;
+  };
 
-        let newPost = null;
-        if (resp.ok) {
-          const resData = await resp.json().catch(() => null);
-          if (resData && (resData.message || resData.post)) {
-            newPost = resData.message || resData.post;
-          }
-        }
+  function getPlayerSkinUrl(nickname) {
+    const trimmed = (nickname || '').trim();
+    if (!trimmed) return CONFIG.FALLBACK_STEVE;
+    return CONFIG.SKIN_BASE_URL + encodeURIComponent(trimmed) + '.png';
+  }
 
-        if (!newPost) {
-          newPost = {
-            id: 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
-            channel: currentActiveChannel,
-            author: user.username,
-            role: 'ADMIN',
-            time: timeStr,
-            content: text,
-            createdAt: Date.now()
-          };
-        }
+  function isUserAuthenticated() {
+    return !!(window.currentUser && window.currentUser.username);
+  }
 
-        if (!appMessages[currentActiveChannel]) {
-          appMessages[currentActiveChannel] = [];
-        }
-        appMessages[currentActiveChannel].push(newPost);
-        saveLocalCache();
+  function isUserAdmin() {
+    if (!isUserAuthenticated()) return false;
+    const role = (window.currentUser.role || '').toLowerCase();
+    return role === 'admin' || role === 'administrator';
+  }
 
-        input.value = '';
-        renderChannelMessages();
-        setKvStatus('success', 'KV DB: синхронизировано');
-      } catch (err) {
-        console.warn('Post to worker failed, fallback local cache:', err);
-        const fallbackPost = {
-          id: 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
-          channel: currentActiveChannel,
-          author: user.username,
-          role: 'ADMIN',
-          time: timeStr,
-          content: text,
-          createdAt: Date.now()
-        };
-        if (!appMessages[currentActiveChannel]) {
-          appMessages[currentActiveChannel] = [];
-        }
-        appMessages[currentActiveChannel].push(fallbackPost);
-        saveLocalCache();
-        input.value = '';
-        renderChannelMessages();
-        setKvStatus('local', 'KV DB: сохранено локально');
-      } finally {
-        if (sendBtn) sendBtn.disabled = false;
-        if (sendBtnText) sendBtnText.textContent = 'Отправить';
-      }
-    };
+  function canAccessChannel(channelKey) {
+    if (!CHANNELS_META[channelKey]) return false;
+    if (CHANNELS_META[channelKey].guestAllowed) return true;
+    return isUserAuthenticated();
+  }
 
-    window.refreshMessages = function() {
-      fetchMessagesFromKV(currentActiveChannel);
-    };
+  function canUserManageMessage(post) {
+    if (!isUserAuthenticated() || !post) return false;
+    if (isUserAdmin()) return true;
+    const currentName = (window.currentUser.username || '').toLowerCase();
+    const authorName = (post.author || '').toLowerCase();
+    return Boolean(currentName && authorName && currentName === authorName);
+  }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      loadLocalCache();
-      renderChannelsNav();
-      renderChannelMessages();
-      lucide.createIcons();
+  function renderChannelsNav() {
+    const nav = document.getElementById('channelsList');
+    if (!nav) return;
+    const authenticated = isUserAuthenticated();
+    const channelKeys = ['recruitment', 'info', 'chat', 'rules', 'ip'];
 
-      // Проверка авторизации
-      let rawAuth = localStorage.getItem(CONFIG.AUTH_STORAGE_KEY);
-      let sessionUser = null;
-      try {
-        if (rawAuth) sessionUser = JSON.parse(rawAuth);
-      } catch (e) {}
+    let html = '';
+    channelKeys.forEach(key => {
+      const meta = CHANNELS_META[key];
+      const isActive = (currentActiveChannel === key);
+      const isLockedForGuest = !authenticated && !meta.guestAllowed;
 
-      if (sessionUser && sessionUser.username) {
-        window.currentUser = sessionUser;
-        applyUserRolePortal(sessionUser);
+      if (isLockedForGuest) {
+        html += `
+          <button onclick="handleLockedChannelClick('${key}')" class="channel-item w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left text-gray-500 hover:text-gray-300 hover:bg-white/5 transition group" id="chan-btn-${key}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <i data-lucide="lock" class="w-4 h-4 shrink-0 text-amber-500/70 group-hover:text-amber-400"></i>
+              <span class="truncate line-through decoration-gray-600 text-gray-500 group-hover:text-gray-400">${meta.name}</span>
+            </div>
+            <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-medium">ВХОД</span>
+          </button>
+        `;
       } else {
-        window.currentUser = null;
-        applyUserRolePortal(null);
+        const activeCls = isActive ? 'active text-[#00f5a0]' : 'text-gray-400 hover:text-gray-200';
+        const iconCls = isActive ? 'text-[#00f5a0]' : 'text-gray-500';
+        const discordBadge = meta.isDiscord ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#5865F2]/15 text-[#7983f5] border border-[#5865F2]/30 ml-auto shrink-0">DISCORD</span>' : '';
+        html += `
+          <button onclick="switchChannel('${key}')" class="channel-item w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs md:text-sm font-heading tracking-wide text-left ${activeCls}" id="chan-btn-${key}">
+            <i data-lucide="hash" class="w-4 h-4 shrink-0 ${iconCls}"></i>
+            <span class="truncate">${meta.name}</span>
+            ${discordBadge}
+          </button>
+        `;
       }
-
-      // Загрузка сообщений из Cloudflare KV при открытии сайта
-      fetchAllMessagesFromKV(true);
-
-      const msgInput = document.getElementById('messageTextInput');
-      if (msgInput) {
-        msgInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handlePostMessage(e);
-          }
-        });
-      }
-
-      const startTime = Date.now();
-      const sessionSmallEl = document.getElementById('sessionTimeSmall');
-      setInterval(() => {
-        if (sessionSmallEl && window.currentUser) {
-          const mins = Math.floor((Date.now() - startTime) / 60000);
-          sessionSmallEl.textContent = isUserAdmin() ? 'Администратор' : `${mins}м онлайн`;
-        }
-      }, 30000);
-
-      // Запрос статистики
-      try {
-        const res = await fetch(CONFIG.STATS_ENDPOINT, { cache: 'no-store' });
-        if (res.ok) {
-          await res.json();
-        }
-      } catch (e) {}
     });
 
-    // ==========================================
-    // ВЫСОКОПРОИЗВОДИТЕЛЬНЫЙ И ОПТИМИЗИРОВАННЫЙ WEBGL ШЕЙДЕР
-    // ==========================================
-    (function initOptimizedShader() {
-      const canvas = document.getElementById('shader-canvas');
-      if (!canvas) return;
-      const gl = canvas.getContext('webgl', { 
-        powerPreference: 'low-power', 
-        antialias: false,
-        depth: false,
-        stencil: false,
-        alpha: false 
-      }) || canvas.getContext('experimental-webgl');
-      
-      if (!gl) return;
+    nav.innerHTML = html;
+    lucide.createIcons();
+  }
 
-      let isPaused = false;
-      document.addEventListener('visibilitychange', () => {
-        isPaused = document.hidden;
+  window.handleLockedChannelClick = function(channelKey) {
+    openAuthModal("Войдите в аккаунт");
+  };
+
+  function loadLocalCache() {
+    try {
+      const stored = localStorage.getItem(CONFIG.CHANNELS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && typeof parsed === 'object') {
+          appMessages = {
+            recruitment: Array.isArray(parsed.recruitment) ? parsed.recruitment.filter(m => !isDiscordMessage(m) || isDiscordMessageToday(m)) : [],
+            info: Array.isArray(parsed.info) ? parsed.info.filter(m => !isDiscordMessage(m) || isDiscordMessageToday(m)) : [],
+            chat: Array.isArray(parsed.chat) ? parsed.chat.filter(m => !isDiscordMessage(m) || isDiscordMessageToday(m)) : [],
+            rules: Array.isArray(parsed.rules) ? parsed.rules.filter(m => !isDiscordMessage(m) || isDiscordMessageToday(m)) : [],
+            ip: Array.isArray(parsed.ip) ? parsed.ip.filter(m => !isDiscordMessage(m) || isDiscordMessageToday(m)) : []
+          };
+        }
+      }
+    } catch (e) {}
+  }
+
+  function saveLocalCache() {
+    try {
+      localStorage.setItem(CONFIG.CHANNELS_STORAGE_KEY, JSON.stringify(appMessages));
+    } catch (e) {}
+  }
+
+  function mergeChannelMessages(channelKey, newMessagesList) {
+    if (!Array.isArray(newMessagesList)) return;
+    const existingList = appMessages[channelKey] || [];
+    const map = new Map();
+
+    existingList.forEach(m => {
+      if (isDiscordMessage(m) && !isDiscordMessageToday(m)) return;
+      const key = m.id || `${m.time || ''}_${m.author || ''}_${m.content || ''}`;
+      map.set(key, m);
+    });
+
+    newMessagesList.forEach(m => {
+      if (isDiscordMessage(m) && !isDiscordMessageToday(m)) return;
+      const key = m.id || `${m.time || ''}_${m.author || ''}_${m.content || ''}`;
+      map.set(key, m);
+    });
+
+    appMessages[channelKey] = Array.from(map.values());
+  }
+
+  async function fetchAllMessagesFromKV(forceBottom = false) {
+    try {
+      const url = currentActiveChannel === 'chat' 
+        ? `${CONFIG.MESSAGES_ENDPOINT}?channel=chat&t=${Date.now()}` 
+        : `${CONFIG.MESSAGES_ENDPOINT}?t=${Date.now()}`;
+
+      const resp = await fetch(url, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
       });
 
-      function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
-        const w = Math.floor(window.innerWidth * dpr);
-        const h = Math.floor(window.innerHeight * dpr);
-        if (canvas.width !== w || canvas.height !== h) {
-          canvas.width = w;
-          canvas.height = h;
-          gl.viewport(0, 0, w, h);
+      if (resp.ok) {
+        const data = await resp.json();
+        let chatItems = [];
+        if (data.channel === 'chat' && Array.isArray(data.messages)) {
+          chatItems = data.messages;
+        } else if (data.messages && Array.isArray(data.messages.chat)) {
+          chatItems = data.messages.chat;
+          if (Array.isArray(data.messages.recruitment)) mergeChannelMessages('recruitment', data.messages.recruitment);
+          if (Array.isArray(data.messages.info)) mergeChannelMessages('info', data.messages.info);
+          if (Array.isArray(data.messages.rules)) mergeChannelMessages('rules', data.messages.rules);
+          if (Array.isArray(data.messages.ip)) mergeChannelMessages('ip', data.messages.ip);
+        } else if (Array.isArray(data.messages)) {
+          data.messages.forEach(item => {
+            const ch = item.channel || (item.source === 'discord' || item.fromDiscord ? 'chat' : 'recruitment');
+            if (ch === 'chat') chatItems.push(item);
+            else if (appMessages[ch]) mergeChannelMessages(ch, [item]);
+          });
+        }
+
+        if (chatItems.length > 0) {
+          mergeChannelMessages('chat', chatItems);
+        }
+
+        saveLocalCache();
+        renderChannelMessages(forceBottom);
+        return;
+      }
+    } catch (err) {}
+
+    loadLocalCache();
+    renderChannelMessages(forceBottom);
+  }
+
+  function startChannelPolling() {
+    if (pollIntervalTimer) clearInterval(pollIntervalTimer);
+    if (currentActiveChannel === 'chat' && isUserAuthenticated()) {
+      pollIntervalTimer = setInterval(() => {
+        fetchAllMessagesFromKV(false);
+      }, 3500);
+    }
+  }
+
+  function handleNicknameInput(val) {
+    const trimmed = (val || '').trim();
+    const previewText = document.getElementById('usernamePreviewText');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const dot = document.getElementById('skinStatusDot');
+    const notice = document.getElementById('skinSourceNotice');
+
+    if (!trimmed) {
+      if (previewText) previewText.textContent = 'Стив';
+      if (avatarPreview) avatarPreview.src = CONFIG.FALLBACK_STEVE;
+      if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-gray-500';
+      if (notice) { notice.innerText = 'Ожидание ввода ника...'; notice.className = 'text-[11px] text-gray-400 font-mono'; }
+      return;
+    }
+
+    if (previewText) previewText.textContent = trimmed;
+    if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse';
+    if (notice) { notice.innerText = 'Поиск скина в репозитории...'; notice.className = 'text-[11px] text-yellow-400 font-mono'; }
+
+    clearTimeout(skinCheckTimeout);
+    skinCheckTimeout = setTimeout(() => {
+      const targetUrl = CONFIG.SKIN_BASE_URL + encodeURIComponent(trimmed) + '.png';
+      const testImg = new Image();
+      testImg.onload = function() {
+        if (avatarPreview) avatarPreview.src = targetUrl;
+        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-[#00f5a0]';
+        if (notice) { notice.innerText = 'Скин найден в репозитории'; notice.className = 'text-[11px] text-[#00f5a0] font-mono'; }
+      };
+      testImg.onerror = function() {
+        if (avatarPreview) avatarPreview.src = CONFIG.FALLBACK_STEVE;
+        if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-yellow-500';
+        if (notice) { notice.innerText = 'Скин не найден (дефолт Steve)'; notice.className = 'text-[11px] text-yellow-400 font-mono'; }
+      };
+      testImg.src = targetUrl;
+    }, 250);
+  }
+
+  function togglePasswordVisibility() {
+    const passInput = document.getElementById('inputPassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    if (!passInput) return;
+    passInput.type = passInput.type === 'password' ? 'text' : 'password';
+    if (eyeIcon) eyeIcon.classList.toggle('text-[#00f5a0]');
+  }
+
+  function showAuthMessage(type, msg) {
+    const errBox = document.getElementById('authErrorMsg');
+    if (!errBox) return;
+    const isErr = type === 'error';
+    const isWarn = type === 'warn';
+    const colorCls = isErr ? 'bg-red-950/70 border-red-600/70 text-red-300' : isWarn ? 'bg-amber-950/70 border-amber-500/60 text-amber-200' : 'bg-[#00f5a0]/15 border-[#00f5a0]/40 text-[#00f5a0]';
+    const iconName = isErr ? 'alert-circle' : isWarn ? 'lock' : 'check-circle-2';
+    errBox.innerHTML = `
+      <div class="flex items-start gap-2.5">
+        <i data-lucide="${iconName}" class="shrink-0 mt-0.5 w-4 h-4"></i>
+        <span class="leading-relaxed font-mono text-[11px]">${msg}</span>
+      </div>
+    `;
+    errBox.className = `p-3 rounded-xl text-xs font-mono transition shadow-lg border ${colorCls}`;
+    errBox.classList.remove('hidden');
+    lucide.createIcons();
+  }
+
+  function clearAuthFeedback() {
+    const errBox = document.getElementById('authErrorMsg');
+    if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
+  }
+
+  async function handleModalLogin(e) {
+    if (e) e.preventDefault();
+    clearAuthFeedback();
+    const username = (document.getElementById('inputUsername')?.value || '').trim();
+    const password = (document.getElementById('inputPassword')?.value || '').trim();
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnText = document.getElementById('btnSubmitText');
+
+    if (!username || !password) {
+      showAuthMessage('error', "Пожалуйста, заполните логин и пароль.");
+      return;
+    }
+
+    btnSubmit.disabled = true;
+    btnText.textContent = 'Проверка...';
+    let matchedUser = null;
+
+    try {
+      const resp = await fetch(CONFIG.USERS_ENDPOINT, { cache: 'no-store' });
+      if (resp.ok) {
+        const data = await resp.json();
+        let list = Array.isArray(data) ? data : (data.users || data.db?.users || []);
+        if (typeof list === 'object' && !Array.isArray(list)) list = Object.values(list);
+        const found = list.find(u => {
+          const uName = (u.username || u.login || u.name || '').trim().toLowerCase();
+          return uName === username.toLowerCase() && String(u.password || u.pass || '') === password;
+        });
+        if (found) {
+          matchedUser = {
+            username: found.username || found.login || username,
+            role: found.role || found.permission || 'player',
+            skin: getPlayerSkinUrl(found.username || username)
+          };
         }
       }
-      window.addEventListener('resize', resize, { passive: true });
-      resize();
+    } catch (err) {}
 
-      const vs = `
-        attribute vec2 p;
-        varying vec2 vUv;
-        void main() {
-          vUv = p * 0.5 + 0.5;
-          gl_Position = vec4(p, 0.0, 1.0);
-        }
+    if (!matchedUser) {
+      btnSubmit.disabled = false;
+      btnText.textContent = 'Войти';
+      showAuthMessage('error', "Ошибка: неверный логин или пароль.");
+      return;
+    }
+
+    showAuthMessage('success', `Добро пожаловать, ${matchedUser.username}!`);
+    const sessionData = {
+      username: matchedUser.username,
+      role: (matchedUser.role || 'player').toLowerCase(),
+      skin: matchedUser.skin,
+      loginTime: Date.now()
+    };
+    try { localStorage.setItem(CONFIG.AUTH_STORAGE_KEY, JSON.stringify(sessionData)); } catch (err) {}
+    window.currentUser = sessionData;
+
+    setTimeout(() => {
+      closeAuthModal();
+      applyUserRolePortal(sessionData);
+      btnSubmit.disabled = false;
+      btnText.textContent = 'Войти';
+    }, 400);
+  }
+
+  window.openAuthModal = function(warningNotice) {
+    const modal = document.getElementById('authModal');
+    const card = document.getElementById('authModalCard');
+    const subtitle = document.getElementById('authModalSubtitle');
+    if (subtitle) subtitle.textContent = warningNotice || 'Авторизация игрока для доступа';
+    clearAuthFeedback();
+    if (modal) {
+      modal.classList.remove('hidden', 'pointer-events-none');
+      modal.classList.add('pointer-events-auto');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        if (card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
+      }, 10);
+    }
+    lucide.createIcons();
+  };
+
+  window.closeAuthModal = function() {
+    const modal = document.getElementById('authModal');
+    const card = document.getElementById('authModalCard');
+    if (modal) {
+      modal.classList.add('opacity-0');
+      if (card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
+      setTimeout(() => {
+        modal.classList.add('hidden', 'pointer-events-none');
+        modal.classList.remove('pointer-events-auto');
+      }, 250);
+    }
+  };
+
+  function handleAuthModalBackdropClick(e) {
+    if (e.target === document.getElementById('authModal')) closeAuthModal();
+  }
+
+  window.logoutUser = function() {
+    localStorage.removeItem(CONFIG.AUTH_STORAGE_KEY);
+    window.currentUser = null;
+    if (document.getElementById('inputUsername')) document.getElementById('inputUsername').value = '';
+    if (document.getElementById('inputPassword')) document.getElementById('inputPassword').value = '';
+    clearAuthFeedback();
+    handleNicknameInput('');
+    if (!CHANNELS_META[currentActiveChannel]?.guestAllowed) currentActiveChannel = 'recruitment';
+    applyUserRolePortal(null);
+  };
+
+  function renderHeaderProfile(user) {
+    const chipContainer = document.getElementById('headerProfileChip');
+    if (!chipContainer) return;
+    if (!user) {
+      chipContainer.innerHTML = `
+        <button onclick="openAuthModal()" class="px-3.5 py-2 cyber-btn-primary font-bold text-xs rounded-xl flex items-center gap-1.5 transition font-heading cursor-pointer">
+          <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+          <span>Войти</span>
+        </button>
       `;
-
-      const fs = `
-        precision mediump float;
-        uniform float t;
-        uniform vec2 r;
-        varying vec2 vUv;
-
-        void main() {
-          vec2 p = vUv * 2.0 - 1.0;
-          p.x *= (r.x / r.y);
-
-          float wave = sin(p.y * 2.2 + p.x * 1.1 + t * 0.5) * 0.5 + 0.5;
-
-          vec3 darkVoid = vec3(0.027, 0.043, 0.063);
-          vec3 deepCyan = vec3(0.02, 0.14, 0.12);
-          vec3 emerald  = vec3(0.0, 0.96, 0.62);
-
-          vec3 col = mix(darkVoid, deepCyan, wave * 0.45);
-          col += emerald * (wave * wave * 0.18);
-
-          vec2 gridUv = fract(gl_FragCoord.xy / 44.0);
-          float line = step(0.96, gridUv.x) + step(0.96, gridUv.y);
-          col += emerald * (clamp(line, 0.0, 1.0) * 0.035);
-
-          gl_FragColor = vec4(col, 1.0);
-        }
+    } else {
+      const skinUrl = user.skin || getPlayerSkinUrl(user.username);
+      chipContainer.innerHTML = `
+        <div class="flex items-center gap-2 px-2.5 py-1.5 bg-[#121a22] border border-[#00f5a0]/30 rounded-xl">
+          <div class="w-6 h-6 rounded-lg bg-[#18232e] avatar-wrapper overflow-hidden border border-[#00f5a0]/50 shrink-0">
+            <img src="${skinUrl}" alt="${user.username}" class="w-full h-full object-cover mc-skin-avatar" onerror="handleSkinError(this)">
+          </div>
+          <span class="text-xs font-bold text-white font-heading truncate max-w-[90px] sm:max-w-[120px]">${user.username}</span>
+        </div>
+        <button onclick="logoutUser()" title="Завершить сессию" class="px-3 py-2 bg-red-950/25 hover:bg-red-900/40 text-red-400 border border-red-900/40 rounded-xl text-xs flex items-center gap-1.5 transition">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+          <span class="font-heading hidden sm:inline">Выйти</span>
+        </button>
       `;
+    }
+    lucide.createIcons();
+  }
 
-      function compile(type, src) {
-        const s = gl.createShader(type);
-        gl.shaderSource(s, src);
-        gl.compileShader(s);
-        return s;
+  function applyUserRolePortal(user) {
+    renderHeaderProfile(user);
+    const sidebarNick = document.getElementById('userSidebarNick');
+    const sidebarAvatar = document.getElementById('userSidebarAvatar');
+    const sessionSmallEl = document.getElementById('sessionTimeSmall');
+    const sidebarUserActionBtn = document.getElementById('sidebarUserActionBtn');
+
+    if (!user) {
+      if (sidebarNick) sidebarNick.textContent = 'Гость';
+      if (sidebarAvatar) sidebarAvatar.src = CONFIG.FALLBACK_STEVE;
+      if (sessionSmallEl) sessionSmallEl.textContent = 'Режим чтения';
+      if (sidebarUserActionBtn) {
+        sidebarUserActionBtn.innerHTML = `
+          <button onclick="openAuthModal()" title="Войти в аккаунт" class="p-2 text-gray-400 hover:text-[#00f5a0] hover:bg-[#121a22] border border-white/5 rounded-lg transition">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+          </button>
+        `;
       }
+    } else {
+      const username = user.username;
+      const isAdmin = isUserAdmin();
+      const skinUrl = user.skin || getPlayerSkinUrl(username);
+      if (sidebarNick) sidebarNick.textContent = username;
+      if (sidebarAvatar) sidebarAvatar.src = skinUrl;
+      if (sessionSmallEl) sessionSmallEl.textContent = isAdmin ? 'Администратор' : 'В сети';
+      if (sidebarUserActionBtn) {
+        sidebarUserActionBtn.innerHTML = `
+          <button onclick="logoutUser()" title="Выйти из аккаунта" class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-950/30 border border-white/5 rounded-lg transition">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        `;
+      }
+    }
 
-      const prog = gl.createProgram();
-      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
-      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
+    renderChannelsNav();
+    updateChannelHeaderView();
+    renderChannelMessages(true);
+    lucide.createIcons();
+  }
 
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-      const pos = gl.getAttribLocation(prog, 'p');
-      gl.enableVertexAttribArray(pos);
-      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  function updateChannelHeaderView() {
+    const meta = CHANNELS_META[currentActiveChannel] || CHANNELS_META.recruitment;
+    const titleEl = document.getElementById('currentChannelTitle');
+    const discordBadge = document.getElementById('discordWebhookBadge');
+    const discordIndicator = document.getElementById('discordInputIndicator');
+    const postModeLabel = document.getElementById('postModeLabel');
+    const inputEl = document.getElementById('messageTextInput');
+    const adminPostForm = document.getElementById('adminPostForm');
+    const playerNoticeBlock = document.getElementById('playerNoticeBlock');
+    const playerNoticeText = document.getElementById('playerNoticeText');
 
-      const uT = gl.getUniformLocation(prog, 't');
-      const uR = gl.getUniformLocation(prog, 'r');
+    if (titleEl) titleEl.textContent = meta.name;
+    const isChat = (currentActiveChannel === 'chat');
 
-      let lastTime = 0;
-      const targetFPS = 30;
-      const frameInterval = 1000 / targetFPS;
+    if (discordBadge) discordBadge.classList.toggle('hidden', !isChat);
+    if (discordIndicator) discordIndicator.classList.toggle('hidden', !isChat);
+    if (postModeLabel) postModeLabel.textContent = isChat ? 'Отправка в чат' : 'Публикация объявления в KV';
 
-      function render(now) {
-        requestAnimationFrame(render);
-        if (isPaused) return;
+    if (inputEl) {
+      inputEl.placeholder = isChat ? 'Написать сообщение в #chat...' : `Опубликовать объявление в #${meta.name}...`;
+    }
 
-        const delta = now - lastTime;
-        if (delta > frameInterval) {
-          lastTime = now - (delta % frameInterval);
-          gl.uniform1f(uT, now * 0.001);
-          gl.uniform2f(uR, canvas.width, canvas.height);
-          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    const isAuth = isUserAuthenticated();
+    const isAdmin = isUserAdmin();
+
+    if (!isAuth) {
+      if (adminPostForm) adminPostForm.classList.add('hidden');
+      if (playerNoticeBlock) {
+        playerNoticeBlock.classList.remove('hidden');
+        if (playerNoticeText) playerNoticeText.textContent = 'Войдите в аккаунт';
+      }
+    } else {
+      if (isChat || isAdmin) {
+        if (adminPostForm) adminPostForm.classList.remove('hidden');
+        if (playerNoticeBlock) playerNoticeBlock.classList.add('hidden');
+      } else {
+        if (adminPostForm) adminPostForm.classList.add('hidden');
+        if (playerNoticeBlock) {
+          playerNoticeBlock.classList.remove('hidden');
+          if (playerNoticeText) playerNoticeText.textContent = 'Войдите в аккаунт';
         }
       }
+    }
+  }
+
+  window.switchChannel = function(channelKey) {
+    if (!CHANNELS_META[channelKey]) return;
+    if (!canAccessChannel(channelKey)) {
+      handleLockedChannelClick(channelKey);
+      return;
+    }
+    if (currentActiveChannel === channelKey && !isChannelSwitching) return;
+    if (isChannelSwitching) return;
+
+    isChannelSwitching = true;
+    currentActiveChannel = channelKey;
+    renderChannelsNav();
+
+    const container = document.getElementById('messagesContainer');
+    const headerTitleGroup = document.getElementById('channelHeaderTitleGroup');
+
+    if (container) {
+      container.classList.remove('channel-fade-transition');
+      container.classList.add('channel-fade-out');
+    }
+    if (headerTitleGroup) headerTitleGroup.classList.add('channel-header-out');
+
+    setTimeout(() => {
+      updateChannelHeaderView();
+      renderChannelMessages(true);
+      fetchAllMessagesFromKV(true);
+      startChannelPolling();
+
+      if (headerTitleGroup) headerTitleGroup.classList.remove('channel-header-out');
+      if (container) {
+        container.classList.remove('channel-fade-out');
+        void container.offsetWidth;
+        container.classList.add('channel-fade-transition');
+      }
+      isChannelSwitching = false;
+    }, 130);
+  };
+
+  function formatMessageContent(rawText) {
+    if (!rawText) return '';
+    let text = rawText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    text = text.replace(/```([\s\S]*?)```/g, '<pre class="bg-[#04080c] border border-white/10 p-3 rounded-xl my-2 font-mono text-xs text-[#00f5a0] overflow-x-auto"><code>$1</code></pre>');
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+    text = text.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-[#121a22] text-[#00f5a0] rounded border border-white/10 font-mono text-xs">$1</code>');
+    text = text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-[#00f5a0] underline hover:text-[#50ffaf] break-all">$1</a>');
+    text = text.replace(/\n• /g, '<br/>• ');
+    text = text.replace(/\n/g, '<br/>');
+    return text;
+  }
+
+  function renderChannelMessages(forceBottom = false) {
+    const container = document.getElementById('messagesContainer');
+    if (!container) return;
+
+    const isAtBottom = (container.scrollHeight - container.scrollTop - container.clientHeight) < 80;
+    const previousScrollTop = container.scrollTop;
+
+    let rawPosts = appMessages[currentActiveChannel] || [];
+    // Фильтруем сообщения из Discord, допуская только сегодняшние
+    let posts = rawPosts.filter(post => !isDiscordMessage(post) || isDiscordMessageToday(post));
+    const meta = CHANNELS_META[currentActiveChannel] || { name: currentActiveChannel };
+
+    if (posts.length === 0) {
+      container.innerHTML = `
+        <div class="h-64 flex flex-col items-center justify-center text-center p-6 space-y-3">
+          <div class="p-3.5 rounded-2xl bg-[#121a22] text-gray-500 border border-white/10 shadow-inner">
+            <i data-lucide="message-square" class="w-6 h-6 text-[#00f5a0]/60"></i>
+          </div>
+          <div>
+            <p class="text-sm font-heading text-gray-200 font-semibold tracking-wide">В канале #${meta.name} пока нет сообщений</p>
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+      if (forceBottom || isAtBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+      return;
+    }
+
+    let html = '';
+    const discordSvgIcon = `<svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg>`;
+
+    posts.forEach((post) => {
+      const postId = post.id || `${post.time || ''}_${post.author || ''}`;
+      const isDiscordAuthor = isDiscordMessage(post);
+
+      let roleBadge = '';
+      let authorClass = 'font-heading font-bold text-sm text-white';
+
+      if (isDiscordAuthor) {
+        authorClass = 'font-heading font-bold text-sm text-[#8ea1ff]';
+        if (post.isBot || post.bot) {
+          roleBadge = `<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/40 font-semibold flex items-center gap-1 shadow-[0_0_8px_rgba(88,101,242,0.25)]">${discordSvgIcon} [БОТ]</span>`;
+        } else {
+          roleBadge = `<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#5865F2]/20 text-[#7983f5] border border-[#5865F2]/40 font-semibold flex items-center gap-1 shadow-[0_0_8px_rgba(88,101,242,0.25)]">${discordSvgIcon} [DISCORD]</span>`;
+        }
+      } else {
+        const isAuthorAdmin = (post.role || '').toUpperCase() === 'ADMIN';
+        roleBadge = isAuthorAdmin 
+          ? '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-950/50 text-red-400 border border-red-900/50 font-semibold">[АДМИН]</span>'
+          : '<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 font-semibold">[ИГРОК]</span>';
+      }
+
+      const avatarUrl = post.avatar || getPlayerSkinUrl(post.author);
+      const isManaged = canUserManageMessage(post);
+
+      let actionButtons = '';
+      if (isManaged) {
+        actionButtons = `
+          <div class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 bg-[#0b1017]/90 border border-white/10 rounded-lg p-1 shadow-md">
+            <button onclick="promptEditMessage('${encodeURIComponent(postId)}')" title="Редактировать сообщение" class="p-1.5 text-gray-400 hover:text-[#00f5a0] hover:bg-white/5 rounded transition">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+            </button>
+            <button onclick="promptDeleteMessage('${encodeURIComponent(postId)}')" title="Удалить сообщение" class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-950/30 rounded transition">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+      }
+
+      html += `
+        <div class="group relative flex items-start gap-3.5 p-3 rounded-xl hover:bg-white/[0.02] transition border border-transparent hover:border-white/5">
+          <div class="relative w-10 h-10 rounded-xl bg-[#131c26] border border-[#00f5a0]/30 avatar-wrapper flex-shrink-0 flex items-center justify-center overflow-hidden shadow-sm mt-0.5">
+            <img src="${avatarUrl}" alt="${post.author}" class="w-full h-full object-cover mc-skin-avatar" onerror="handleSkinError(this)" />
+          </div>
+          <div class="flex-1 min-w-0 pr-2">
+            <div class="flex items-baseline justify-between gap-2 mb-1">
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <span class="${authorClass}">${post.author || 'Игрок'}</span>
+                ${roleBadge}
+                <span class="text-[11px] font-mono text-gray-500">${post.time || 'Только что'}</span>
+                ${post.edited ? '<span class="text-[10px] font-mono text-gray-500 italic">(изм.)</span>' : ''}
+              </div>
+              ${actionButtons}
+            </div>
+            <div class="text-xs leading-relaxed text-gray-300 font-mono space-y-1">
+              ${formatMessageContent(post.content)}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+    lucide.createIcons();
+
+    if (forceBottom || isAtBottom) {
+      container.scrollTop = container.scrollHeight;
+    } else {
+      container.scrollTop = previousScrollTop;
+    }
+  }
+
+  // --- Функции редактирования сообщений ---
+  window.promptEditMessage = function(encodedPostId) {
+    const postId = decodeURIComponent(encodedPostId);
+    const posts = appMessages[currentActiveChannel] || [];
+    const post = posts.find(p => (p.id || `${p.time || ''}_${p.author || ''}`) === postId);
+    if (!post) return;
+
+    activeEditingMessageId = postId;
+    const modal = document.getElementById('editModal');
+    const card = document.getElementById('editModalCard');
+    const textarea = document.getElementById('editTextarea');
+    const subtitle = document.getElementById('editModalChannelSubtitle');
+
+    if (textarea) textarea.value = post.content || '';
+    if (subtitle) {
+      const meta = CHANNELS_META[currentActiveChannel] || { name: currentActiveChannel };
+      subtitle.textContent = `Канал #${meta.name}`;
+    }
+
+    if (modal) {
+      modal.classList.remove('hidden', 'pointer-events-none');
+      modal.classList.add('pointer-events-auto');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        if (card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
+        if (textarea) { textarea.focus(); textarea.selectionStart = textarea.value.length; }
+      }, 10);
+    }
+    lucide.createIcons();
+  };
+
+  window.closeEditModal = function() {
+    const modal = document.getElementById('editModal');
+    const card = document.getElementById('editModalCard');
+    if (modal) {
+      modal.classList.add('opacity-0');
+      if (card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
+      setTimeout(() => {
+        modal.classList.add('hidden', 'pointer-events-none');
+        modal.classList.remove('pointer-events-auto');
+        activeEditingMessageId = null;
+      }, 200);
+    }
+  };
+
+  function handleEditModalBackdropClick(e) {
+    if (e.target === document.getElementById('editModal')) closeEditModal();
+  }
+
+  window.executeEditMessage = async function(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (!activeEditingMessageId) return;
+
+    const textarea = document.getElementById('editTextarea');
+    const newContent = textarea ? textarea.value.trim() : '';
+    if (!newContent) return;
+
+    const saveBtn = document.getElementById('saveEditBtn');
+    const saveBtnText = document.getElementById('saveEditBtnText');
+    if (saveBtn) saveBtn.disabled = true;
+    if (saveBtnText) saveBtnText.textContent = 'Сохранение...';
+
+    const posts = appMessages[currentActiveChannel] || [];
+    const index = posts.findIndex(p => (p.id || `${p.time || ''}_${p.author || ''}`) === activeEditingMessageId);
+
+    if (index !== -1) {
+      posts[index].content = newContent;
+      posts[index].edited = true;
+      saveLocalCache();
+      renderChannelMessages(false);
+    }
+
+    const payload = {
+      action: 'edit',
+      channel: currentActiveChannel,
+      id: activeEditingMessageId,
+      content: newContent,
+      author: window.currentUser ? window.currentUser.username : 'Unknown'
+    };
+
+    try {
+      await fetch(CONFIG.MESSAGES_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {}
+
+    if (saveBtn) saveBtn.disabled = false;
+    if (saveBtnText) saveBtnText.textContent = 'Сохранить изменения';
+    closeEditModal();
+  };
+
+  // --- Функции удаления сообщений ---
+  window.promptDeleteMessage = function(encodedPostId) {
+    const postId = decodeURIComponent(encodedPostId);
+    const posts = appMessages[currentActiveChannel] || [];
+    const post = posts.find(p => (p.id || `${p.time || ''}_${p.author || ''}`) === postId);
+    if (!post) return;
+
+    activeDeletingMessageId = postId;
+    const modal = document.getElementById('deleteConfirmModal');
+    const card = document.getElementById('deleteModalCard');
+    const previewEl = document.getElementById('deletePreviewText');
+
+    if (previewEl) previewEl.textContent = post.content || '...';
+
+    if (modal) {
+      modal.classList.remove('hidden', 'pointer-events-none');
+      modal.classList.add('pointer-events-auto');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        if (card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
+      }, 10);
+    }
+    lucide.createIcons();
+  };
+
+  window.closeDeleteModal = function() {
+    const modal = document.getElementById('deleteConfirmModal');
+    const card = document.getElementById('deleteModalCard');
+    if (modal) {
+      modal.classList.add('opacity-0');
+      if (card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
+      setTimeout(() => {
+        modal.classList.add('hidden', 'pointer-events-none');
+        modal.classList.remove('pointer-events-auto');
+        activeDeletingMessageId = null;
+      }, 200);
+    }
+  };
+
+  function handleDeleteModalBackdropClick(e) {
+    if (e.target === document.getElementById('deleteConfirmModal')) closeDeleteModal();
+  }
+
+  window.executeDeleteMessage = async function() {
+    if (!activeDeletingMessageId) return;
+
+    const delBtn = document.getElementById('executeDeleteBtn');
+    const delBtnText = document.getElementById('executeDeleteBtnText');
+    if (delBtn) delBtn.disabled = true;
+    if (delBtnText) delBtnText.textContent = 'Удаление...';
+
+    const targetId = activeDeletingMessageId;
+
+    if (appMessages[currentActiveChannel]) {
+      appMessages[currentActiveChannel] = appMessages[currentActiveChannel].filter(
+        p => (p.id || `${p.time || ''}_${p.author || ''}`) !== targetId
+      );
+      saveLocalCache();
+      renderChannelMessages(false);
+    }
+
+    const payload = {
+      action: 'delete',
+      channel: currentActiveChannel,
+      id: targetId,
+      author: window.currentUser ? window.currentUser.username : 'Unknown'
+    };
+
+    try {
+      await fetch(CONFIG.MESSAGES_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {}
+
+    if (delBtn) delBtn.disabled = false;
+    if (delBtnText) delBtnText.textContent = 'Удалить';
+    closeDeleteModal();
+  };
+
+  async function postToDiscordWebhook(username, text) {
+    const avatarUrl = (window.currentUser && window.currentUser.skin) 
+      ? window.currentUser.skin 
+      : (CONFIG.SKIN_BASE_URL + encodeURIComponent(username) + '.png');
+
+    fetch(CONFIG.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: username,
+        avatar_url: avatarUrl,
+        content: text
+      })
+    }).catch(e => console.warn('Direct webhook catch:', e));
+  }
+
+  window.handlePostMessage = async function(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (isSending) return;
+
+    const user = window.currentUser;
+    if (!user || !user.username) {
+      openAuthModal("Войдите в аккаунт");
+      return;
+    }
+
+    const input = document.getElementById('messageTextInput');
+    const sendBtn = document.getElementById('adminSendBtn');
+    const sendBtnText = document.getElementById('adminSendBtnText');
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+
+    isSending = true;
+    if (sendBtn) sendBtn.disabled = true;
+    if (sendBtnText) sendBtnText.textContent = 'Отправка...';
+
+    const now = new Date();
+    const timeStr = `Сегодня в ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const userRole = isUserAdmin() ? 'ADMIN' : 'PLAYER';
+    const uniqueId = `msg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    input.value = '';
+
+    const payload = {
+      id: uniqueId,
+      channel: currentActiveChannel,
+      author: user.username,
+      role: userRole,
+      content: text,
+      time: timeStr,
+      avatar: user.skin || getPlayerSkinUrl(user.username),
+      sendToDiscord: (currentActiveChannel === 'chat'),
+      syncDiscord: (currentActiveChannel === 'chat')
+    };
+
+    if (currentActiveChannel === 'chat') {
+      postToDiscordWebhook(user.username, text);
+    }
+
+    try {
+      await fetch(CONFIG.MESSAGES_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      mergeChannelMessages(currentActiveChannel, [payload]);
+      saveLocalCache();
+      renderChannelMessages(true);
+    } catch (err) {
+      mergeChannelMessages(currentActiveChannel, [payload]);
+      saveLocalCache();
+      renderChannelMessages(true);
+    } finally {
+      isSending = false;
+      if (sendBtn) sendBtn.disabled = false;
+      if (sendBtnText) sendBtnText.textContent = 'Отправить';
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    currentActiveChannel = 'recruitment';
+    loadLocalCache();
+
+    let rawAuth = localStorage.getItem(CONFIG.AUTH_STORAGE_KEY);
+    let sessionUser = null;
+    try { if (rawAuth) sessionUser = JSON.parse(rawAuth); } catch (e) {}
+
+    if (sessionUser && sessionUser.username) {
+      window.currentUser = sessionUser;
+      applyUserRolePortal(sessionUser);
+    } else {
+      window.currentUser = null;
+      applyUserRolePortal(null);
+    }
+
+    fetchAllMessagesFromKV(true);
+    startChannelPolling();
+
+    const msgInput = document.getElementById('messageTextInput');
+    if (msgInput) {
+      msgInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handlePostMessage(e);
+        }
+      });
+    }
+  });
+
+  (function initShader() {
+    const canvas = document.getElementById('shader-canvas');
+    if (!canvas) return;
+    const gl = canvas.getContext('webgl', { powerPreference: 'low-power' });
+    if (!gl) return;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+
+    const vs = `attribute vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
+    const fs = `
+      precision mediump float;
+      uniform float t;
+      uniform vec2 r;
+      void main() {
+        vec2 p = (gl_FragCoord.xy * 2.0 - r) / min(r.x, r.y);
+        float wave = sin(p.y * 2.5 + p.x * 1.5 + t * 0.4) * 0.5 + 0.5;
+        vec3 dark = vec3(0.027, 0.043, 0.063);
+        vec3 cyan = vec3(0.02, 0.18, 0.15);
+        vec3 green = vec3(0.0, 0.96, 0.62);
+        vec3 col = mix(dark, cyan, wave * 0.5);
+        col += green * pow(wave, 4.0) * 0.3;
+        vec2 g = abs(fract(gl_FragCoord.xy / 40.0) - 0.5);
+        float line = 1.0 - smoothstep(0.0, 0.05, min(g.x, g.y));
+        col += green * line * 0.03;
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    function compile(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uT = gl.getUniformLocation(prog, 't');
+    const uR = gl.getUniformLocation(prog, 'r');
+    let start = performance.now();
+    function render() {
+      const now = (performance.now() - start) * 0.001;
+      gl.uniform1f(uT, now);
+      gl.uniform2f(uR, canvas.width, canvas.height);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       requestAnimationFrame(render);
-    })();
-  </script>
+    }
+    render();
+  })();
+</script>
 
 
 </body></html>
