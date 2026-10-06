@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="ru" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Регистр</title>
-<link href="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/icon/Arnimaz21-Head.png?raw=true" rel="icon" type="image/png">
+<title>Регистр — Cloud.Users</title>
+<link href="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/icon/Arnimaz21-Head.png" rel="icon" type="image/png">
 <!-- Tailwind CSS CDN with Forms & Container Queries -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <!-- Google Fonts: JetBrains Mono & Space Grotesk -->
@@ -94,38 +94,17 @@
 </div>
 <div>
 <h1 class="font-bold text-white tracking-wide text-base md:text-lg font-sans flex items-center gap-2">
-            Cloud.Users
-          </h1>
+  Cloud.Users
+  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f5a0]/15 text-[#00f5a0] border border-[#00f5a0]/30 hidden sm:inline-block">ADMIN</span>
+</h1>
 </div>
 </div>
 <!-- Правая часть: Плашка вошедшего админа и кнопка Discord -->
-<div class="flex items-center gap-3">
-<!-- Плашка авторизованного администратора -->
-<div class="hidden items-center gap-2.5 bg-[#070b10] border border-[#00f5a0]/30 px-3 py-1.5 rounded-xl shadow-[0_0_12px_rgba(0,245,160,0.1)]" id="headerAdminBadge">
-<img alt="Admin Avatar" class="w-7 h-7 rounded-lg object-cover pixelated bg-black/60 border border-[#00f5a0]/40" id="headerAdminAvatar" onerror="handleSkinError(this)" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
-<div class="flex flex-col text-left">
-<span class="text-white text-xs font-bold leading-tight flex items-center gap-1.5" id="headerAdminName">Admin</span>
-<div class="flex items-center gap-1">
-<span class="text-[9px] px-1.5 py-0.2 rounded bg-red-950/60 text-red-400 border border-red-800/40 font-semibold tracking-wider">АДМИН</span>
-<span class="text-[9px] text-[#00f5a0]/80">KV AUTH</span>
-</div>
-</div>
-<button class="ml-2 p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition" onclick="logoutAdmin()" title="Выйти из системы">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out w-4 h-4"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
-</button>
-</div>
-<!-- Кнопка перехода в Discord сообщество -->
-<a class="px-4 py-2 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200" data-purpose="discord-link" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path>
-</svg>
-<span class="font-sans font-medium text-xs">Discord</span>
-</a>
-</div>
+<div class="flex items-center gap-3"><!-- Плашка авторизованного администратора и кнопка выхода --><div class="hidden items-center gap-2" id="headerAdminBadge"><div class="h-10 flex items-center gap-2.5 bg-[#070b10] border px-3 rounded-xl shadow-sm border-white/10"><div class="p-0.5 rounded-lg border bg-black/60 flex items-center justify-center flex-shrink-0 border-white/10"><img alt="Steve" class="w-6 h-6 rounded-md object-cover pixelated" id="headerAdminAvatar" onerror="handleSkinError(this)" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png"></div><div class="flex items-center gap-2"><span class="text-white text-xs font-bold font-mono tracking-wide" id="headerAdminName">Admin</span><span class="text-[10px] px-1.5 py-0.5 rounded-md bg-red-950/60 text-red-400 border border-red-800/40 font-semibold font-mono tracking-wider">АДМИН</span></div></div><button class="h-10 w-10 bg-[#070b10] border border-white/10 hover:border-red-800/40 text-gray-400 hover:text-red-400 rounded-xl transition flex items-center justify-center flex-shrink-0" onclick="logoutAdmin()" title="Выйти из системы" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" class="lucide lucide-log-out w-4 h-4"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg></button></div><!-- Кнопка перехода в Discord сообщество --><a class="h-10 px-4 bg-[#5865F2]/15 hover:bg-[#5865F2]/25 text-[#7983f5] border border-[#5865F2]/30 rounded-xl text-xs flex items-center gap-2 transition duration-200 flex-shrink-0" data-purpose="discord-link" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path></svg><span class="font-sans font-medium text-xs">Discord</span></a></div>
 </header>
 <!-- END: MainHeader -->
 <!-- BEGIN: MasterLockScreen -->
-<!-- Экран авторизации администратора через Cloudflare Worker KV -->
+<!-- Экран авторизации администратора через базу данных -->
 <div class="bg-[#0b1017]/95 border border-[#00f5a0]/30 rounded-2xl p-7 md:p-9 shadow-2xl backdrop-blur-md max-w-md mx-auto text-center space-y-5" data-purpose="lock-screen-modal" id="adminLockScreen">
 <div class="w-16 h-16 mx-auto rounded-2xl bg-[#00f5a0]/10 border border-[#00f5a0]/30 flex items-center justify-center text-[#00f5a0] shadow-[0_0_20px_rgba(0,245,160,0.2)]">
 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-check" aria-hidden="true" class="lucide lucide-shield-check w-8 h-8"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
@@ -133,7 +112,8 @@
 <div>
 <h3 class="text-xl font-bold text-white font-sans">Вход для Администратора</h3>
 <p class="text-xs text-gray-400 mt-2 font-mono leading-relaxed">
-          Панель защищена авторизацией Cloud.Mine. Вход разрешён только пользователям с подтверждённой ролью <span class="text-[#00f5a0] font-semibold">Admin</span></p>
+  Панель защищена авторизацией Cloud.Mine<br>Вход разрешён только пользователям с подтверждённой ролью <span class="text-[#00f5a0] font-semibold">Admin</span>
+</p>
 </div>
 <form class="space-y-4 font-mono text-xs text-left" id="adminLockForm">
 <!-- Логин администратора -->
@@ -187,7 +167,7 @@
 <!-- Интерактивный предпросмотр скина игрока -->
 <div class="lg:col-span-3 flex lg:flex-col items-center justify-center p-4 bg-[#070b10] border border-white/10 rounded-xl gap-3" data-purpose="skin-preview-block">
 <div class="relative">
-<img alt="Steve" class="w-16 h-16 rounded-xl object-cover pixelated bg-black/50 border-2 border-[#00f5a0]/40 shadow-[0_0_15px_rgba(0,245,160,0.2)]" id="previewAvatar" onerror="handleSkinError(this)" src="https://github.com/Arnimaz21/arnimaz21.github.io/blob/main/assets/skins/steave.png?raw=true">
+<img alt="Steve" class="w-16 h-16 rounded-xl object-cover pixelated bg-black/50 border-2 border-[#00f5a0]/40 shadow-[0_0_15px_rgba(0,245,160,0.2)]" id="previewAvatar" onerror="handleSkinError(this)" src="https://raw.githubusercontent.com/Arnimaz21/arnimaz21.github.io/main/assets/skins/steave.png">
 <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#00f5a0] border-2 border-[#070b10]" title="Шлюз скина готов"></span>
 </div>
 <div class="text-left lg:text-center">
@@ -264,9 +244,9 @@
 <option value="player">Игроки</option>
 <option value="admin">Администраторы</option>
 </select>
-<!-- Кнопка синхронизации с базой Cloudflare Worker KV -->
+<!-- Кнопка синхронизации с базой данных -->
 <div class="flex items-center gap-1.5 ml-auto sm:ml-0">
-<button class="px-3 py-1.5 bg-[#121a22] hover:bg-[#18232e] text-gray-300 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl transition flex items-center gap-1.5" onclick="refreshUsersList(true)" title="Синхронизировать с Cloudflare Worker KV">
+<button class="px-3 py-1.5 bg-[#121a22] hover:bg-[#18232e] text-gray-300 border border-white/10 hover:border-[#00f5a0]/40 rounded-xl transition flex items-center gap-1.5" onclick="refreshUsersList(true)" title="Синхронизировать с базой данных">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="refresh-cw" aria-hidden="true" class="lucide lucide-refresh-cw w-3.5 h-3.5 text-[#00f5a0]" id="syncUsersIcon"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
 <span class="font-medium">Синхр.</span>
 </button>
@@ -288,17 +268,17 @@
 <tbody class="divide-y divide-white/5" id="usersTableBody">
 <tr>
 <td class="py-8 text-center text-gray-500 font-mono" colspan="5">
-                  В базе пока нет зарегистрированных игроков. Создайте первого пользователя выше.
-                </td>
+  В базе пока нет зарегистрированных игроков. Создайте первого пользователя выше.
+</td>
 </tr>
 </tbody>
 </table>
 </div>
-<!-- Подвал таблицы: статус KV синхронизации -->
+<!-- Подвал таблицы: статус синхронизации базы данных -->
 <div class="p-3 border-t border-white/10 bg-[#070b10]/80 text-[11px] text-gray-400 font-mono flex flex-wrap items-center justify-between gap-2">
-<div class="flex items-center gap-2" id="kvSyncStatusWrapper">
-<span class="w-2 h-2 rounded-full bg-emerald-400" id="kvSyncStatusDot"></span>
-<span class="text-gray-400 font-mono text-[11px]" id="lastKvSyncTime">KV: Синхр. --:--:--</span>
+<div class="flex items-center gap-2" id="syncStatusWrapper">
+<span class="w-2 h-2 rounded-full bg-emerald-400" id="syncStatusDot"></span>
+<span class="text-gray-400 font-mono text-[11px]" id="lastSyncTime">Синхр. --:--:--</span>
 </div>
 </div>
 </section>
@@ -314,8 +294,8 @@
 <div class="flex items-center justify-between border-b border-white/10 pb-3">
 <h3 class="text-white font-bold font-sans flex items-center gap-2">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="edit-3" aria-hidden="true" class="lucide lucide-edit-3 w-4 h-4 text-[#00f5a0]"><path d="M13 21h8"></path><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>
-          Редактирование аккаунта
-        </h3>
+  Редактирование аккаунта
+</h3>
 <button class="text-gray-400 hover:text-white" onclick="closeEditModal()" type="button">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
 </button>
@@ -353,8 +333,8 @@
 <footer class="text-center py-4 text-[11px] font-mono select-none relative z-10" data-purpose="page-footer">
 <span class="text-gray-300 [text-shadow:_0_1px_2px_rgb(0_0_0_/_90%),_0_0_8px_rgb(0_0_0_/_80%)]">by Arnimaz21 for</span>
 <a class="text-[#7289da] hover:underline font-semibold ml-1 inline-flex items-center gap-1" href="https://discord.gg/kQkRgbFZeK" rel="noopener noreferrer" target="_blank">
-      vunya100's server
-      <svg class="w-3.5 h-3.5 fill-current inline-block" viewBox="0 0 24 24">
+  vunya100's server
+  <svg class="w-3.5 h-3.5 fill-current inline-block" viewBox="0 0 24 24">
 <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.893a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"></path>
 </svg>
 </a>
@@ -404,7 +384,7 @@
       skinPreviewNick: document.getElementById('skinPreviewNick'),
       usersTableBody: document.getElementById('usersTableBody'),
       userCountTag: document.getElementById('userCountTag'),
-      lastKvSyncTime: document.getElementById('lastKvSyncTime'),
+      lastSyncTime: document.getElementById('lastSyncTime'),
       syncUsersIcon: document.getElementById('syncUsersIcon'),
       searchInput: document.getElementById('searchInput'),
       roleFilter: document.getElementById('roleFilter'),
@@ -521,7 +501,7 @@
       DOM.adminLoginPassword.value = '';
     };
 
-    // Отправка формы авторизации через Cloudflare Worker KV
+    // Отправка формы авторизации через базу данных
     DOM.adminLockForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       DOM.lockKeyFeedback.classList.add('hidden');
@@ -537,7 +517,7 @@
 
       // Индикация процесса проверки
       DOM.btnSubmitAdminLogin.disabled = true;
-      DOM.submitLoginBtnText.innerText = 'ПРОВЕРКА В KV БАЗЕ...';
+      DOM.submitLoginBtnText.innerText = 'ПРОВЕРКА В БАЗЕ ДАННЫХ...';
 
       let users = [];
       let fetchSuccess = false;
@@ -555,7 +535,7 @@
           }
         }
       } catch (err) {
-        console.warn('Сетевая ошибка при запросе KV базы:', err);
+        console.warn('Сетевая ошибка при запросе базы данных:', err);
       }
 
       // Если внешний сервис недоступен, берем резервную копию из локального кэша
@@ -571,7 +551,7 @@
       const user = users.find(u => (u.username || '').toLowerCase() === lowerNick);
 
       if (!user) {
-        DOM.lockKeyFeedback.innerText = 'Ошибка: доступ разрешён только пользователям с правами Администратора в базе KV';
+        DOM.lockKeyFeedback.innerText = 'Ошибка: доступ разрешён только пользователям с правами Администратора в базе данных';
         DOM.lockKeyFeedback.classList.remove('hidden');
         DOM.btnSubmitAdminLogin.disabled = false;
         DOM.submitLoginBtnText.innerText = 'ВОЙТИ В ПАНЕЛЬ АДМИНИСТРАТОРА';
@@ -590,7 +570,7 @@
       // Проверка роли Администратора
       const isAdminRole = user.role === 'admin' || user.role === 'administrator';
       if (!isAdminRole) {
-        DOM.lockKeyFeedback.innerText = 'Ошибка: доступ разрешён только пользователям с правами Администратора в базе KV';
+        DOM.lockKeyFeedback.innerText = 'Ошибка: доступ разрешён только пользователям с правами Администратора в базе данных';
         DOM.lockKeyFeedback.classList.remove('hidden');
         DOM.btnSubmitAdminLogin.disabled = false;
         DOM.submitLoginBtnText.innerText = 'ВОЙТИ В ПАНЕЛЬ АДМИНИСТРАТОРА';
@@ -696,7 +676,7 @@
       state.usersList.unshift(newUser);
       await saveUsersToDatabase();
 
-      DOM.createUserNotice.innerHTML = `<span class="text-[#00f5a0] flex items-center gap-1 font-mono"><i data-lucide="check" class="w-3.5 h-3.5"></i> Пользователь <b>${nick}</b> добавлен и сохранён в KV!</span>`;
+      DOM.createUserNotice.innerHTML = `<span class="text-[#00f5a0] flex items-center gap-1 font-mono"><i data-lucide="check" class="w-3.5 h-3.5"></i> Пользователь <b>${nick}</b> добавлен и сохранён в базе данных!</span>`;
       
       DOM.newUserNick.value = '';
       generateRandomPassword();
@@ -820,7 +800,6 @@
               <img src="${skinUrl}" onerror="handleSkinError(this)" class="w-7 h-7 rounded-lg object-cover pixelated bg-black/40 border border-white/10" alt="${safeNick}">
               <div>
                 <span class="text-white font-semibold block leading-tight">${safeNick}</span>
-                <span class="text-[10px] text-gray-500 font-mono">Minecraft</span>
               </div>
             </td>
             <td class="py-2.5 px-4">
@@ -869,7 +848,7 @@
         DOM.syncUsersIcon.classList.add('animate-spin');
       }
 
-      let loadedFromKv = false;
+      let loadedFromDb = false;
       try {
         const resp = await fetch(`${CONFIG.WORKER_URL}/users`, {
           headers: { 'Cache-Control': 'no-cache' }
@@ -878,14 +857,14 @@
           const data = await resp.json();
           if (Array.isArray(data.users)) {
             state.usersList = data.users;
-            loadedFromKv = true;
+            loadedFromDb = true;
           }
         }
       } catch (err) {
-        console.warn('KV сервис недоступен, чтение из кэша:', err);
+        console.warn('Сервис базы данных недоступен, чтение из кэша:', err);
       }
 
-      if (!loadedFromKv) {
+      if (!loadedFromDb) {
         try {
           const raw = localStorage.getItem(CONFIG.LOCAL_USERS_KEY);
           state.usersList = raw ? JSON.parse(raw) : [];
@@ -896,7 +875,7 @@
 
       updateUsersMetrics();
       renderUsersTable();
-      DOM.lastKvSyncTime.innerText = `KV: Синхр. ${new Date().toLocaleTimeString('ru-RU')}`;
+      DOM.lastSyncTime.innerText = `Синхр. ${new Date().toLocaleTimeString('ru-RU')}`;
       lucide.createIcons();
 
       if (showAnimation && DOM.syncUsersIcon) {
@@ -917,9 +896,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ users: state.usersList })
         });
-        DOM.lastKvSyncTime.innerText = `KV: Сохранено ${new Date().toLocaleTimeString('ru-RU')}`;
+        DOM.lastSyncTime.innerText = `Сохранено ${new Date().toLocaleTimeString('ru-RU')}`;
       } catch (err) {
-        console.warn('Ошибка сохранения в KV, данные сохранены локально:', err);
+        console.warn('Ошибка сохранения в базе данных, данные сохранены локально:', err);
       }
     }
   </script>
